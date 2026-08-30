@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flame Engine"
+  short_description: "Flame Engine development guidance"
+  default_prompt: "Use $flame-engine to build or debug a Flutter game with Flame."
