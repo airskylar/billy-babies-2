@@ -6,6 +6,12 @@
   wrappers.
 - When replacing pre-release behavior, remove obsolete paths rather than preserving legacy branches.
 
+## Getting started
+
+When the root-level `.getting-started` sentinel exists, read `.agents/getting-started.md` before
+planning or changing application code. It contains the one-time initialization guidance for
+replacing the placeholder game.
+
 ## Git and integration
 
 - Never switch the checked-out branch of the primary checkout without the user's explicit permission.
