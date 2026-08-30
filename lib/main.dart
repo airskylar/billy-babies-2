@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' show DisplayFeatureType;
 
@@ -6,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'game/coreflame_game.dart';
+import 'game/services/coreflame_game_services_config.dart';
+import 'game/services/game_platform_services.dart';
+import 'game/services/mobile_game_platform_services.dart';
 import 'game/theme/game_palette.dart';
 
 Future<void> main() async {
@@ -23,7 +27,9 @@ Future<void> main() async {
 }
 
 class CoreflameApp extends StatelessWidget {
-  const CoreflameApp({super.key});
+  const CoreflameApp({super.key, this.gameServices});
+
+  final GamePlatformServices? gameServices;
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +45,51 @@ class CoreflameApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: GamePalette.cream,
       ),
-      home: const CoreflameGameScreen(),
+      home: CoreflameGameScreen(gameServices: gameServices),
     );
   }
 }
 
 class CoreflameGameScreen extends StatefulWidget {
-  const CoreflameGameScreen({super.key});
+  const CoreflameGameScreen({super.key, this.gameServices});
+
+  final GamePlatformServices? gameServices;
 
   @override
   State<CoreflameGameScreen> createState() => _CoreflameGameScreenState();
 }
 
 class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
-  late final CoreflameGame _game = CoreflameGame();
+  late final bool _ownsGameServices;
+  late final GamePlatformServices _gameServices;
+  late final CoreflameGame _game;
+
+  @override
+  void initState() {
+    super.initState();
+    final injectedGameServices = widget.gameServices;
+    _ownsGameServices = injectedGameServices == null;
+    _gameServices =
+        injectedGameServices ??
+        MobileGamePlatformServices(
+          configuration: coreflameGameServicesConfiguration,
+        );
+    _game = CoreflameGame(platformServices: _gameServices);
+
+    if (_gameServices.capabilities.contains(
+      GameServiceCapability.authentication,
+    )) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(_gameServices.authenticate());
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_ownsGameServices) unawaited(_gameServices.dispose());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

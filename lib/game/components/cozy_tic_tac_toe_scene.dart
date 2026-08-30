@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flame/components.dart';
@@ -6,16 +7,22 @@ import 'package:flame_svg/flame_svg.dart';
 import 'package:flutter/material.dart';
 
 import '../services/game_feedback.dart';
+import '../services/game_platform_services.dart';
 import '../theme/game_palette.dart';
 import '../tic_tac_toe_match.dart';
 
 class CozyTicTacToeScene extends PositionComponent with TapCallbacks {
-  CozyTicTacToeScene({required this.match, required this.feedback});
+  CozyTicTacToeScene({
+    required this.match,
+    required this.feedback,
+    required this.platformServices,
+  });
 
   static const _fontFamily = 'Gluten';
 
   final TicTacToeMatch match;
   final GameFeedback feedback;
+  final GamePlatformServices platformServices;
   final List<double> _markProgress = List<double>.filled(9, 1);
 
   _SceneLayout? _layout;
@@ -123,6 +130,7 @@ class CozyTicTacToeScene extends PositionComponent with TapCallbacks {
     if (match.isFinished) {
       _elapsed = 0;
       _winLineProgress = 0;
+      _reportFinishedRound();
     }
   }
 
@@ -151,6 +159,22 @@ class CozyTicTacToeScene extends PositionComponent with TapCallbacks {
   void _releaseRoundButton() {
     _roundButtonArmed = false;
     _roundButtonPressed = false;
+  }
+
+  void _reportFinishedRound() {
+    switch (match.result) {
+      case RoundResult.xWon || RoundResult.oWon:
+        unawaited(platformServices.unlockAchievement(GameAchievement.firstWin));
+        unawaited(
+          platformServices.submitScore(
+            leaderboard: GameLeaderboard.matchWins,
+            score: math.max(match.xScore, match.oScore),
+          ),
+        );
+        return;
+      case RoundResult.playing || RoundResult.draw:
+        return;
+    }
   }
 
   void _updateRoundButtonSpring(double dt) {

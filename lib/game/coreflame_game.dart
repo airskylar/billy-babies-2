@@ -5,16 +5,21 @@ import 'package:flutter/material.dart';
 
 import 'components/cozy_tic_tac_toe_scene.dart';
 import 'services/game_feedback.dart';
+import 'services/game_platform_services.dart';
 import 'theme/game_palette.dart';
 import 'tic_tac_toe_match.dart';
 
 class CoreflameGame extends FlameGame {
-  CoreflameGame({TicTacToeMatch? match, GameFeedback? feedback})
-    : match = match ?? TicTacToeMatch(),
-      feedback = feedback ?? GameFeedback();
+  CoreflameGame({
+    required this.platformServices,
+    TicTacToeMatch? match,
+    GameFeedback? feedback,
+  }) : match = match ?? TicTacToeMatch(),
+       feedback = feedback ?? GameFeedback();
 
   final TicTacToeMatch match;
   final GameFeedback feedback;
+  final GamePlatformServices platformServices;
   EdgeInsets _safePadding = EdgeInsets.zero;
   CozyTicTacToeScene? _scene;
 
@@ -31,7 +36,11 @@ class CoreflameGame extends FlameGame {
   Future<void> onLoad() async {
     await super.onLoad();
     await feedback.preload();
-    final scene = CozyTicTacToeScene(match: match, feedback: feedback);
+    final scene = CozyTicTacToeScene(
+      match: match,
+      feedback: feedback,
+      platformServices: platformServices,
+    );
     _scene = scene;
     await add(scene);
     scene.applySafeViewport(size, _safePadding);
