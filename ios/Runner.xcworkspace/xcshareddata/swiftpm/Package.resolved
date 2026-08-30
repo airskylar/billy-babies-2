@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "pulsar-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/software-mansion-labs/pulsar-ios",
+      "state" : {
+        "revision" : "f65113a6f1fed7c9737ce85f5ae7ddc5caa5723d",
+        "version" : "1.4.0"
+      }
+    }
+  ],
+  "version" : 2
+}
