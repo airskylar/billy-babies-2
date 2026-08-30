@@ -31,6 +31,16 @@ replacing the placeholder game.
 - Keep game rules free of Flutter and Flame types so they remain quick to unit test and easy to
   replace.
 
+## Runtime inspection
+
+- Debug builds expose versioned Flutter/Flame snapshots, an event journal, semantic commands, both
+  framework trees, and game-loop controls through `tool/coreflame_inspect.dart`.
+- Before debugging live state, driving the game, or adding state that agents must observe or control,
+  read `.agents/rules/runtime-inspection.md` and prefer that protocol over screenshots, coordinate
+  tapping, ad hoc logging, or private-field probing.
+- Keep the inspection contract, CLI help, documentation, and focused tests synchronized with changes
+  to observable state or agent-facing actions.
+
 ## Consistency
 
 - Derive collections from their authoritative source when membership is already represented in code,
@@ -54,3 +64,5 @@ Read the scoped rule below before making related changes:
 
 - `.agents/rules/dart-code-quality.md` — read when creating, changing, reviewing, or refactoring Dart
   code in Flutter or other native platform projects.
+- `.agents/rules/runtime-inspection.md` — read when inspecting or driving a running Coreflame build,
+  debugging Flutter/Flame state, or changing state and actions exposed to agents.
