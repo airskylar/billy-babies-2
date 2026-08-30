@@ -14,8 +14,8 @@ void main() {
     test('rejects a move in an occupied cell', () {
       final match = TicTacToeMatch();
 
-      expect(match.play(4), isTrue);
-      expect(match.play(4), isFalse);
+      expect(match.play(4), MoveOutcome.accepted);
+      expect(match.play(4), MoveOutcome.occupied);
       expect(match.markAt(4), Mark.x);
       expect(match.turn, Mark.o);
     });
@@ -24,13 +24,13 @@ void main() {
       final match = TicTacToeMatch();
 
       for (final move in [0, 3, 1, 4, 2]) {
-        expect(match.play(move), isTrue);
+        expect(match.play(move), MoveOutcome.accepted);
       }
 
       expect(match.result, RoundResult.xWon);
       expect(match.winningCells, [0, 1, 2]);
       expect(match.xScore, 1);
-      expect(match.play(5), isFalse);
+      expect(match.play(5), MoveOutcome.roundFinished);
     });
 
     test('detects a draw', () {

@@ -6,10 +6,84 @@ import 'package:flutter/foundation.dart';
 import 'package:pulsar_haptics/pulsar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../observability/coreflame_observability.dart';
 import '../tic_tac_toe_match.dart';
 
+enum GameFeedbackLifecycle { created, loading, ready, disposing, disposed }
+
+enum BackgroundMusicPhase {
+  uninitialized,
+  initializing,
+  ready,
+  starting,
+  playing,
+  stopping,
+  disposed;
+
+  bool get isInitialized => switch (this) {
+    BackgroundMusicPhase.ready ||
+    BackgroundMusicPhase.starting ||
+    BackgroundMusicPhase.playing ||
+    BackgroundMusicPhase.stopping => true,
+    _ => false,
+  };
+}
+
+enum GameFeedbackEventKind {
+  lifecycleChanged,
+  backgroundMusicChanged,
+  settingsLoaded,
+  settingChanged,
+  failure,
+}
+
+class GameFeedbackEvent {
+  GameFeedbackEvent({
+    required this.kind,
+    Map<String, Object?> payload = const {},
+  }) : payload = Map.unmodifiable(payload);
+
+  final GameFeedbackEventKind kind;
+  final Map<String, Object?> payload;
+}
+
+typedef GameFeedbackObserver = void Function(GameFeedbackEvent event);
+
+abstract interface class BackgroundMusicController {
+  Future<void> initialize();
+
+  Future<void> play(String asset, {required double volume});
+
+  Future<void> stop();
+
+  Future<void> dispose();
+}
+
+class _FlameBackgroundMusicController implements BackgroundMusicController {
+  Bgm? _player;
+
+  Bgm get _activePlayer => _player ??= Bgm(audioCache: FlameAudio.audioCache);
+
+  @override
+  Future<void> initialize() => _activePlayer.initialize();
+
+  @override
+  Future<void> play(String asset, {required double volume}) =>
+      _activePlayer.play(asset, volume: volume);
+
+  @override
+  Future<void> stop() => _activePlayer.stop();
+
+  @override
+  Future<void> dispose() async {
+    await _player?.dispose();
+  }
+}
+
 class GameFeedback {
-  GameFeedback({Pulsar? pulsar}) : _pulsar = pulsar ?? Pulsar();
+  GameFeedback({Pulsar? pulsar, BackgroundMusicController? backgroundMusic})
+    : _pulsar = pulsar ?? Pulsar(),
+      _backgroundMusic = backgroundMusic ?? _FlameBackgroundMusicController();
 
   static const xSound = 'place_x.mp3';
   static const oSound = 'place_o.mp3';
@@ -20,20 +94,53 @@ class GameFeedback {
   static const _vibrationPreference = 'settings.vibration';
 
   final Pulsar _pulsar;
+  final BackgroundMusicController _backgroundMusic;
   SharedPreferences? _preferences;
-  final Bgm _bgm = Bgm(audioCache: FlameAudio.audioCache);
+  final List<GameFeedbackObserver> _observers = [];
+  Future<void> _backgroundOperation = Future.value();
   bool _pulsarSoundDisabled = false;
-  bool _bgmInitialized = false;
-  bool _bgmStarting = false;
+  bool _preferencesLoaded = false;
   bool _soundEnabled = true;
   bool _musicEnabled = true;
   bool _vibrationEnabled = true;
+  GameFeedbackLifecycle _lifecycle = GameFeedbackLifecycle.created;
+  BackgroundMusicPhase _backgroundMusicPhase =
+      BackgroundMusicPhase.uninitialized;
+  FeedbackFailureSnapshot? _lastFailure;
 
   bool get soundEnabled => _soundEnabled;
   bool get musicEnabled => _musicEnabled;
   bool get vibrationEnabled => _vibrationEnabled;
+  GameFeedbackLifecycle get lifecycle => _lifecycle;
+  BackgroundMusicPhase get backgroundMusicPhase => _backgroundMusicPhase;
+
+  FeedbackSnapshot get snapshot => FeedbackSnapshot(
+    lifecycle: _lifecycle.name,
+    backgroundMusic: _backgroundMusicPhase.name,
+    preferencesLoaded: _preferencesLoaded,
+    soundEnabled: _soundEnabled,
+    musicEnabled: _musicEnabled,
+    vibrationEnabled: _vibrationEnabled,
+    lastFailure: _lastFailure,
+  );
+
+  void addObserver(GameFeedbackObserver observer) {
+    if (!_observers.contains(observer)) {
+      _observers.add(observer);
+    }
+  }
+
+  void removeObserver(GameFeedbackObserver observer) {
+    _observers.remove(observer);
+  }
 
   Future<void> preload() async {
+    if (_lifecycle == GameFeedbackLifecycle.ready) return;
+    if (_lifecycle != GameFeedbackLifecycle.created) {
+      throw StateError('Cannot preload feedback while ${_lifecycle.name}');
+    }
+
+    _setLifecycle(GameFeedbackLifecycle.loading);
     await _loadPreferences();
 
     try {
@@ -42,55 +149,67 @@ class GameFeedback {
       _reportOptionalFailure('Audio preload', error, stackTrace);
     }
 
-    try {
-      await _bgm.initialize();
-      _bgmInitialized = true;
-    } on Object catch (error, stackTrace) {
-      _reportOptionalFailure('Background music setup', error, stackTrace);
-    }
+    await _enqueueBackgroundOperation(_ensureBackgroundMusicInitialized);
+    _setLifecycle(GameFeedbackLifecycle.ready);
   }
 
-  Future<void> startBackgroundMusic({bool fromUserGesture = false}) async {
-    if (!_musicEnabled ||
-        _bgm.isPlaying ||
-        _bgmStarting ||
-        (kIsWeb && !fromUserGesture)) {
-      return;
-    }
+  Future<void> startBackgroundMusic({bool fromUserGesture = false}) {
+    return _enqueueBackgroundOperation(() async {
+      if (!_musicEnabled ||
+          _lifecycle == GameFeedbackLifecycle.disposing ||
+          _lifecycle == GameFeedbackLifecycle.disposed ||
+          _backgroundMusicPhase == BackgroundMusicPhase.playing ||
+          (kIsWeb && !fromUserGesture)) {
+        return;
+      }
 
-    _bgmStarting = true;
-    try {
-      if (!_bgmInitialized) {
-        await _bgm.initialize();
-        _bgmInitialized = true;
+      if (!await _ensureBackgroundMusicInitialized()) return;
+      _setBackgroundMusicPhase(BackgroundMusicPhase.starting);
+      try {
+        await _backgroundMusic.play(
+          backgroundMusic,
+          volume: backgroundMusicVolume,
+        );
+        if (!_musicEnabled ||
+            _lifecycle == GameFeedbackLifecycle.disposing ||
+            _lifecycle == GameFeedbackLifecycle.disposed) {
+          await _backgroundMusic.stop();
+          _setBackgroundMusicPhase(BackgroundMusicPhase.ready);
+        } else {
+          _setBackgroundMusicPhase(BackgroundMusicPhase.playing);
+        }
+      } on Object catch (error, stackTrace) {
+        _setBackgroundMusicPhase(BackgroundMusicPhase.ready);
+        _reportOptionalFailure('Background music', error, stackTrace);
       }
-      if (!_musicEnabled) return;
-      await _bgm.play(backgroundMusic, volume: backgroundMusicVolume);
-      if (!_musicEnabled) {
-        await _bgm.stop();
-      }
-    } on Object catch (error, stackTrace) {
-      _reportOptionalFailure('Background music', error, stackTrace);
-    } finally {
-      _bgmStarting = false;
-    }
+    });
   }
 
   void handleUserGesture() {
-    if (kIsWeb && _musicEnabled && !_bgm.isPlaying) {
+    if (kIsWeb &&
+        _musicEnabled &&
+        _backgroundMusicPhase != BackgroundMusicPhase.playing) {
       unawaited(startBackgroundMusic(fromUserGesture: true));
     }
   }
 
-  void setSoundEnabled(bool enabled) {
+  void setSoundEnabled(
+    bool enabled, {
+    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+  }) {
     if (_soundEnabled == enabled) return;
     _soundEnabled = enabled;
+    _emitSettingChanged(FeedbackSetting.sound, enabled, origin);
     unawaited(_persistPreference(_soundPreference, enabled));
   }
 
-  void setMusicEnabled(bool enabled) {
+  void setMusicEnabled(
+    bool enabled, {
+    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+  }) {
     if (_musicEnabled == enabled) return;
     _musicEnabled = enabled;
+    _emitSettingChanged(FeedbackSetting.music, enabled, origin);
     unawaited(_persistPreference(_musicPreference, enabled));
     if (enabled) {
       unawaited(startBackgroundMusic(fromUserGesture: true));
@@ -99,20 +218,37 @@ class GameFeedback {
     }
   }
 
-  void setVibrationEnabled(bool enabled) {
+  void setVibrationEnabled(
+    bool enabled, {
+    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+  }) {
     if (_vibrationEnabled == enabled) return;
     final wasEnabled = _vibrationEnabled;
     _vibrationEnabled = enabled;
+    _emitSettingChanged(FeedbackSetting.vibration, enabled, origin);
     unawaited(_persistPreference(_vibrationPreference, enabled));
     if (_supportsPulsar) {
       unawaited(_applyVibrationSetting(enabled, wasEnabled: wasEnabled));
     }
   }
 
-  Future<void> dispose() async {
-    if (!_bgmInitialized) return;
-    await _bgm.dispose();
-    _bgmInitialized = false;
+  Future<void> dispose() {
+    if (_lifecycle == GameFeedbackLifecycle.disposed ||
+        _lifecycle == GameFeedbackLifecycle.disposing) {
+      return _backgroundOperation;
+    }
+
+    _setLifecycle(GameFeedbackLifecycle.disposing);
+    return _enqueueBackgroundOperation(() async {
+      try {
+        await _backgroundMusic.dispose();
+      } on Object catch (error, stackTrace) {
+        _reportOptionalFailure('Background music dispose', error, stackTrace);
+      } finally {
+        _setBackgroundMusicPhase(BackgroundMusicPhase.disposed);
+        _setLifecycle(GameFeedbackLifecycle.disposed);
+      }
+    });
   }
 
   void playMove(Mark mark, {bool isWinningMove = false}) {
@@ -137,6 +273,8 @@ class GameFeedback {
       _soundEnabled = preferences.getBool(_soundPreference) ?? true;
       _musicEnabled = preferences.getBool(_musicPreference) ?? true;
       _vibrationEnabled = preferences.getBool(_vibrationPreference) ?? true;
+      _preferencesLoaded = true;
+      _emit(GameFeedbackEventKind.settingsLoaded, snapshot.toJson());
     } on Object catch (error, stackTrace) {
       _reportOptionalFailure('Settings load', error, stackTrace);
     }
@@ -152,14 +290,53 @@ class GameFeedback {
     }
   }
 
-  Future<void> _stopBackgroundMusic() async {
-    try {
-      if (_bgm.isPlaying) {
-        await _bgm.stop();
-      }
-    } on Object catch (error, stackTrace) {
-      _reportOptionalFailure('Background music stop', error, stackTrace);
+  Future<bool> _ensureBackgroundMusicInitialized() async {
+    if (_backgroundMusicPhase.isInitialized) return true;
+    if (_backgroundMusicPhase == BackgroundMusicPhase.disposed ||
+        _lifecycle == GameFeedbackLifecycle.disposing ||
+        _lifecycle == GameFeedbackLifecycle.disposed) {
+      return false;
     }
+
+    _setBackgroundMusicPhase(BackgroundMusicPhase.initializing);
+    try {
+      await _backgroundMusic.initialize();
+      _setBackgroundMusicPhase(BackgroundMusicPhase.ready);
+      return true;
+    } on Object catch (error, stackTrace) {
+      _setBackgroundMusicPhase(BackgroundMusicPhase.uninitialized);
+      _reportOptionalFailure('Background music setup', error, stackTrace);
+      return false;
+    }
+  }
+
+  Future<void> _stopBackgroundMusic() {
+    return _enqueueBackgroundOperation(() async {
+      if (!_backgroundMusicPhase.isInitialized ||
+          _backgroundMusicPhase == BackgroundMusicPhase.ready) {
+        return;
+      }
+      _setBackgroundMusicPhase(BackgroundMusicPhase.stopping);
+      try {
+        await _backgroundMusic.stop();
+      } on Object catch (error, stackTrace) {
+        _reportOptionalFailure('Background music stop', error, stackTrace);
+      } finally {
+        if (_backgroundMusicPhase != BackgroundMusicPhase.disposed) {
+          _setBackgroundMusicPhase(BackgroundMusicPhase.ready);
+        }
+      }
+    });
+  }
+
+  Future<void> _enqueueBackgroundOperation(Future<void> Function() operation) {
+    final previous = _backgroundOperation;
+    final next = () async {
+      await previous;
+      await operation();
+    }();
+    _backgroundOperation = next;
+    return next;
   }
 
   Future<void> _applyVibrationSetting(
@@ -225,11 +402,63 @@ class GameFeedback {
       (defaultTargetPlatform == TargetPlatform.android ||
           defaultTargetPlatform == TargetPlatform.iOS);
 
+  void _setLifecycle(GameFeedbackLifecycle value) {
+    if (_lifecycle == value) return;
+    final previous = _lifecycle;
+    _lifecycle = value;
+    _emit(GameFeedbackEventKind.lifecycleChanged, {
+      'from': previous.name,
+      'to': value.name,
+    });
+  }
+
+  void _setBackgroundMusicPhase(BackgroundMusicPhase value) {
+    if (_backgroundMusicPhase == value) return;
+    final previous = _backgroundMusicPhase;
+    _backgroundMusicPhase = value;
+    _emit(GameFeedbackEventKind.backgroundMusicChanged, {
+      'from': previous.name,
+      'to': value.name,
+    });
+  }
+
+  void _emitSettingChanged(
+    FeedbackSetting setting,
+    bool enabled,
+    CoreflameActionOrigin origin,
+  ) {
+    _emit(GameFeedbackEventKind.settingChanged, {
+      'setting': setting.name,
+      'enabled': enabled,
+      'origin': origin.name,
+    });
+  }
+
+  void _emit(
+    GameFeedbackEventKind kind, [
+    Map<String, Object?> payload = const {},
+  ]) {
+    final event = GameFeedbackEvent(kind: kind, payload: payload);
+    for (final observer in List<GameFeedbackObserver>.of(_observers)) {
+      observer(event);
+    }
+  }
+
   void _reportOptionalFailure(
     String feature,
     Object error,
     StackTrace stackTrace,
   ) {
+    final failure = FeedbackFailureSnapshot(
+      feature: feature,
+      errorType: error.runtimeType.toString(),
+      message: error.toString(),
+    );
+    _lastFailure = failure;
+    _emit(GameFeedbackEventKind.failure, {
+      ...failure.toJson(),
+      'stackTrace': stackTrace.toString(),
+    });
     assert(() {
       debugPrint('$feature unavailable: $error\n$stackTrace');
       return true;

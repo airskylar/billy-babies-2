@@ -22,6 +22,45 @@ flutter run -d <android-or-ios-device>
 Use `flutter devices` to find an Android emulator, iOS simulator, or connected
 phone.
 
+## Inspect a running game
+
+Debug builds expose a versioned, JSON-friendly view of Flutter/Flame state over
+the Dart VM service. Copy the VM service URL printed by `flutter run`, then use
+the repository CLI from another terminal:
+
+```sh
+export COREFLAME_VM_SERVICE_URL=http://127.0.0.1:12345/example=/
+dart run tool/coreflame_inspect.dart snapshot
+dart run tool/coreflame_inspect.dart events --after 0
+dart run tool/coreflame_inspect.dart tree          # Flame component tree
+dart run tool/coreflame_inspect.dart widget-tree   # Flutter widget tree
+```
+
+The default snapshot is semantic: match state, feedback state, lifecycle,
+viewport, and stable component IDs without render-only geometry. Request visual
+detail when an agent needs bounds and hit targets:
+
+```sh
+dart run tool/coreflame_inspect.dart snapshot --detail visual
+```
+
+Agents can drive the same semantic actions as players. Passing the revision
+from the latest snapshot prevents a stale observer from mutating newer state:
+
+```sh
+dart run tool/coreflame_inspect.dart dispatch play-cell \
+  --cell 4 --expected-revision 12
+dart run tool/coreflame_inspect.dart dispatch open-settings
+dart run tool/coreflame_inspect.dart pause
+dart run tool/coreflame_inspect.dart step --seconds 0.0166667
+```
+
+Run `dart run tool/coreflame_inspect.dart --help` for every command. The custom
+service extensions are debug-only. Snapshots carry a `schemaVersion`; event
+batches report their available sequence range and whether older history was
+truncated. Commands return their resulting snapshot so automation can observe
+each transition directly.
+
 ## Project shape
 
 ```text
@@ -32,6 +71,9 @@ lib/
     ├── tic_tac_toe_match.dart            Pure, testable game rules
     ├── components/
     │   └── cozy_tic_tac_toe_scene.dart   Rendering, layout, input, animation
+    ├── observability/
+    │   ├── coreflame_debug_bridge.dart   Debug VM service extensions
+    │   └── coreflame_observability.dart  Snapshots, events, and commands
     ├── services/
     │   ├── game_feedback.dart             Pulsar haptics and Flame audio
     │   ├── game_platform_services.dart    Typed, platform-neutral contract
@@ -41,6 +83,8 @@ lib/
     │                                      Deterministic in-memory fake
     └── theme/
         └── game_palette.dart              Shared colors
+tool/
+└── coreflame_inspect.dart                 Agent-facing inspection CLI
 ```
 
 Flutter owns the application shell and safe-area handling. Flame owns the game

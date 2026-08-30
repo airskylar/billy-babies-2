@@ -92,8 +92,13 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _game.safePadding = _safePaddingFor(MediaQuery.of(context));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(body: GameWidget<CoreflameGame>(game: _game));
   }
 }

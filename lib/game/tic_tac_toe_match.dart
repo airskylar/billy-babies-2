@@ -1,3 +1,5 @@
+import 'observability/coreflame_observability.dart';
+
 enum Mark { x, o }
 
 extension MarkDetails on Mark {
@@ -9,6 +11,8 @@ extension MarkDetails on Mark {
 }
 
 enum RoundResult { playing, xWon, oWon, draw }
+
+enum MoveOutcome { accepted, occupied, roundFinished }
 
 class TicTacToeMatch {
   TicTacToeMatch({Mark firstPlayer = Mark.x})
@@ -32,26 +36,40 @@ class TicTacToeMatch {
   RoundResult _result = RoundResult.playing;
   List<int> _winningCells = const [];
 
-  int xScore = 0;
-  int oScore = 0;
-  int draws = 0;
+  int _xScore = 0;
+  int _oScore = 0;
+  int _draws = 0;
 
   Mark get turn => _turn;
+  Mark get starter => _starter;
   RoundResult get result => _result;
   bool get isFinished => _result != RoundResult.playing;
   List<Mark?> get cells => List<Mark?>.unmodifiable(_cells);
   List<int> get winningCells => List<int>.unmodifiable(_winningCells);
+  int get xScore => _xScore;
+  int get oScore => _oScore;
+  int get draws => _draws;
+
+  MatchSnapshot get snapshot => MatchSnapshot(
+    cells: _cells.map((mark) => mark?.name).toList(growable: false),
+    turn: _turn.name,
+    starter: _starter.name,
+    result: _result.name,
+    winningCells: List.unmodifiable(_winningCells),
+    xScore: _xScore,
+    oScore: _oScore,
+    draws: _draws,
+  );
 
   Mark? markAt(int index) {
     RangeError.checkValidIndex(index, _cells, 'index');
     return _cells[index];
   }
 
-  bool play(int index) {
+  MoveOutcome play(int index) {
     RangeError.checkValidIndex(index, _cells, 'index');
-    if (isFinished || _cells[index] != null) {
-      return false;
-    }
+    if (isFinished) return MoveOutcome.roundFinished;
+    if (_cells[index] != null) return MoveOutcome.occupied;
 
     final playedMark = _turn;
     _cells[index] = playedMark;
@@ -59,7 +77,7 @@ class TicTacToeMatch {
     if (!isFinished) {
       _turn = _turn.other;
     }
-    return true;
+    return MoveOutcome.accepted;
   }
 
   void startNextRound() {
@@ -69,9 +87,9 @@ class TicTacToeMatch {
   }
 
   void resetMatch() {
-    xScore = 0;
-    oScore = 0;
-    draws = 0;
+    _xScore = 0;
+    _oScore = 0;
+    _draws = 0;
     _starter = Mark.x;
     _turn = Mark.x;
     _clearBoard();
@@ -83,10 +101,10 @@ class TicTacToeMatch {
         _winningCells = line;
         if (playedMark == Mark.x) {
           _result = RoundResult.xWon;
-          xScore += 1;
+          _xScore += 1;
         } else {
           _result = RoundResult.oWon;
-          oScore += 1;
+          _oScore += 1;
         }
         return;
       }
@@ -94,7 +112,7 @@ class TicTacToeMatch {
 
     if (_cells.every((mark) => mark != null)) {
       _result = RoundResult.draw;
-      draws += 1;
+      _draws += 1;
     }
   }
 
