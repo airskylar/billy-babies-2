@@ -841,11 +841,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "6c1343e888a792545b866c8f9bd99cb5f530659b"
-      resolved-ref: "6c1343e888a792545b866c8f9bd99cb5f530659b"
+      ref: "77b9a41c4f4fc8f213c6d48e5fc6bee8187a4013"
+      resolved-ref: "77b9a41c4f4fc8f213c6d48e5fc6bee8187a4013"
       url: "https://github.com/aleclarson/state_launcher_flutter.git"
     source: git
-    version: "0.1.0"
+    version: "0.2.0"
   stream_channel:
     dependency: transitive
     description:

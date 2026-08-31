@@ -4,6 +4,7 @@ import 'package:coreflame/game/services/game_platform_services.dart';
 import 'package:coreflame/game/tic_tac_toe_match.dart';
 import 'package:coreflame/main.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
@@ -67,6 +68,33 @@ void main() {
     final clearedGame = _currentGame(tester);
     expect(clearedGame, isNot(same(restartedGame)));
     expect(clearedGame.match.cells, everyElement(isNull));
+  });
+
+  testWidgets('opens the launcher with a mobile three-finger upward swipe', (
+    tester,
+  ) async {
+    final gameServices = FakeGamePlatformServices();
+    await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
+    await tester.pump();
+
+    final gestures = <TestGesture>[];
+    for (var index = 0; index < 3; index += 1) {
+      final gesture = await tester.createGesture(
+        pointer: index + 1,
+        kind: PointerDeviceKind.touch,
+      );
+      gestures.add(gesture);
+      await gesture.down(Offset(120 + (index * 24), 300));
+    }
+    for (var index = 0; index < gestures.length; index += 1) {
+      await gestures[index].moveTo(Offset(120 + (index * 24), 220));
+    }
+    for (final gesture in gestures) {
+      await gesture.up();
+    }
+    await tester.pumpAndSettle();
+
+    expect(find.text('Scenarios'), findsOneWidget);
   });
 }
 

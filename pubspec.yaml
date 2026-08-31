@@ -21,7 +21,7 @@ dependencies:
   state_launcher_flutter:
     git:
       url: https://github.com/aleclarson/state_launcher_flutter.git
-      ref: 6c1343e888a792545b866c8f9bd99cb5f530659b
+      ref: 77b9a41c4f4fc8f213c6d48e5fc6bee8187a4013
 
 dev_dependencies:
   build_runner: ^2.15.1

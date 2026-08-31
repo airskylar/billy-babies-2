@@ -85,11 +85,11 @@ completed response when its `sessionId` is no longer current.
 
 ## Launch scenarios
 
-Debug and profile builds include a searchable scenario launcher. Open it with
-the developer-mode button, Control-Shift-P, Command-Shift-P, or a two-finger
-double-tap. Launching, restarting, or clearing a scenario creates a fresh Flame
-game root so components, services, and transient input state do not leak
-between runs.
+Debug and profile builds include a searchable scenario launcher. On mobile,
+swipe upward with three fingers. You can also use the developer-mode button,
+Control-Shift-P, or Command-Shift-P. Launching, restarting, or clearing a
+scenario creates a fresh Flame game root so components, services, and transient
+input state do not leak between runs.
 
 Start directly in a named scenario with a compilation variable:
 
