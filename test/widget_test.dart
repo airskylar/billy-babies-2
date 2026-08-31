@@ -77,6 +77,24 @@ void main() {
 
     expect(find.text('Scenarios'), findsOneWidget);
   });
+
+  testWidgets('opens the launcher through the public programmatic function', (
+    tester,
+  ) async {
+    final gameServices = FakeGamePlatformServices();
+    await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
+    await tester.pump();
+
+    final gameContext = tester.element(find.byType(GameWidget<CoreflameGame>));
+    final result = showCoreflameScenarioLauncher(gameContext);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Scenarios'), findsOneWidget);
+
+    Navigator.of(gameContext).pop();
+    await tester.pumpAndSettle();
+    expect(await result, isNull);
+  });
 }
 
 CoreflameGame _currentGame(WidgetTester tester) => tester

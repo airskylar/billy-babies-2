@@ -21,6 +21,21 @@ const _scenarioLauncherEnabled = bool.fromEnvironment(
 );
 const _initialScenarioId = String.fromEnvironment('COREFLAME_SCENARIO');
 
+/// Shows the Coreflame scenario launcher above the nearest game screen.
+///
+/// The supplied [context] must be below [CoreflameGameScreen], and scenario
+/// launching must be enabled for the current build.
+Future<String?> showCoreflameScenarioLauncher(BuildContext context) {
+  final host = context
+      .getInheritedWidgetOfExactType<_CoreflameScenarioLauncherHost>();
+  if (host == null) {
+    throw StateError(
+      'No enabled Coreflame scenario launcher exists above this context.',
+    );
+  }
+  return host.showLauncher();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -135,7 +150,13 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
       ),
     );
     if (!_scenarioLauncherEnabled) return scaffold;
-    return StateLauncherTrigger(onOpen: _openScenarioLauncher, child: scaffold);
+    return _CoreflameScenarioLauncherHost(
+      showLauncher: _showScenarioLauncher,
+      child: StateLauncherTrigger(
+        onOpen: () => unawaited(_showScenarioLauncher()),
+        child: scaffold,
+      ),
+    );
   }
 
   CoreflameScenario? _resolveInitialScenario() {
@@ -164,11 +185,20 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
     });
   }
 
-  void _openScenarioLauncher() {
-    unawaited(
-      showStateLauncher(context: context, controller: _scenarioLauncher),
-    );
-  }
+  Future<String?> _showScenarioLauncher() =>
+      showStateLauncher(context: context, controller: _scenarioLauncher);
+}
+
+class _CoreflameScenarioLauncherHost extends InheritedWidget {
+  const _CoreflameScenarioLauncherHost({
+    required this.showLauncher,
+    required super.child,
+  });
+
+  final Future<String?> Function() showLauncher;
+
+  @override
+  bool updateShouldNotify(_CoreflameScenarioLauncherHost oldWidget) => false;
 }
 
 EdgeInsets _safePaddingFor(MediaQueryData mediaQuery) {

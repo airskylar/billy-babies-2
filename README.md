@@ -91,6 +91,15 @@ Command-Shift-P. Launching, restarting, or clearing a scenario creates a fresh
 Flame game root so components, services, and transient input state do not leak
 between runs.
 
+Flutter widgets below `CoreflameGameScreen` can open the same UI
+programmatically:
+
+```dart
+await showCoreflameScenarioLauncher(context);
+```
+
+The function is available when scenario launching is enabled for the build.
+
 Start directly in a named scenario with a compilation variable:
 
 ```sh
