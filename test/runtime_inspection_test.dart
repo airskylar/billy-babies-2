@@ -1,5 +1,7 @@
 import 'package:coreflame/game/observability/inspectable_flame_game.dart';
 import 'package:coreflame/game/observability/runtime_inspection.dart';
+import 'package:flame/camera.dart';
+import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -57,7 +59,124 @@ void main() {
         );
       },
     );
+
+    testWithGame<_HierarchyGame>(
+      'preserves typed Flame configuration and inspectable relationships',
+      _HierarchyGame.new,
+      (game) async {
+        await game.ready();
+
+        expect(identical(game.world, game.configuredWorld), isTrue);
+        expect(identical(game.camera, game.configuredCamera), isTrue);
+        expect(game.initialChild.isMounted, isTrue);
+
+        final components = game.snapshot(SnapshotDetail.semantic).components;
+        final byId = {
+          for (final component in components) component.id: component,
+        };
+
+        expect(
+          byId.keys,
+          unorderedEquals(const {
+            'game',
+            'initial-child',
+            'hud',
+            'viewfinder-child',
+            'world',
+            'world-entity',
+            'world-leaf',
+          }),
+        );
+        expect(
+          byId['game']!.childIds,
+          containsAll(const {
+            'initial-child',
+            'hud',
+            'viewfinder-child',
+            'world',
+          }),
+        );
+        expect(byId['world']!.parentId, 'game');
+        expect(byId['world']!.childIds, ['world-entity']);
+        expect(byId['world-entity']!.parentId, 'world');
+        expect(byId['world-entity']!.childIds, ['world-leaf']);
+        expect(byId['world-leaf']!.parentId, 'world-entity');
+        expect(byId['hud']!.parentId, 'game');
+        expect(byId['viewfinder-child']!.parentId, 'game');
+      },
+    );
+
+    testWithGame<_HierarchyGame>(
+      'resolves visual bounds in world and screen coordinate spaces',
+      _HierarchyGame.new,
+      (game) async {
+        await game.ready();
+
+        final components = game.snapshot(SnapshotDetail.visual).components;
+        final byId = {
+          for (final component in components) component.id: component,
+        };
+        final worldEntity = byId['world-entity']!.transform!;
+        final hud = byId['hud']!.transform!;
+        final viewfinderChild = byId['viewfinder-child']!.transform!;
+        final initialChild = byId['initial-child']!.transform!;
+
+        expect(worldEntity.x, 10);
+        expect(worldEntity.y, 20);
+        expect(worldEntity.width, 20);
+        expect(worldEntity.height, 10);
+        _expectRect(
+          worldEntity.worldBounds,
+          x: 50,
+          y: 80,
+          width: 40,
+          height: 20,
+        );
+        _expectRect(
+          worldEntity.screenBounds,
+          x: 400,
+          y: 360,
+          width: 80,
+          height: 40,
+        );
+
+        expect(hud.worldBounds, isNull);
+        _expectRect(hud.screenBounds, x: 10, y: 12, width: 20, height: 40);
+
+        _expectRect(
+          viewfinderChild.worldBounds,
+          x: 60,
+          y: 60,
+          width: 10,
+          height: 10,
+        );
+        _expectRect(
+          viewfinderChild.screenBounds,
+          x: 420,
+          y: 320,
+          width: 20,
+          height: 20,
+        );
+
+        expect(initialChild.worldBounds, isNull);
+        _expectRect(initialChild.screenBounds, x: 7, y: 8, width: 3, height: 4);
+      },
+    );
   });
+}
+
+void _expectRect(
+  RectSnapshot? actual, {
+  required double x,
+  required double y,
+  required double width,
+  required double height,
+}) {
+  expect(actual, isNotNull);
+  expect(actual!.x, closeTo(x, 1e-9));
+  expect(actual.y, closeTo(y, 1e-9));
+  expect(actual.width, closeTo(width, 1e-9));
+  expect(actual.height, closeTo(height, 1e-9));
 }
 
 enum _CounterEventKind implements InspectionEventKind {
@@ -137,4 +256,103 @@ class _CounterGame extends InspectableFlameGame {
 
   @override
   RuntimeInspectionAdapter get inspectionAdapter => _adapter;
+}
+
+class _HierarchyGame extends InspectableFlameGame<_InspectableWorld> {
+  factory _HierarchyGame() {
+    final worldLeaf = _InspectablePosition(
+      'world-leaf',
+      position: Vector2(1, 2),
+      size: Vector2.all(3),
+    );
+    final worldEntity = _InspectablePosition(
+      'world-entity',
+      position: Vector2(10, 20),
+      size: Vector2(20, 10),
+      children: [
+        Component(children: [worldLeaf]),
+      ],
+    );
+    final world = _InspectableWorld(
+      children: [
+        PositionComponent(
+          position: Vector2(30, 40),
+          scale: Vector2.all(2),
+          children: [worldEntity],
+        ),
+      ],
+    );
+    final hud = _InspectablePosition(
+      'hud',
+      position: Vector2(5, 6),
+      size: Vector2(10, 20),
+    );
+    final viewfinderChild = _InspectablePosition(
+      'viewfinder-child',
+      position: Vector2.all(60),
+      size: Vector2.all(10),
+    );
+    final viewfinder = Viewfinder()
+      ..position = Vector2.all(50)
+      ..add(viewfinderChild);
+    final camera = CameraComponent.withFixedResolution(
+      width: 400,
+      height: 300,
+      viewfinder: viewfinder,
+      hudComponents: [hud],
+    );
+    final initialChild = _InspectablePosition(
+      'initial-child',
+      position: Vector2(7, 8),
+      size: Vector2(3, 4),
+    );
+    return _HierarchyGame._(
+      world: world,
+      camera: camera,
+      initialChild: initialChild,
+    );
+  }
+
+  _HierarchyGame._({
+    required _InspectableWorld world,
+    required CameraComponent camera,
+    required this.initialChild,
+  }) : configuredWorld = world,
+       configuredCamera = camera,
+       super(world: world, camera: camera, children: [initialChild]);
+
+  final _InspectableWorld configuredWorld;
+  final CameraComponent configuredCamera;
+  final _InspectablePosition initialChild;
+
+  late final _CounterAdapter _adapter = _CounterAdapter(recordInspectionEvent);
+
+  @override
+  RuntimeInspectionAdapter get inspectionAdapter => _adapter;
+}
+
+class _InspectableWorld extends World implements RuntimeInspectable {
+  _InspectableWorld({super.children});
+
+  @override
+  String get inspectionId => 'world';
+
+  @override
+  Map<String, Object?> inspectState(SnapshotDetail detail) => const {};
+}
+
+class _InspectablePosition extends PositionComponent
+    implements RuntimeInspectable {
+  _InspectablePosition(
+    this.inspectionId, {
+    super.position,
+    super.size,
+    super.children,
+  });
+
+  @override
+  final String inspectionId;
+
+  @override
+  Map<String, Object?> inspectState(SnapshotDetail detail) => const {};
 }

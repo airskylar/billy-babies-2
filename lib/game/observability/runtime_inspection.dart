@@ -61,6 +61,8 @@ class TransformSnapshot {
     required this.scaleY,
     required this.angle,
     required this.anchor,
+    this.worldBounds,
+    this.screenBounds,
   });
 
   final double x;
@@ -72,12 +74,20 @@ class TransformSnapshot {
   final double angle;
   final String anchor;
 
+  /// Axis-aligned bounds after resolving the component's world transforms.
+  final RectSnapshot? worldBounds;
+
+  /// Axis-aligned bounds after resolving the primary camera or viewport.
+  final RectSnapshot? screenBounds;
+
   Map<String, Object?> toJson() => {
     'position': {'x': x, 'y': y},
     'size': {'width': width, 'height': height},
     'scale': {'x': scaleX, 'y': scaleY},
     'angle': angle,
     'anchor': anchor,
+    if (worldBounds case final value?) 'worldBounds': value.toJson(),
+    if (screenBounds case final value?) 'screenBounds': value.toJson(),
   };
 }
 

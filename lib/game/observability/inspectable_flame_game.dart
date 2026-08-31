@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 import 'coreflame_debug_bridge.dart';
 import 'runtime_inspection.dart';
 
-abstract class InspectableFlameGame extends FlameGame
+abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     implements RuntimeInspectionTarget, RuntimeInspectable {
-  InspectableFlameGame({RuntimeEventJournal? inspectionJournal})
-    : _journal = inspectionJournal ?? RuntimeEventJournal() {
+  InspectableFlameGame({
+    super.children,
+    super.world,
+    super.camera,
+    RuntimeEventJournal? inspectionJournal,
+  }) : _journal = inspectionJournal ?? RuntimeEventJournal() {
     CoreflameDebugBridge.attach(this);
   }
 
@@ -132,12 +136,8 @@ abstract class InspectableFlameGame extends FlameGame
 
   @override
   RuntimeSnapshot snapshot(SnapshotDetail detail) {
-    final componentSnapshots = descendants(includeSelf: true)
-        .whereType<RuntimeInspectable>()
-        .map((inspectable) {
-          final component = inspectable as Component;
-          return _componentSnapshot(component, inspectable, detail);
-        })
+    final componentSnapshots = _inspectableNodes()
+        .map((node) => _componentSnapshot(node, detail))
         .toList(growable: false);
 
     return RuntimeSnapshot(
@@ -239,23 +239,40 @@ abstract class InspectableFlameGame extends FlameGame
     );
   }
 
+  List<_InspectableNode> _inspectableNodes() {
+    final nodes = <_InspectableNode>[];
+
+    void visit(Component component, _InspectableNode? parent) {
+      var inspectableParent = parent;
+      if (component case final RuntimeInspectable inspectable) {
+        final node = _InspectableNode(
+          component: component,
+          inspectable: inspectable,
+          parentId: parent?.inspectable.inspectionId,
+        );
+        parent?.childIds.add(inspectable.inspectionId);
+        nodes.add(node);
+        inspectableParent = node;
+      }
+
+      for (final child in component.children) {
+        visit(child, inspectableParent);
+      }
+    }
+
+    visit(this, null);
+    return nodes;
+  }
+
   ComponentSnapshot _componentSnapshot(
-    Component component,
-    RuntimeInspectable inspectable,
+    _InspectableNode node,
     SnapshotDetail detail,
   ) {
+    final component = node.component;
+    final inspectable = node.inspectable;
     final transform =
         detail == SnapshotDetail.visual && component is PositionComponent
-        ? TransformSnapshot(
-            x: component.position.x,
-            y: component.position.y,
-            width: component.size.x,
-            height: component.size.y,
-            scaleX: component.scale.x,
-            scaleY: component.scale.y,
-            angle: component.angle,
-            anchor: component.anchor.toString(),
-          )
+        ? _transformSnapshot(component)
         : null;
     return ComponentSnapshot(
       id: inspectable.inspectionId,
@@ -264,17 +281,101 @@ abstract class InspectableFlameGame extends FlameGame
       mounted: component.isMounted,
       removed: component.isRemoved,
       priority: component.priority,
-      parentId: switch (component.parent) {
-        final RuntimeInspectable parent => parent.inspectionId,
-        _ => null,
-      },
-      childIds: component.children
-          .whereType<RuntimeInspectable>()
-          .map((child) => child.inspectionId)
-          .toList(growable: false),
+      parentId: node.parentId,
+      childIds: List.unmodifiable(node.childIds),
       transform: transform,
       state: inspectable.inspectState(detail),
     );
+  }
+
+  TransformSnapshot _transformSnapshot(PositionComponent component) {
+    final corners = _absoluteCorners(component);
+    RectSnapshot? worldBounds;
+    RectSnapshot? screenBounds;
+
+    // Flame's absolute position helpers resolve PositionComponent ancestors,
+    // but Worlds, Viewfinders, and Viewports establish additional render
+    // spaces. Project those corners through the same primary-camera transforms
+    // that render them so the snapshot keeps both world and hit-test geometry.
+    final componentWorld = _ancestorOfType<World>(component);
+    if (componentWorld != null) {
+      worldBounds = _boundsSnapshot(corners);
+      if (identical(camera.world, componentWorld)) {
+        screenBounds = _projectedBounds(corners, camera.localToGlobal);
+      }
+    } else if (_isDescendantOf(component, camera.viewfinder)) {
+      worldBounds = _boundsSnapshot(corners);
+      screenBounds = _projectedBounds(corners, camera.localToGlobal);
+    } else if (_isDescendantOf(component, camera.viewport) ||
+        _isDescendantOf(component, camera.backdrop)) {
+      screenBounds = _projectedBounds(corners, camera.viewport.localToGlobal);
+    } else {
+      screenBounds = _boundsSnapshot(corners);
+    }
+
+    return TransformSnapshot(
+      x: component.position.x,
+      y: component.position.y,
+      width: component.size.x,
+      height: component.size.y,
+      scaleX: component.scale.x,
+      scaleY: component.scale.y,
+      angle: component.angle,
+      anchor: component.anchor.toString(),
+      worldBounds: worldBounds,
+      screenBounds: screenBounds,
+    );
+  }
+
+  List<Vector2> _absoluteCorners(PositionComponent component) => [
+    component.absolutePositionOfAnchor(Anchor.topLeft),
+    component.absolutePositionOfAnchor(Anchor.topRight),
+    component.absolutePositionOfAnchor(Anchor.bottomRight),
+    component.absolutePositionOfAnchor(Anchor.bottomLeft),
+  ];
+
+  RectSnapshot _projectedBounds(
+    List<Vector2> corners,
+    Vector2 Function(Vector2) project,
+  ) => _boundsSnapshot(corners.map(project));
+
+  RectSnapshot _boundsSnapshot(Iterable<Vector2> points) {
+    final iterator = points.iterator..moveNext();
+    var minX = iterator.current.x;
+    var minY = iterator.current.y;
+    var maxX = minX;
+    var maxY = minY;
+    while (iterator.moveNext()) {
+      final point = iterator.current;
+      minX = point.x < minX ? point.x : minX;
+      minY = point.y < minY ? point.y : minY;
+      maxX = point.x > maxX ? point.x : maxX;
+      maxY = point.y > maxY ? point.y : maxY;
+    }
+    return RectSnapshot(
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY,
+    );
+  }
+
+  T? _ancestorOfType<T extends Component>(Component component) {
+    var ancestor = component.parent;
+    while (ancestor != null) {
+      if (ancestor is T) return ancestor;
+      ancestor = ancestor.parent;
+    }
+    return null;
+  }
+
+  bool _isDescendantOf(Component component, Component ancestor) {
+    var candidate = component.parent;
+    while (candidate != null) {
+      if (identical(candidate, ancestor)) return true;
+      candidate = candidate.parent;
+    }
+    return false;
   }
 
   Map<String, Object?> _insetsJson(EdgeInsets value) => {
@@ -288,4 +389,17 @@ abstract class InspectableFlameGame extends FlameGame
     'width': value.x,
     'height': value.y,
   };
+}
+
+class _InspectableNode {
+  _InspectableNode({
+    required this.component,
+    required this.inspectable,
+    required this.parentId,
+  });
+
+  final Component component;
+  final RuntimeInspectable inspectable;
+  final String? parentId;
+  final List<String> childIds = [];
 }
