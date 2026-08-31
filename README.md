@@ -61,11 +61,34 @@ batches report their available sequence range and whether older history was
 truncated. Commands return their resulting snapshot so automation can observe
 each transition directly.
 
+## Launch scenarios
+
+Debug and profile builds include a searchable scenario launcher. Open it with
+the developer-mode button, Control-Shift-P, Command-Shift-P, or a two-finger
+double-tap. Launching, restarting, or clearing a scenario creates a fresh Flame
+game root so components, services, and transient input state do not leak
+between runs.
+
+Start directly in a named scenario with a compilation variable:
+
+```sh
+flutter run --dart-define=COREFLAME_SCENARIO=round.x-about-to-win
+```
+
+The launcher is excluded from release builds by default. Enable it explicitly
+when producing an internal release build:
+
+```sh
+flutter run --release --dart-define=COREFLAME_SCENARIOS=true
+```
+
 ## Project shape
 
 ```text
 lib/
-├── main.dart                              Flutter app shell
+├── main.dart                              Flutter app shell and launcher host
+├── scenarios/
+│   └── coreflame_scenario.dart            Scenario catalog and match factories
 └── game/
     ├── coreflame_game.dart               Flame game root
     ├── tic_tac_toe_match.dart            Pure, testable game rules

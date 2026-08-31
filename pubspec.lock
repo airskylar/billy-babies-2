@@ -837,6 +837,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
+  state_launcher_flutter:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "6c1343e888a792545b866c8f9bd99cb5f530659b"
+      resolved-ref: "6c1343e888a792545b866c8f9bd99cb5f530659b"
+      url: "https://github.com/aleclarson/state_launcher_flutter.git"
+    source: git
+    version: "0.1.0"
   stream_channel:
     dependency: transitive
     description:

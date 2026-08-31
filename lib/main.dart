@@ -3,14 +3,23 @@ import 'dart:math' as math;
 import 'dart:ui' show DisplayFeatureType;
 
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:state_launcher_flutter/state_launcher_flutter.dart';
 
 import 'game/coreflame_game.dart';
 import 'game/services/coreflame_game_services_config.dart';
 import 'game/services/game_platform_services.dart';
 import 'game/services/mobile_game_platform_services.dart';
 import 'game/theme/game_palette.dart';
+import 'scenarios/coreflame_scenario.dart';
+
+const _scenarioLauncherEnabled = bool.fromEnvironment(
+  'COREFLAME_SCENARIOS',
+  defaultValue: !kReleaseMode,
+);
+const _initialScenarioId = String.fromEnvironment('COREFLAME_SCENARIO');
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +71,10 @@ class CoreflameGameScreen extends StatefulWidget {
 class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
   late final bool _ownsGameServices;
   late final GamePlatformServices _gameServices;
-  late final CoreflameGame _game;
+  late CoreflameGame _game;
+  late final StateLauncherController _scenarioLauncher;
+  var _gameGeneration = 0;
+  var _safePadding = EdgeInsets.zero;
 
   @override
   void initState() {
@@ -74,7 +86,22 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
         MobileGamePlatformServices(
           configuration: coreflameGameServicesConfiguration,
         );
-    _game = CoreflameGame(platformServices: _gameServices);
+    final initialScenario = _resolveInitialScenario();
+    _game = _createGame(initialScenario);
+    _scenarioLauncher = StateLauncherController(
+      entries: [
+        for (final scenario in CoreflameScenario.values) scenario.launcherEntry,
+      ],
+      activeEntryId: initialScenario?.id,
+      onLaunch: (entry) {
+        final scenario = CoreflameScenario.findById(entry.id);
+        if (scenario == null) {
+          throw StateError('Unknown Coreflame scenario: ${entry.id}');
+        }
+        _replaceGame(_createGame(scenario));
+      },
+      onClear: () => _replaceGame(_createGame(null)),
+    );
 
     if (_gameServices.capabilities.contains(
       GameServiceCapability.authentication,
@@ -87,6 +114,7 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
 
   @override
   void dispose() {
+    _scenarioLauncher.dispose();
     if (_ownsGameServices) unawaited(_gameServices.dispose());
     super.dispose();
   }
@@ -94,12 +122,60 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _game.safePadding = _safePaddingFor(MediaQuery.of(context));
+    _safePadding = _safePaddingFor(MediaQuery.of(context));
+    _game.safePadding = _safePadding;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: GameWidget<CoreflameGame>(game: _game));
+    final scaffold = Scaffold(
+      body: GameWidget<CoreflameGame>(
+        key: ValueKey(_gameGeneration),
+        game: _game,
+      ),
+      floatingActionButton: _scenarioLauncherEnabled
+          ? FloatingActionButton.small(
+              key: const ValueKey('open-scenario-launcher'),
+              tooltip: 'Open scenarios',
+              onPressed: _openScenarioLauncher,
+              child: const Icon(Icons.developer_mode),
+            )
+          : null,
+    );
+    if (!_scenarioLauncherEnabled) return scaffold;
+    return StateLauncherTrigger(onOpen: _openScenarioLauncher, child: scaffold);
+  }
+
+  CoreflameScenario? _resolveInitialScenario() {
+    if (!_scenarioLauncherEnabled || _initialScenarioId.isEmpty) return null;
+    final scenario = CoreflameScenario.findById(_initialScenarioId);
+    if (scenario == null) {
+      throw ArgumentError.value(
+        _initialScenarioId,
+        'COREFLAME_SCENARIO',
+        'No Coreflame scenario has this ID.',
+      );
+    }
+    return scenario;
+  }
+
+  CoreflameGame _createGame(CoreflameScenario? scenario) => CoreflameGame(
+    platformServices: _gameServices,
+    match: scenario?.createMatch(),
+  );
+
+  void _replaceGame(CoreflameGame game) {
+    game.safePadding = _safePadding;
+    setState(() {
+      _game = game;
+      _gameGeneration += 1;
+    });
+  }
+
+  void _openScenarioLauncher() {
+    unawaited(
+      showStateLauncher(context: context, controller: _scenarioLauncher),
+    );
   }
 }
 
