@@ -133,14 +133,6 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
         key: ValueKey(_gameGeneration),
         game: _game,
       ),
-      floatingActionButton: _scenarioLauncherEnabled
-          ? FloatingActionButton.small(
-              key: const ValueKey('open-scenario-launcher'),
-              tooltip: 'Open scenarios',
-              onPressed: _openScenarioLauncher,
-              child: const Icon(Icons.developer_mode),
-            )
-          : null,
     );
     if (!_scenarioLauncherEnabled) return scaffold;
     return StateLauncherTrigger(onOpen: _openScenarioLauncher, child: scaffold);

@@ -7,7 +7,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   testWidgets('hosts the Flame game without owning injected services', (
@@ -24,7 +23,7 @@ void main() {
       gameServices.calls.map((call) => call.operation),
       contains(GameServiceOperation.authenticate),
     );
-    expect(find.byTooltip('Open scenarios'), findsOneWidget);
+    expect(find.byType(FloatingActionButton), findsNothing);
     expect(tester.takeException(), isNull);
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -40,8 +39,7 @@ void main() {
     await tester.pump();
     final normalGame = _currentGame(tester);
 
-    await tester.tap(find.byTooltip('Open scenarios'));
-    await tester.pumpAndSettle();
+    await _openLauncherWithGesture(tester);
     expect(find.text('Scenarios'), findsOneWidget);
 
     await tester.tap(find.text('X about to win'));
@@ -53,16 +51,14 @@ void main() {
     expect(scenarioGame.match.markAt(0), Mark.x);
     expect(scenarioGame.match.markAt(2), isNull);
 
-    await tester.tap(find.byTooltip('Open scenarios'));
-    await tester.pumpAndSettle();
+    await _openLauncherWithGesture(tester);
     await tester.tap(find.byKey(const ValueKey('state-launcher-restart')));
     await tester.pumpAndSettle();
     final restartedGame = _currentGame(tester);
     expect(restartedGame, isNot(same(scenarioGame)));
     expect(restartedGame.match.markAt(0), Mark.x);
 
-    await tester.tap(find.byTooltip('Open scenarios'));
-    await tester.pumpAndSettle();
+    await _openLauncherWithGesture(tester);
     await tester.tap(find.byKey(const ValueKey('state-launcher-clear')));
     await tester.pump();
     final clearedGame = _currentGame(tester);
@@ -77,22 +73,7 @@ void main() {
     await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
     await tester.pump();
 
-    final gestures = <TestGesture>[];
-    for (var index = 0; index < 3; index += 1) {
-      final gesture = await tester.createGesture(
-        pointer: index + 1,
-        kind: PointerDeviceKind.touch,
-      );
-      gestures.add(gesture);
-      await gesture.down(Offset(120 + (index * 24), 300));
-    }
-    for (var index = 0; index < gestures.length; index += 1) {
-      await gestures[index].moveTo(Offset(120 + (index * 24), 220));
-    }
-    for (final gesture in gestures) {
-      await gesture.up();
-    }
-    await tester.pumpAndSettle();
+    await _openLauncherWithGesture(tester);
 
     expect(find.text('Scenarios'), findsOneWidget);
   });
@@ -101,3 +82,22 @@ void main() {
 CoreflameGame _currentGame(WidgetTester tester) => tester
     .widget<GameWidget<CoreflameGame>>(find.byType(GameWidget<CoreflameGame>))
     .game!;
+
+Future<void> _openLauncherWithGesture(WidgetTester tester) async {
+  final gestures = <TestGesture>[];
+  for (var index = 0; index < 3; index += 1) {
+    final gesture = await tester.createGesture(
+      pointer: index + 1,
+      kind: PointerDeviceKind.touch,
+    );
+    gestures.add(gesture);
+    await gesture.down(Offset(120 + (index * 24), 300));
+  }
+  for (var index = 0; index < gestures.length; index += 1) {
+    await gestures[index].moveTo(Offset(120 + (index * 24), 220));
+  }
+  for (final gesture in gestures) {
+    await gesture.up();
+  }
+  await tester.pumpAndSettle();
+}
