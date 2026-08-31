@@ -1,5 +1,6 @@
 import 'package:coreflame/game/coreflame_game.dart';
-import 'package:coreflame/game/observability/coreflame_observability.dart';
+import 'package:coreflame/game/observability/runtime_inspection.dart';
+import 'package:coreflame/game/observability/tiny_tactics_inspection.dart';
 import 'package:coreflame/game/services/fake_game_platform_services.dart';
 import 'package:coreflame/game/services/game_feedback.dart';
 import 'package:coreflame/game/services/game_platform_services.dart';
@@ -26,14 +27,16 @@ void main() {
 
         final semantic = game.snapshot(SnapshotDetail.semantic);
         final visual = game.snapshot(SnapshotDetail.visual);
+        final semanticGame = semantic.game.state as TinyTacticsSnapshot;
+        final visualGame = visual.game.state as TinyTacticsSnapshot;
 
-        expect(semantic.match.cells, everyElement(isNull));
-        expect(semantic.scene?.layout, isNull);
+        expect(semanticGame.match.cells, everyElement(isNull));
+        expect(semanticGame.scene?.layout, isNull);
         expect(
           semantic.components.map((component) => component.transform),
           everyElement(isNull),
         );
-        expect(visual.scene?.layout?.cells, hasLength(9));
+        expect(visualGame.scene?.layout?.cells, hasLength(9));
         expect(
           visual.components
               .singleWhere((component) => component.id == 'scene')
@@ -63,9 +66,11 @@ void main() {
           }),
         );
         expect(
-          semantic.toJson()['schemaVersion'],
-          CoreflameSnapshot.schemaVersion,
+          semantic.toJson()['protocolVersion'],
+          RuntimeSnapshot.protocolVersion,
         );
+        expect(semantic.game.id, 'tinyTactics');
+        expect(semantic.game.schemaVersion, 1);
       },
     );
 
@@ -83,56 +88,58 @@ void main() {
         final initialRevision = game.revision;
 
         final played = game.dispatch(
-          CoreflameCommandRequest(
+          TinyTacticsCommandRequest(
             command: const PlayCellCommand(4),
             expectedRevision: initialRevision,
-          ),
+          ).toEnvelope(),
         );
         expect(played.accepted, isTrue);
         expect(played.code, MoveOutcome.accepted.name);
-        expect(played.snapshot.match.cells[4], Mark.x.name);
+        final playedGame = played.snapshot.game.state as TinyTacticsSnapshot;
+        expect(playedGame.match.cells[4], Mark.x.name);
         expect(played.currentRevision, initialRevision + 1);
 
         final stale = game.dispatch(
-          CoreflameCommandRequest(
+          TinyTacticsCommandRequest(
             command: const PlayCellCommand(0),
             expectedRevision: initialRevision,
-          ),
+          ).toEnvelope(),
         );
         expect(stale.accepted, isFalse);
         expect(stale.code, 'staleRevision');
         expect(stale.currentRevision, played.currentRevision);
 
         final occupied = game.dispatch(
-          CoreflameCommandRequest(
+          TinyTacticsCommandRequest(
             command: const PlayCellCommand(4),
             expectedRevision: game.revision,
-          ),
+          ).toEnvelope(),
         );
         expect(occupied.accepted, isFalse);
         expect(occupied.code, MoveOutcome.occupied.name);
         expect(occupied.currentRevision, played.currentRevision);
 
         final sound = game.dispatch(
-          CoreflameCommandRequest(
+          TinyTacticsCommandRequest(
             command: const SetFeedbackSettingCommand(
               setting: FeedbackSetting.sound,
               enabled: false,
             ),
             expectedRevision: game.revision,
-          ),
+          ).toEnvelope(),
         );
         expect(sound.accepted, isTrue);
-        expect(sound.snapshot.feedback.soundEnabled, isFalse);
+        final soundGame = sound.snapshot.game.state as TinyTacticsSnapshot;
+        expect(soundGame.feedback.soundEnabled, isFalse);
 
         final events = game.eventBatchAfter(0).events;
         expect(
           events.map((event) => event.kind),
           containsAll(const {
-            CoreflameEventKind.gameLoaded,
-            CoreflameEventKind.moveAccepted,
-            CoreflameEventKind.moveRejected,
-            CoreflameEventKind.feedbackStateChanged,
+            RuntimeEventKind.gameLoaded,
+            TinyTacticsEventKind.moveAccepted,
+            TinyTacticsEventKind.moveRejected,
+            TinyTacticsEventKind.feedbackStateChanged,
           }),
         );
       },
@@ -155,10 +162,10 @@ void main() {
 
         for (final cell in [0, 3, 1, 4, 2]) {
           final result = game.dispatch(
-            CoreflameCommandRequest(
+            TinyTacticsCommandRequest(
               command: PlayCellCommand(cell),
               expectedRevision: game.revision,
-            ),
+            ).toEnvelope(),
           );
           expect(result.accepted, isTrue);
         }

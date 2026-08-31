@@ -6,22 +6,17 @@ import 'package:flame/events.dart';
 import 'package:flame_svg/flame_svg.dart';
 import 'package:flutter/material.dart';
 
-import '../observability/coreflame_observability.dart';
+import '../game_action_origin.dart';
+import '../observability/runtime_inspection.dart';
+import '../observability/tiny_tactics_inspection.dart';
 import '../services/game_feedback.dart';
 import '../services/game_platform_services.dart';
 import '../theme/game_palette.dart';
 import '../tic_tac_toe_match.dart';
 
-typedef SceneEventRecorder =
-    void Function(
-      CoreflameEventKind kind,
-      Map<String, Object?> payload, {
-      bool changesState,
-    });
-
 class CozyTicTacToeScene extends PositionComponent
     with TapCallbacks
-    implements CoreflameInspectable {
+    implements RuntimeInspectable {
   CozyTicTacToeScene({
     required this.match,
     required this.feedback,
@@ -39,7 +34,7 @@ class CozyTicTacToeScene extends PositionComponent
   final TicTacToeMatch match;
   final GameFeedback feedback;
   final GamePlatformServices platformServices;
-  final SceneEventRecorder recordEvent;
+  final RuntimeEventRecorder recordEvent;
   final _BoardStateComponent _boardState;
   final _RoundControlStateComponent _roundControl;
   final _SettingsStateComponent _settingsState;
@@ -114,12 +109,12 @@ class CozyTicTacToeScene extends PositionComponent
 
   MoveOutcome playCell(
     int cell, {
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+    GameActionOrigin origin = GameActionOrigin.system,
   }) {
     final placedMark = match.turn;
     final outcome = match.play(cell);
     if (outcome != MoveOutcome.accepted) {
-      recordEvent(CoreflameEventKind.moveRejected, {
+      recordEvent(TinyTacticsEventKind.moveRejected, {
         'cell': cell,
         'reason': outcome.name,
         'origin': origin.name,
@@ -134,7 +129,7 @@ class CozyTicTacToeScene extends PositionComponent
       _boardState.onRoundFinished();
       _reportFinishedRound();
     }
-    recordEvent(CoreflameEventKind.moveAccepted, {
+    recordEvent(TinyTacticsEventKind.moveAccepted, {
       'cell': cell,
       'mark': placedMark.name,
       'result': match.result.name,
@@ -144,29 +139,25 @@ class CozyTicTacToeScene extends PositionComponent
     return outcome;
   }
 
-  void startNextRound({
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
-  }) {
+  void startNextRound({GameActionOrigin origin = GameActionOrigin.system}) {
     match.startNextRound();
     _boardState.onRoundStarted();
-    recordEvent(CoreflameEventKind.roundStarted, {
+    recordEvent(TinyTacticsEventKind.roundStarted, {
       'starter': match.starter.name,
       'origin': origin.name,
     });
   }
 
-  void resetMatch({
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
-  }) {
+  void resetMatch({GameActionOrigin origin = GameActionOrigin.system}) {
     match.resetMatch();
     _boardState.onRoundStarted();
     _elapsed = 0;
-    recordEvent(CoreflameEventKind.matchReset, {'origin': origin.name});
+    recordEvent(TinyTacticsEventKind.matchReset, {'origin': origin.name});
   }
 
   bool setSettingsOpen(
     bool open, {
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+    GameActionOrigin origin = GameActionOrigin.system,
   }) {
     if (_settingsState.isOpen == open) return false;
     _settingsState.setOpen(open);
@@ -175,8 +166,8 @@ class CozyTicTacToeScene extends PositionComponent
     }
     recordEvent(
       open
-          ? CoreflameEventKind.settingsOpened
-          : CoreflameEventKind.settingsClosed,
+          ? TinyTacticsEventKind.settingsOpened
+          : TinyTacticsEventKind.settingsClosed,
       {'origin': origin.name},
     );
     return true;
@@ -185,7 +176,7 @@ class CozyTicTacToeScene extends PositionComponent
   bool setFeedbackSetting(
     FeedbackSetting setting,
     bool enabled, {
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+    GameActionOrigin origin = GameActionOrigin.system,
   }) {
     final currentValue = switch (setting) {
       FeedbackSetting.sound => feedback.soundEnabled,
@@ -218,7 +209,7 @@ class CozyTicTacToeScene extends PositionComponent
 
     if (layout.settingsButton.contains(point)) {
       feedback.playButtonHaptic();
-      setSettingsOpen(true, origin: CoreflameActionOrigin.pointer);
+      setSettingsOpen(true, origin: GameActionOrigin.pointer);
       return;
     }
 
@@ -232,7 +223,7 @@ class CozyTicTacToeScene extends PositionComponent
     if (cell == null) {
       return;
     }
-    playCell(cell, origin: CoreflameActionOrigin.pointer);
+    playCell(cell, origin: GameActionOrigin.pointer);
   }
 
   @override
@@ -245,7 +236,7 @@ class CozyTicTacToeScene extends PositionComponent
     _roundControl.release();
 
     if (shouldStartRound) {
-      startNextRound(origin: CoreflameActionOrigin.pointer);
+      startNextRound(origin: GameActionOrigin.pointer);
     }
   }
 
@@ -411,11 +402,11 @@ class CozyTicTacToeScene extends PositionComponent
     final modal = _SettingsModalLayout.fromSize(size.x, size.y);
     if (modal.closeButton.contains(point)) {
       feedback.playButtonHaptic();
-      setSettingsOpen(false, origin: CoreflameActionOrigin.pointer);
+      setSettingsOpen(false, origin: GameActionOrigin.pointer);
       return;
     }
     if (!modal.card.contains(point)) {
-      setSettingsOpen(false, origin: CoreflameActionOrigin.pointer);
+      setSettingsOpen(false, origin: GameActionOrigin.pointer);
       return;
     }
 
@@ -427,20 +418,20 @@ class CozyTicTacToeScene extends PositionComponent
           setFeedbackSetting(
             FeedbackSetting.sound,
             !feedback.soundEnabled,
-            origin: CoreflameActionOrigin.pointer,
+            origin: GameActionOrigin.pointer,
           );
         case _SettingKind.music:
           feedback.playButtonHaptic();
           setFeedbackSetting(
             FeedbackSetting.music,
             !feedback.musicEnabled,
-            origin: CoreflameActionOrigin.pointer,
+            origin: GameActionOrigin.pointer,
           );
         case _SettingKind.vibration:
           setFeedbackSetting(
             FeedbackSetting.vibration,
             !feedback.vibrationEnabled,
-            origin: CoreflameActionOrigin.pointer,
+            origin: GameActionOrigin.pointer,
           );
       }
       return;
@@ -1536,7 +1527,7 @@ RectSnapshot _rectSnapshot(Rect rect) => RectSnapshot(
   height: rect.height,
 );
 
-class _BoardStateComponent extends Component implements CoreflameInspectable {
+class _BoardStateComponent extends Component implements RuntimeInspectable {
   _BoardStateComponent(this.match)
     : super(key: ComponentKey.named('board-state'));
 
@@ -1593,7 +1584,7 @@ class _BoardStateComponent extends Component implements CoreflameInspectable {
 enum _RoundButtonPhase { idle, pressed }
 
 class _RoundControlStateComponent extends Component
-    implements CoreflameInspectable {
+    implements RuntimeInspectable {
   _RoundControlStateComponent()
     : super(key: ComponentKey.named('round-control-state'));
 
@@ -1650,8 +1641,7 @@ class _RoundControlStateComponent extends Component
 
 enum _SceneOverlay { none, settings }
 
-class _SettingsStateComponent extends Component
-    implements CoreflameInspectable {
+class _SettingsStateComponent extends Component implements RuntimeInspectable {
   _SettingsStateComponent() : super(key: ComponentKey.named('settings-state'));
 
   _SceneOverlay overlay = _SceneOverlay.none;

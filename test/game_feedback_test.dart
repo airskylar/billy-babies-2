@@ -1,4 +1,4 @@
-import 'package:coreflame/game/observability/coreflame_observability.dart';
+import 'package:coreflame/game/game_action_origin.dart';
 import 'package:coreflame/game/services/game_feedback.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,16 +22,16 @@ void main() {
         expect(backgroundMusic.initializeCalls, 1);
         expect(backgroundMusic.playCalls, 1);
 
-        feedback.setSoundEnabled(false, origin: CoreflameActionOrigin.test);
+        feedback.setSoundEnabled(false, origin: GameActionOrigin.test);
 
-        expect(feedback.snapshot.soundEnabled, isFalse);
+        expect(feedback.soundEnabled, isFalse);
         expect(
           events
               .singleWhere(
                 (event) => event.kind == GameFeedbackEventKind.settingChanged,
               )
               .payload,
-          containsPair('origin', CoreflameActionOrigin.test.name),
+          containsPair('origin', GameActionOrigin.test.name),
         );
 
         await feedback.dispose();

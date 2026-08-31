@@ -40,6 +40,8 @@ replacing the placeholder game.
   tapping, ad hoc logging, or private-field probing.
 - Keep the inspection contract, CLI help, documentation, and focused tests synchronized with changes
   to observable state or agent-facing actions.
+- Keep the runtime kernel, Flame host, VM bridge, and CLI game-independent. Put concrete state,
+  events, commands, and dispatch behavior in the active game's `RuntimeInspectionAdapter`.
 
 ## Consistency
 

@@ -1,5 +1,3 @@
-import 'observability/coreflame_observability.dart';
-
 enum Mark { x, o }
 
 extension MarkDetails on Mark {
@@ -49,17 +47,6 @@ class TicTacToeMatch {
   int get xScore => _xScore;
   int get oScore => _oScore;
   int get draws => _draws;
-
-  MatchSnapshot get snapshot => MatchSnapshot(
-    cells: _cells.map((mark) => mark?.name).toList(growable: false),
-    turn: _turn.name,
-    starter: _starter.name,
-    result: _result.name,
-    winningCells: List.unmodifiable(_winningCells),
-    xScore: _xScore,
-    oScore: _oScore,
-    draws: _draws,
-  );
 
   Mark? markAt(int index) {
     RangeError.checkValidIndex(index, _cells, 'index');

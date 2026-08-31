@@ -3,42 +3,64 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/foundation.dart';
 
-import 'coreflame_observability.dart';
+import 'runtime_inspection.dart';
 
-abstract interface class CoreflameDebugTarget {
-  CoreflameSnapshot snapshot(SnapshotDetail detail);
+abstract interface class RuntimeInspectionTarget {
+  RuntimeInspectionCapabilities capabilities();
 
-  CoreflameEventBatch eventBatchAfter(int sequence);
+  RuntimeSnapshot snapshot(SnapshotDetail detail);
 
-  CoreflameCommandResult dispatch(CoreflameCommandRequest request);
+  RuntimeEventBatch eventBatchAfter(int sequence);
+
+  RuntimeCommandResult dispatch(RuntimeCommandEnvelope command);
 }
 
 class CoreflameDebugBridge {
   CoreflameDebugBridge._();
 
-  static CoreflameDebugTarget? _target;
+  static RuntimeInspectionTarget? _target;
   static bool _registered = false;
 
-  static void attach(CoreflameDebugTarget target) {
+  static void attach(RuntimeInspectionTarget target) {
     if (!kDebugMode) return;
     _target = target;
     if (_registered) return;
 
+    developer.registerExtension(
+      'ext.coreflame.getCapabilities',
+      _getCapabilities,
+    );
     developer.registerExtension('ext.coreflame.getSnapshot', _getSnapshot);
     developer.registerExtension('ext.coreflame.getEvents', _getEvents);
     developer.registerExtension('ext.coreflame.dispatch', _dispatch);
     _registered = true;
   }
 
-  static void detach(CoreflameDebugTarget target) {
+  static void detach(RuntimeInspectionTarget target) {
     if (identical(_target, target)) {
       _target = null;
     }
   }
 
-  static void publish(CoreflameEvent event) {
+  static void publish(RuntimeEvent event) {
     if (!kDebugMode) return;
     developer.postEvent('Coreflame.Event', event.toJson());
+  }
+
+  static Future<developer.ServiceExtensionResponse> _getCapabilities(
+    String method,
+    Map<String, String> parameters,
+  ) async {
+    final target = _target;
+    if (target == null) return _unavailable();
+
+    try {
+      final arguments = _requestArguments(parameters);
+      _rejectUnexpected(arguments, const {});
+      return _result(target.capabilities().toJson());
+    } on FormatException catch (error) {
+      return _invalidParameters(error.message);
+    }
   }
 
   static Future<developer.ServiceExtensionResponse> _getSnapshot(
@@ -89,7 +111,7 @@ class CoreflameDebugBridge {
     if (target == null) return _unavailable();
 
     try {
-      final request = CoreflameCommandRequest.parse(
+      final request = RuntimeCommandEnvelope.parse(
         _requestArguments(parameters),
       );
       return _result(target.dispatch(request).toJson());

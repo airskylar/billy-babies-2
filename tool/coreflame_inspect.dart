@@ -157,6 +157,7 @@ class _Invocation {
   }
 
   _ServiceCall get serviceCall => switch (command) {
+    'capabilities' => _capabilitiesCall(),
     'snapshot' => _snapshotCall(),
     'events' => _eventsCall(),
     'dispatch' => _dispatchCall(),
@@ -167,6 +168,12 @@ class _Invocation {
     'step' => _stepCall(),
     _ => throw FormatException('Unknown command: $command'),
   };
+
+  _ServiceCall _capabilitiesCall() {
+    _expectPositionals(0);
+    _expectOptions(const {'uri', 'isolate'});
+    return const _ServiceCall('ext.coreflame.getCapabilities');
+  }
 
   _ServiceCall _snapshotCall() {
     _expectPositionals(0);
@@ -186,9 +193,10 @@ class _Invocation {
   }
 
   _ServiceCall _dispatchCall() {
-    _expectPositionals(1);
-    final action = positionals.single;
-    final arguments = <String, dynamic>{};
+    _expectAtLeastPositionals(1);
+    _expectOptions(const {'uri', 'isolate', 'expected-revision'});
+    final commandName = positionals.first;
+    final arguments = <String, dynamic>{'command': commandName};
     if (options['expected-revision'] case final revision?) {
       final parsed = int.tryParse(revision);
       if (parsed == null || parsed < 0) {
@@ -199,36 +207,22 @@ class _Invocation {
       arguments['expected_revision'] = parsed;
     }
 
-    switch (action) {
-      case 'play-cell':
-        _expectOptions(const {'uri', 'isolate', 'expected-revision', 'cell'});
-        arguments['command'] = 'playCell';
-        arguments['cell'] = _requiredIntegerOption('cell');
-      case 'start-next-round':
-        _expectOptions(const {'uri', 'isolate', 'expected-revision'});
-        arguments['command'] = 'startNextRound';
-      case 'reset-match':
-        _expectOptions(const {'uri', 'isolate', 'expected-revision'});
-        arguments['command'] = 'resetMatch';
-      case 'open-settings':
-      case 'close-settings':
-        _expectOptions(const {'uri', 'isolate', 'expected-revision'});
-        arguments['command'] = 'setSettingsOpen';
-        arguments['open'] = action == 'open-settings';
-      case 'set-sound':
-      case 'set-music':
-      case 'set-vibration':
-        _expectOptions(const {
-          'uri',
-          'isolate',
-          'expected-revision',
-          'enabled',
-        });
-        arguments['command'] = 'setFeedbackSetting';
-        arguments['setting'] = action.substring('set-'.length);
-        arguments['enabled'] = _requiredBooleanOption('enabled');
-      default:
-        throw FormatException('Unknown dispatch action: $action');
+    for (final argument in positionals.skip(1)) {
+      final separator = argument.indexOf('=');
+      if (separator <= 0) {
+        throw FormatException(
+          'Command arguments must use NAME=VALUE: $argument',
+        );
+      }
+      final name = argument.substring(0, separator);
+      final value = argument.substring(separator + 1);
+      if (name == 'command' || name == 'expected_revision') {
+        throw FormatException('Reserved command argument: $name');
+      }
+      if (arguments.containsKey(name)) {
+        throw FormatException('Duplicate command argument: $name');
+      }
+      arguments[name] = value;
     }
     return _ServiceCall('ext.coreflame.dispatch', arguments);
   }
@@ -271,15 +265,6 @@ class _Invocation {
     return _ServiceCall('ext.flame_devtools.step', {'step_time': seconds});
   }
 
-  int _requiredIntegerOption(String name) {
-    final value = options[name];
-    final parsed = value == null ? null : int.tryParse(value);
-    if (parsed == null) {
-      throw FormatException('Expected --$name to be an integer');
-    }
-    return parsed;
-  }
-
   int? _nonNegativeIntegerOption(String name) {
     final value = options[name];
     if (value == null) return null;
@@ -288,14 +273,6 @@ class _Invocation {
       throw FormatException('Expected --$name to be a non-negative integer');
     }
     return parsed;
-  }
-
-  bool _requiredBooleanOption(String name) {
-    return switch (options[name]) {
-      'true' => true,
-      'false' => false,
-      _ => throw FormatException('Expected --$name to be true or false'),
-    };
   }
 
   void _validateCommonOptions() {
@@ -316,6 +293,15 @@ class _Invocation {
     }
   }
 
+  void _expectAtLeastPositionals(int count) {
+    if (positionals.length < count) {
+      throw FormatException(
+        '$command expects at least $count positional argument(s), '
+        'received ${positionals.length}',
+      );
+    }
+  }
+
   void _expectOptions(Set<String> allowed) {
     final unexpected = options.keys
         .where((option) => !allowed.contains(option))
@@ -330,22 +316,17 @@ class _Invocation {
 
 const _usage = '''
 Usage:
+  dart run tool/coreflame_inspect.dart capabilities --uri URL
   dart run tool/coreflame_inspect.dart snapshot [--detail semantic|visual] --uri URL
   dart run tool/coreflame_inspect.dart events [--after SEQUENCE] --uri URL
-  dart run tool/coreflame_inspect.dart dispatch ACTION [options] --uri URL
+  dart run tool/coreflame_inspect.dart dispatch COMMAND [NAME=VALUE ...]
+    [--expected-revision REVISION] --uri URL
   dart run tool/coreflame_inspect.dart tree|widget-tree --uri URL
   dart run tool/coreflame_inspect.dart pause|resume --uri URL
   dart run tool/coreflame_inspect.dart step [--seconds NUMBER] --uri URL
 
-Dispatch actions:
-  play-cell --cell INDEX
-  start-next-round
-  reset-match
-  open-settings
-  close-settings
-  set-sound|set-music|set-vibration --enabled true|false
-
-All dispatch actions accept --expected-revision REVISION. Set
+Use capabilities to discover the active game's commands and their parameters.
+Command arguments use NAME=VALUE and remain game-defined. Set
 COREFLAME_VM_SERVICE_URL instead of passing --uri on every call. Use --isolate
 with an isolate ID or name when the VM contains multiple matching isolates.
 ''';

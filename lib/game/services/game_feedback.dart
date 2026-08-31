@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:pulsar_haptics/pulsar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../observability/coreflame_observability.dart';
+import '../game_action_origin.dart';
 import '../tic_tac_toe_match.dart';
 
 enum GameFeedbackLifecycle { created, loading, ready, disposing, disposed }
@@ -35,6 +35,26 @@ enum GameFeedbackEventKind {
   settingsLoaded,
   settingChanged,
   failure,
+}
+
+enum FeedbackSetting { sound, music, vibration }
+
+class GameFeedbackFailure {
+  const GameFeedbackFailure({
+    required this.feature,
+    required this.errorType,
+    required this.message,
+  });
+
+  final String feature;
+  final String errorType;
+  final String message;
+
+  Map<String, Object?> toEventPayload() => {
+    'feature': feature,
+    'errorType': errorType,
+    'message': message,
+  };
 }
 
 class GameFeedbackEvent {
@@ -106,23 +126,15 @@ class GameFeedback {
   GameFeedbackLifecycle _lifecycle = GameFeedbackLifecycle.created;
   BackgroundMusicPhase _backgroundMusicPhase =
       BackgroundMusicPhase.uninitialized;
-  FeedbackFailureSnapshot? _lastFailure;
+  GameFeedbackFailure? _lastFailure;
 
   bool get soundEnabled => _soundEnabled;
   bool get musicEnabled => _musicEnabled;
   bool get vibrationEnabled => _vibrationEnabled;
+  bool get preferencesLoaded => _preferencesLoaded;
   GameFeedbackLifecycle get lifecycle => _lifecycle;
   BackgroundMusicPhase get backgroundMusicPhase => _backgroundMusicPhase;
-
-  FeedbackSnapshot get snapshot => FeedbackSnapshot(
-    lifecycle: _lifecycle.name,
-    backgroundMusic: _backgroundMusicPhase.name,
-    preferencesLoaded: _preferencesLoaded,
-    soundEnabled: _soundEnabled,
-    musicEnabled: _musicEnabled,
-    vibrationEnabled: _vibrationEnabled,
-    lastFailure: _lastFailure,
-  );
+  GameFeedbackFailure? get lastFailure => _lastFailure;
 
   void addObserver(GameFeedbackObserver observer) {
     if (!_observers.contains(observer)) {
@@ -195,7 +207,7 @@ class GameFeedback {
 
   void setSoundEnabled(
     bool enabled, {
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+    GameActionOrigin origin = GameActionOrigin.system,
   }) {
     if (_soundEnabled == enabled) return;
     _soundEnabled = enabled;
@@ -205,7 +217,7 @@ class GameFeedback {
 
   void setMusicEnabled(
     bool enabled, {
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+    GameActionOrigin origin = GameActionOrigin.system,
   }) {
     if (_musicEnabled == enabled) return;
     _musicEnabled = enabled;
@@ -220,7 +232,7 @@ class GameFeedback {
 
   void setVibrationEnabled(
     bool enabled, {
-    CoreflameActionOrigin origin = CoreflameActionOrigin.system,
+    GameActionOrigin origin = GameActionOrigin.system,
   }) {
     if (_vibrationEnabled == enabled) return;
     final wasEnabled = _vibrationEnabled;
@@ -274,7 +286,13 @@ class GameFeedback {
       _musicEnabled = preferences.getBool(_musicPreference) ?? true;
       _vibrationEnabled = preferences.getBool(_vibrationPreference) ?? true;
       _preferencesLoaded = true;
-      _emit(GameFeedbackEventKind.settingsLoaded, snapshot.toJson());
+      _emit(GameFeedbackEventKind.settingsLoaded, {
+        'settings': {
+          'soundEnabled': _soundEnabled,
+          'musicEnabled': _musicEnabled,
+          'vibrationEnabled': _vibrationEnabled,
+        },
+      });
     } on Object catch (error, stackTrace) {
       _reportOptionalFailure('Settings load', error, stackTrace);
     }
@@ -425,7 +443,7 @@ class GameFeedback {
   void _emitSettingChanged(
     FeedbackSetting setting,
     bool enabled,
-    CoreflameActionOrigin origin,
+    GameActionOrigin origin,
   ) {
     _emit(GameFeedbackEventKind.settingChanged, {
       'setting': setting.name,
@@ -449,14 +467,14 @@ class GameFeedback {
     Object error,
     StackTrace stackTrace,
   ) {
-    final failure = FeedbackFailureSnapshot(
+    final failure = GameFeedbackFailure(
       feature: feature,
       errorType: error.runtimeType.toString(),
       message: error.toString(),
     );
     _lastFailure = failure;
     _emit(GameFeedbackEventKind.failure, {
-      ...failure.toJson(),
+      ...failure.toEventPayload(),
       'stackTrace': stackTrace.toString(),
     });
     assert(() {

@@ -30,15 +30,17 @@ the repository CLI from another terminal:
 
 ```sh
 export COREFLAME_VM_SERVICE_URL=http://127.0.0.1:12345/example=/
+dart run tool/coreflame_inspect.dart capabilities
 dart run tool/coreflame_inspect.dart snapshot
 dart run tool/coreflame_inspect.dart events --after 0
 dart run tool/coreflame_inspect.dart tree          # Flame component tree
 dart run tool/coreflame_inspect.dart widget-tree   # Flutter widget tree
 ```
 
-The default snapshot is semantic: match state, feedback state, lifecycle,
-viewport, and stable component IDs without render-only geometry. Request visual
-detail when an agent needs bounds and hit targets:
+The default snapshot is semantic. The generic envelope contains engine,
+viewport, and stable component state; `game.state` contains the active game's
+typed state. Request visual detail when an agent needs bounds, hit targets, or
+animation progress:
 
 ```sh
 dart run tool/coreflame_inspect.dart snapshot --detail visual
@@ -48,18 +50,21 @@ Agents can drive the same semantic actions as players. Passing the revision
 from the latest snapshot prevents a stale observer from mutating newer state:
 
 ```sh
-dart run tool/coreflame_inspect.dart dispatch play-cell \
-  --cell 4 --expected-revision 12
-dart run tool/coreflame_inspect.dart dispatch open-settings
+dart run tool/coreflame_inspect.dart dispatch playCell cell=4 \
+  --expected-revision 12
+dart run tool/coreflame_inspect.dart dispatch setSettingsOpen open=true
 dart run tool/coreflame_inspect.dart pause
 dart run tool/coreflame_inspect.dart step --seconds 0.0166667
 ```
 
-Run `dart run tool/coreflame_inspect.dart --help` for every command. The custom
-service extensions are debug-only. Snapshots carry a `schemaVersion`; event
-batches report their available sequence range and whether older history was
-truncated. Commands return their resulting snapshot so automation can observe
-each transition directly.
+Run `capabilities` to discover the active game ID, game-state schema version,
+and strict command parameters; the CLI does not hard-code Tiny Tactics actions.
+Run `dart run tool/coreflame_inspect.dart --help` for the transport commands.
+The custom service extensions are debug-only. Snapshots carry a generic
+`protocolVersion` and a separate `game.schemaVersion`; event batches report
+their available sequence range and whether older history was truncated.
+Commands return their resulting snapshot so automation can observe each
+transition directly.
 
 ## Launch scenarios
 
@@ -96,7 +101,11 @@ lib/
     │   └── cozy_tic_tac_toe_scene.dart   Rendering, layout, input, animation
     ├── observability/
     │   ├── coreflame_debug_bridge.dart   Debug VM service extensions
-    │   └── coreflame_observability.dart  Snapshots, events, and commands
+    │   ├── inspectable_flame_game.dart   Reusable Flame inspection host
+    │   ├── runtime_inspection.dart       Game-independent protocol kernel
+    │   ├── tiny_tactics_inspection.dart  Demo state and command schema
+    │   └── tiny_tactics_inspection_adapter.dart
+    │                                      Demo snapshot/dispatch adapter
     ├── services/
     │   ├── game_feedback.dart             Pulsar haptics and Flame audio
     │   ├── game_platform_services.dart    Typed, platform-neutral contract
@@ -168,7 +177,9 @@ game requires either behavior.
 - Replace `assets/fonts/gluten_variable.ttf` to change the registered `Gluten`
   typeface used by both Flutter widgets and Flame-rendered text.
 - Add components or split scenes under `lib/game/components/`.
-- Replace `TicTacToeMatch` while keeping `CoreflameGame` and the Flutter shell.
+- Replace `TicTacToeMatch` and `TinyTacticsInspectionAdapter` together when
+  replacing the demo. A new game supplies its own `RuntimeInspectionAdapter`;
+  `InspectableFlameGame`, the VM bridge, and the CLI remain unchanged.
 - Add sprite or audio folders under `assets/`, then register them in
   `pubspec.yaml`.
 - Replace the sample game-service IDs and versioned save payload with the
