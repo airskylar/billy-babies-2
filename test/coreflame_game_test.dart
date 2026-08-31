@@ -87,39 +87,39 @@ void main() {
         await game.ready();
         final initialRevision = game.revision;
 
-        final played = game.dispatch(
+        final played = await game.dispatch(
           TinyTacticsCommandRequest(
             command: const PlayCellCommand(4),
             expectedRevision: initialRevision,
           ).toEnvelope(),
         );
-        expect(played.accepted, isTrue);
+        expect(played.disposition, RuntimeCommandDisposition.applied);
         expect(played.code, MoveOutcome.accepted.name);
         final playedGame = played.snapshot.game.state as TinyTacticsSnapshot;
         expect(playedGame.match.cells[4], Mark.x.name);
         expect(played.currentRevision, initialRevision + 1);
 
-        final stale = game.dispatch(
+        final stale = await game.dispatch(
           TinyTacticsCommandRequest(
             command: const PlayCellCommand(0),
             expectedRevision: initialRevision,
           ).toEnvelope(),
         );
-        expect(stale.accepted, isFalse);
+        expect(stale.disposition, RuntimeCommandDisposition.rejected);
         expect(stale.code, 'staleRevision');
         expect(stale.currentRevision, played.currentRevision);
 
-        final occupied = game.dispatch(
+        final occupied = await game.dispatch(
           TinyTacticsCommandRequest(
             command: const PlayCellCommand(4),
             expectedRevision: game.revision,
           ).toEnvelope(),
         );
-        expect(occupied.accepted, isFalse);
+        expect(occupied.disposition, RuntimeCommandDisposition.rejected);
         expect(occupied.code, MoveOutcome.occupied.name);
         expect(occupied.currentRevision, played.currentRevision);
 
-        final sound = game.dispatch(
+        final sound = await game.dispatch(
           TinyTacticsCommandRequest(
             command: const SetFeedbackSettingCommand(
               setting: FeedbackSetting.sound,
@@ -128,9 +128,21 @@ void main() {
             expectedRevision: game.revision,
           ).toEnvelope(),
         );
-        expect(sound.accepted, isTrue);
+        expect(sound.disposition, RuntimeCommandDisposition.applied);
         final soundGame = sound.snapshot.game.state as TinyTacticsSnapshot;
         expect(soundGame.feedback.soundEnabled, isFalse);
+
+        final unchangedSound = await game.dispatch(
+          TinyTacticsCommandRequest(
+            command: const SetFeedbackSettingCommand(
+              setting: FeedbackSetting.sound,
+              enabled: false,
+            ),
+            expectedRevision: game.revision,
+          ).toEnvelope(),
+        );
+        expect(unchangedSound.disposition, RuntimeCommandDisposition.noChange);
+        expect(unchangedSound.currentRevision, sound.currentRevision);
 
         final events = game.eventBatchAfter(0).events;
         expect(
@@ -161,13 +173,13 @@ void main() {
         await platformServices.authenticate();
 
         for (final cell in [0, 3, 1, 4, 2]) {
-          final result = game.dispatch(
+          final result = await game.dispatch(
             TinyTacticsCommandRequest(
               command: PlayCellCommand(cell),
               expectedRevision: game.revision,
             ).toEnvelope(),
           );
-          expect(result.accepted, isTrue);
+          expect(result.disposition, RuntimeCommandDisposition.applied);
         }
 
         expect(

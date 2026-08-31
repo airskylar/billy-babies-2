@@ -12,7 +12,11 @@ abstract interface class RuntimeInspectionTarget {
 
   RuntimeEventBatch eventBatchAfter(int sequence);
 
-  RuntimeCommandResult dispatch(RuntimeCommandEnvelope command);
+  /// [initiatingSession] owns command events and the response across awaits.
+  Future<RuntimeCommandResult> dispatch(
+    RuntimeCommandEnvelope command, {
+    RuntimeInspectionSession? initiatingSession,
+  });
 }
 
 final class RuntimeInspectionSession {
@@ -27,6 +31,16 @@ final class RuntimeInspectionSession {
     ...payload,
     'sessionId': id,
   };
+
+  Future<Map<String, Object?>> dispatchResponse(
+    RuntimeCommandEnvelope command,
+  ) async {
+    // Bind both event and response ownership to this initiating session. A
+    // replacement session must never label an older game's completed work.
+    return envelope(
+      (await target.dispatch(command, initiatingSession: this)).toJson(),
+    );
+  }
 }
 
 class CoreflameDebugBridge {
@@ -148,16 +162,12 @@ class CoreflameDebugBridge {
   ) async {
     final session = _session;
     if (session == null) return _unavailable();
-    final target = session.target;
 
     try {
       final request = RuntimeCommandEnvelope.parse(
         _requestArguments(parameters),
       );
-      return _result(
-        session: session,
-        value: target.dispatch(request).toJson(),
-      );
+      return _encodedResult(await session.dispatchResponse(request));
     } on FormatException catch (error) {
       return _invalidParameters(error.message);
     } on RangeError catch (error) {
@@ -188,10 +198,12 @@ class CoreflameDebugBridge {
   static developer.ServiceExtensionResponse _result({
     required RuntimeInspectionSession session,
     required Map<String, Object?> value,
-  }) {
-    return developer.ServiceExtensionResponse.result(
-      jsonEncode(session.envelope(value)),
-    );
+  }) => _encodedResult(session.envelope(value));
+
+  static developer.ServiceExtensionResponse _encodedResult(
+    Map<String, Object?> value,
+  ) {
+    return developer.ServiceExtensionResponse.result(jsonEncode(value));
   }
 
   static developer.ServiceExtensionResponse _unavailable() {

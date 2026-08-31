@@ -63,11 +63,23 @@ Run `dart run tool/coreflame_inspect.dart --help` for the transport commands.
 The custom service extensions are debug-only. Snapshots carry a generic
 `protocolVersion` and a separate `game.schemaVersion`; event batches report
 their available sequence range and whether older history was truncated.
-Commands return their resulting snapshot so automation can observe each
-transition directly. Every `capabilities`, `snapshot`, `events`, and `dispatch`
-response—and every pushed Coreflame event—also carries a top-level `sessionId`
-identifying the current game mount. If it changes, discard cached revisions and
-event cursors before continuing.
+Commands execute serially and return only after their adapter work completes.
+Each result reports a `disposition` of `rejected`, `noChange`, or `applied` and
+includes the completed semantic snapshot. Expected revisions are checked when
+the command reaches the front of the queue. State-changing events emitted in a
+command's asynchronous call chain are attributed to that transaction. If an
+applied command emits no such game event, the host records a generic
+`commandApplied` fallback event; unrelated concurrent events cannot satisfy the
+command's revision guarantee.
+
+Every `capabilities`, `snapshot`, `events`, and `dispatch` response—and every
+pushed Coreflame event—also carries a top-level `sessionId` identifying the
+current game mount. If it changes, discard cached revisions and event cursors
+before continuing. A command response retains the session that accepted it even
+if the same game remounts or another game mount replaces it while the command is
+running. Command-owned events are publishable only through that initiating
+session, so they cannot be pushed as events from the replacement. Discard the
+completed response when its `sessionId` is no longer current.
 
 ## Launch scenarios
 

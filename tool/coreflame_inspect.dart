@@ -331,5 +331,10 @@ COREFLAME_VM_SERVICE_URL instead of passing --uri on every call. Use --isolate
 with an isolate ID or name when the VM contains multiple matching isolates.
 Every capabilities, snapshot, events, and dispatch response includes a
 mount-scoped sessionId. If it changes, reacquire a snapshot and reset cached
-revisions and event cursors.
+revisions and event cursors. Dispatches execute serially and wait for adapter
+completion. Their disposition is rejected, noChange, or applied, and their
+snapshot is the completed postcondition. Applied commands without a
+state-changing game event emit a commandApplied fallback event. A response keeps
+the sessionId that accepted its command; command events cannot be pushed as
+events from a replacement session.
 ''';

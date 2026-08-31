@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:coreflame/game/observability/coreflame_debug_bridge.dart';
 import 'package:coreflame/game/observability/inspectable_flame_game.dart';
 import 'package:coreflame/game/observability/runtime_inspection.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Runtime inspection kernel', () {
     test('keeps a bounded, sequence-addressable event journal', () {
+      expect(RuntimeSnapshot.protocolVersion, 2);
       final journal = RuntimeEventJournal(capacity: 2);
 
       for (var revision = 1; revision <= 3; revision += 1) {
@@ -42,7 +45,7 @@ void main() {
         expect(capabilities.commands.single.name, 'increment');
 
         final initialRevision = game.revision;
-        final result = game.dispatch(
+        final result = await game.dispatch(
           RuntimeCommandEnvelope(
             name: 'increment',
             expectedRevision: initialRevision,
@@ -50,7 +53,7 @@ void main() {
           ),
         );
 
-        expect(result.accepted, isTrue);
+        expect(result.disposition, RuntimeCommandDisposition.applied);
         expect(result.currentRevision, initialRevision + 1);
         expect(result.snapshot.game.id, 'counter');
         expect((result.snapshot.game.state as _CounterState).value, 2);
@@ -58,6 +61,188 @@ void main() {
           game.eventBatchAfter(0).events.map((event) => event.kind),
           contains(_CounterEventKind.incremented),
         );
+      },
+    );
+
+    testWithGame<_CounterGame>(
+      'serializes asynchronous commands and checks revisions before execution',
+      _CounterGame.new,
+      (game) async {
+        await game.ready();
+        final started = Completer<void>();
+        final release = Completer<void>();
+        game.adapter
+          ..dispatchStarted = started
+          ..dispatchGate = release.future;
+        final initialRevision = game.revision;
+
+        final first = game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: initialRevision,
+            arguments: const {'amount': '2'},
+          ),
+        );
+        await started.future;
+        final second = game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: initialRevision,
+            arguments: const {'amount': '3'},
+          ),
+        );
+
+        expect(game.adapter.dispatchCount, 1);
+        release.complete();
+        final firstResult = await first;
+        final secondResult = await second;
+
+        expect(firstResult.disposition, RuntimeCommandDisposition.applied);
+        expect(firstResult.currentRevision, initialRevision + 1);
+        expect((firstResult.snapshot.game.state as _CounterState).value, 2);
+        expect(secondResult.disposition, RuntimeCommandDisposition.rejected);
+        expect(secondResult.code, 'staleRevision');
+        expect(secondResult.currentRevision, firstResult.currentRevision);
+        expect(secondResult.toJson()['disposition'], 'rejected');
+        expect(game.adapter.dispatchCount, 1);
+        expect(game.adapter.value, 2);
+      },
+    );
+
+    testWithGame<_CounterGame>(
+      'continues the command queue after an adapter error',
+      _CounterGame.new,
+      (game) async {
+        await game.ready();
+        final initialRevision = game.revision;
+
+        final invalid = game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: initialRevision,
+            arguments: const {'amount': 'invalid'},
+          ),
+        );
+        final valid = game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: initialRevision,
+            arguments: const {'amount': '1'},
+          ),
+        );
+
+        await expectLater(invalid, throwsFormatException);
+        final result = await valid;
+        expect(result.disposition, RuntimeCommandDisposition.applied);
+        expect(game.adapter.value, 1);
+      },
+    );
+
+    testWithGame<_CounterGame>(
+      'enforces applied revisions without double-counting adapter events',
+      _CounterGame.new,
+      (game) async {
+        await game.ready();
+        final initialRevision = game.revision;
+        final initialSequence = game.eventBatchAfter(0).latestSequence;
+
+        final recorded = await game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: initialRevision,
+            arguments: const {'amount': '1'},
+          ),
+        );
+        expect(recorded.disposition, RuntimeCommandDisposition.applied);
+        expect(recorded.currentRevision, initialRevision + 1);
+        expect(
+          game
+              .eventBatchAfter(initialSequence)
+              .events
+              .map((event) => event.kind),
+          [_CounterEventKind.incremented],
+        );
+
+        game.adapter.recordEvents = false;
+        final fallbackSequence = game.eventBatchAfter(0).latestSequence;
+        final unrecorded = await game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: recorded.currentRevision,
+            arguments: const {'amount': '1'},
+          ),
+        );
+        expect(unrecorded.disposition, RuntimeCommandDisposition.applied);
+        expect(unrecorded.currentRevision, recorded.currentRevision + 1);
+        expect((unrecorded.snapshot.game.state as _CounterState).value, 2);
+        expect(unrecorded.toJson()['disposition'], 'applied');
+        final fallbackEvent = game
+            .eventBatchAfter(fallbackSequence)
+            .events
+            .single;
+        expect(fallbackEvent.kind, RuntimeEventKind.commandApplied);
+        expect(fallbackEvent.payload, {
+          'command': 'increment',
+          'code': 'applied',
+        });
+
+        final noChangeSequence = fallbackEvent.sequence;
+        final noChange = await game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: unrecorded.currentRevision,
+            arguments: const {'amount': '0'},
+          ),
+        );
+        expect(noChange.disposition, RuntimeCommandDisposition.noChange);
+        expect(noChange.currentRevision, unrecorded.currentRevision);
+        expect(noChange.toJson()['disposition'], 'noChange');
+        expect(game.eventBatchAfter(noChangeSequence).events, isEmpty);
+      },
+    );
+
+    testWithGame<_CounterGame>(
+      'attributes an applied revision despite an unrelated concurrent event',
+      _CounterGame.new,
+      (game) async {
+        await game.ready();
+        final started = Completer<void>();
+        final release = Completer<void>();
+        game.adapter
+          ..recordEvents = false
+          ..dispatchStarted = started
+          ..dispatchGate = release.future;
+        final initialRevision = game.revision;
+        final initialSequence = game.eventBatchAfter(0).latestSequence;
+
+        final pending = game.dispatch(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: initialRevision,
+            arguments: const {'amount': '1'},
+          ),
+        );
+        await started.future;
+        game.recordInspectionEvent(_CounterEventKind.unrelated, const {
+          'source': 'outsideCommand',
+        });
+        expect(game.revision, initialRevision + 1);
+
+        release.complete();
+        final result = await pending;
+
+        expect(result.disposition, RuntimeCommandDisposition.applied);
+        expect(result.currentRevision, initialRevision + 2);
+        expect((result.snapshot.game.state as _CounterState).value, 1);
+        final events = game.eventBatchAfter(initialSequence).events;
+        expect(events.map((event) => event.kind), [
+          _CounterEventKind.unrelated,
+          RuntimeEventKind.commandApplied,
+        ]);
+        expect(events.map((event) => event.revision), [
+          initialRevision + 1,
+          initialRevision + 2,
+        ]);
       },
     );
 
@@ -190,15 +375,13 @@ void main() {
           'capabilities': game.capabilities().toJson(),
           'snapshot': game.snapshot(SnapshotDetail.semantic).toJson(),
           'events': game.eventBatchAfter(0).toJson(),
-          'dispatch': game
-              .dispatch(
-                RuntimeCommandEnvelope(
-                  name: 'increment',
-                  expectedRevision: game.revision,
-                  arguments: const {'amount': '1'},
-                ),
-              )
-              .toJson(),
+          'dispatch': (await game.dispatch(
+            RuntimeCommandEnvelope(
+              name: 'increment',
+              expectedRevision: game.revision,
+              arguments: const {'amount': '1'},
+            ),
+          )).toJson(),
         };
 
         for (final MapEntry(:key, :value) in responses.entries) {
@@ -269,6 +452,55 @@ void main() {
       },
     );
 
+    test(
+      'keeps command ownership on its first session across remounts',
+      () async {
+        final game = await initializeGame<_HierarchyGame>(_HierarchyGame.new);
+        var mounted = true;
+        addTearDown(() {
+          if (mounted) {
+            // ignore: invalid_use_of_internal_member
+            game.finalizeRemoval();
+          }
+        });
+
+        final started = Completer<void>();
+        final release = Completer<void>();
+        game.adapter
+          ..dispatchStarted = started
+          ..dispatchGate = release.future;
+        final firstSession = game.inspectionSession!;
+        final pendingResponse = firstSession.dispatchResponse(
+          RuntimeCommandEnvelope(
+            name: 'increment',
+            expectedRevision: game.revision,
+            arguments: const {'amount': '1'},
+          ),
+        );
+        await started.future;
+
+        // ignore: invalid_use_of_internal_member
+        game.finalizeRemoval();
+        mounted = false;
+        // ignore: invalid_use_of_internal_member
+        game.mount();
+        mounted = true;
+        final secondSession = game.inspectionSession!;
+        release.complete();
+        final response = await pendingResponse;
+
+        expect(firstSession.isActive, isFalse);
+        expect(secondSession.isActive, isTrue);
+        expect(response['sessionId'], firstSession.id);
+        expect(response['sessionId'], isNot(secondSession.id));
+        expect(game.adapter.lastEventPublished, isFalse);
+        expect(
+          game.eventBatchAfter(0).events.map((event) => event.kind),
+          contains(_CounterEventKind.incremented),
+        );
+      },
+    );
+
     test('creates a fresh inspection session when remounted', () async {
       final game = await initializeGame<_HierarchyGame>(_HierarchyGame.new);
       var mounted = true;
@@ -313,11 +545,19 @@ void _expectRect(
 }
 
 enum _CounterEventKind implements InspectionEventKind {
-  incremented;
+  incremented,
+  unrelated;
 
   @override
   String get wireName => name;
 }
+
+typedef _TestEventRecorder =
+    bool Function(
+      InspectionEventKind kind,
+      Map<String, Object?> payload, {
+      bool changesState,
+    });
 
 class _CounterState implements GameInspectionState {
   const _CounterState(this.value);
@@ -331,8 +571,13 @@ class _CounterState implements GameInspectionState {
 class _CounterAdapter implements RuntimeInspectionAdapter {
   _CounterAdapter(this.recordEvent);
 
-  final RuntimeEventRecorder recordEvent;
+  final _TestEventRecorder recordEvent;
   int value = 0;
+  int dispatchCount = 0;
+  Completer<void>? dispatchStarted;
+  Future<void>? dispatchGate;
+  bool recordEvents = true;
+  bool? lastEventPublished;
 
   @override
   String get gameId => 'counter';
@@ -357,7 +602,7 @@ class _CounterAdapter implements RuntimeInspectionAdapter {
   ];
 
   @override
-  RuntimeCommandOutcome dispatch(RuntimeCommandEnvelope command) {
+  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope command) async {
     if (command.name != 'increment') {
       throw FormatException('Unknown command: ${command.name}');
     }
@@ -371,10 +616,28 @@ class _CounterAdapter implements RuntimeInspectionAdapter {
       throw const FormatException('Expected integer parameter: amount');
     }
 
+    dispatchCount += 1;
+    dispatchStarted?.complete();
+    dispatchStarted = null;
+    final gate = dispatchGate;
+    dispatchGate = null;
+    if (gate != null) await gate;
+
+    if (amount == 0) {
+      return const RuntimeCommandOutcome(
+        disposition: RuntimeCommandDisposition.noChange,
+        code: 'noChange',
+        message: 'The counter was unchanged',
+      );
+    }
     value += amount;
-    recordEvent(_CounterEventKind.incremented, {'amount': amount});
+    if (recordEvents) {
+      lastEventPublished = recordEvent(_CounterEventKind.incremented, {
+        'amount': amount,
+      });
+    }
     return const RuntimeCommandOutcome(
-      accepted: true,
+      disposition: RuntimeCommandDisposition.applied,
       code: 'applied',
       message: 'Incremented the counter',
     );
@@ -386,6 +649,8 @@ class _CounterAdapter implements RuntimeInspectionAdapter {
 
 class _CounterGame extends InspectableFlameGame {
   late final _CounterAdapter _adapter = _CounterAdapter(recordInspectionEvent);
+
+  _CounterAdapter get adapter => _adapter;
 
   @override
   RuntimeInspectionAdapter get inspectionAdapter => _adapter;
@@ -459,6 +724,8 @@ class _HierarchyGame extends InspectableFlameGame<_InspectableWorld> {
   final _InspectablePosition initialChild;
 
   late final _CounterAdapter _adapter = _CounterAdapter(recordInspectionEvent);
+
+  _CounterAdapter get adapter => _adapter;
 
   @override
   RuntimeInspectionAdapter get inspectionAdapter => _adapter;

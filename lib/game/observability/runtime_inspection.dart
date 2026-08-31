@@ -24,7 +24,10 @@ enum RuntimeEventKind implements InspectionEventKind {
   viewportChanged,
   enginePaused,
   engineResumed,
-  engineStepped;
+  engineStepped,
+
+  /// Host fallback for an applied command without a state-changing game event.
+  commandApplied;
 
   @override
   String get wireName => name;
@@ -232,7 +235,7 @@ class RuntimeSnapshot {
     required this.components,
   });
 
-  static const protocolVersion = 1;
+  static const protocolVersion = 2;
 
   final int revision;
   final SnapshotDetail detail;
@@ -474,21 +477,32 @@ class RuntimeCommandEnvelope {
   }
 }
 
+enum RuntimeCommandDisposition {
+  /// The command was not performed.
+  rejected,
+
+  /// The command was valid, but its requested postcondition already held.
+  noChange,
+
+  /// The command changed authoritative game state.
+  applied,
+}
+
 class RuntimeCommandOutcome {
   const RuntimeCommandOutcome({
-    required this.accepted,
+    required this.disposition,
     required this.code,
     required this.message,
   });
 
-  final bool accepted;
+  final RuntimeCommandDisposition disposition;
   final String code;
   final String message;
 }
 
 class RuntimeCommandResult {
   const RuntimeCommandResult({
-    required this.accepted,
+    required this.disposition,
     required this.code,
     required this.message,
     required this.previousRevision,
@@ -496,7 +510,7 @@ class RuntimeCommandResult {
     required this.snapshot,
   });
 
-  final bool accepted;
+  final RuntimeCommandDisposition disposition;
   final String code;
   final String message;
   final int previousRevision;
@@ -504,7 +518,7 @@ class RuntimeCommandResult {
   final RuntimeSnapshot snapshot;
 
   Map<String, Object?> toJson() => {
-    'accepted': accepted,
+    'disposition': disposition.name,
     'code': code,
     'message': message,
     'previousRevision': previousRevision,
@@ -522,7 +536,7 @@ abstract interface class RuntimeInspectionAdapter {
 
   GameInspectionState snapshot(SnapshotDetail detail);
 
-  RuntimeCommandOutcome dispatch(RuntimeCommandEnvelope command);
+  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope command);
 }
 
 typedef RuntimeEventRecorder =

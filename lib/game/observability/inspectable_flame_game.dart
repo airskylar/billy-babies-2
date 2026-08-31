@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import 'coreflame_debug_bridge.dart';
 import 'runtime_inspection.dart';
+
+final _inspectionCommandTransactionKey = Object();
 
 abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     implements RuntimeInspectionTarget, RuntimeInspectable {
@@ -23,6 +27,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   int _frameNumber = 0;
   double _gameTimeSeconds = 0;
   bool _recordedGameLoaded = false;
+  Future<void> _commandTail = Future.value();
 
   RuntimeInspectionAdapter get inspectionAdapter;
 
@@ -192,13 +197,41 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       _journal.batchAfter(sequence);
 
   @override
-  RuntimeCommandResult dispatch(RuntimeCommandEnvelope command) {
+  Future<RuntimeCommandResult> dispatch(
+    RuntimeCommandEnvelope command, {
+    RuntimeInspectionSession? initiatingSession,
+  }) {
+    if (initiatingSession != null &&
+        !identical(initiatingSession.target, this)) {
+      throw ArgumentError.value(
+        initiatingSession,
+        'initiatingSession',
+        'must target this game',
+      );
+    }
+    final commandSession = initiatingSession ?? _inspectionSession;
+    // Recover the shared tail so one adapter error reaches only its caller and
+    // cannot prevent later commands from entering the serialized queue.
+    final transaction = _commandTail.then(
+      (_) => _dispatchTransaction(command, initiatingSession: commandSession),
+    );
+    _commandTail = transaction.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return transaction;
+  }
+
+  Future<RuntimeCommandResult> _dispatchTransaction(
+    RuntimeCommandEnvelope command, {
+    required RuntimeInspectionSession? initiatingSession,
+  }) async {
     final previousRevision = _revision;
     if (command.expectedRevision case final expected?
         when expected != previousRevision) {
       return _commandResult(
         outcome: RuntimeCommandOutcome(
-          accepted: false,
+          disposition: RuntimeCommandDisposition.rejected,
           code: 'staleRevision',
           message:
               'Expected revision $expected but current revision is '
@@ -208,19 +241,36 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       );
     }
 
-    return _commandResult(
-      outcome: inspectionAdapter.dispatch(command),
-      previousRevision: previousRevision,
+    final transaction = _InspectionCommandTransaction(
+      target: this,
+      initiatingSession: initiatingSession,
     );
+    // A zone follows the adapter's asynchronous call chain without claiming
+    // unrelated game events that happen while the command Future is pending.
+    final outcome = await runZoned(() async {
+      final outcome = await inspectionAdapter.dispatch(command);
+      if (outcome.disposition == RuntimeCommandDisposition.applied &&
+          !transaction.recordedStateChangingEvent) {
+        recordInspectionEvent(RuntimeEventKind.commandApplied, {
+          'command': command.name,
+          'code': outcome.code,
+        });
+      }
+      return outcome;
+    }, zoneValues: {_inspectionCommandTransactionKey: transaction});
+    return _commandResult(outcome: outcome, previousRevision: previousRevision);
   }
 
-  void recordInspectionEvent(
+  /// Records every event in the journal and reports whether it was also pushed.
+  bool recordInspectionEvent(
     InspectionEventKind kind,
     Map<String, Object?> payload, {
     bool changesState = true,
   }) {
+    final transaction = _currentCommandTransaction;
     if (changesState) {
       _revision += 1;
+      transaction?.recordedStateChangingEvent = true;
     }
     final event = _journal.add(
       revision: _revision,
@@ -228,14 +278,23 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       kind: kind,
       payload: payload,
     );
-    final session = _inspectionSession;
+    final session = transaction?.initiatingSession ?? _inspectionSession;
     if (session != null) {
-      CoreflameDebugBridge.publish(
+      return CoreflameDebugBridge.publish(
         target: this,
         session: session,
         event: event,
       );
     }
+    return false;
+  }
+
+  _InspectionCommandTransaction? get _currentCommandTransaction {
+    final transaction = Zone.current[_inspectionCommandTransactionKey];
+    return transaction is _InspectionCommandTransaction &&
+            identical(transaction.target, this)
+        ? transaction
+        : null;
   }
 
   RuntimeCommandResult _commandResult({
@@ -243,7 +302,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     required int previousRevision,
   }) {
     return RuntimeCommandResult(
-      accepted: outcome.accepted,
+      disposition: outcome.disposition,
       code: outcome.code,
       message: outcome.message,
       previousRevision: previousRevision,
@@ -415,4 +474,15 @@ class _InspectableNode {
   final RuntimeInspectable inspectable;
   final String? parentId;
   final List<String> childIds = [];
+}
+
+class _InspectionCommandTransaction {
+  _InspectionCommandTransaction({
+    required this.target,
+    required this.initiatingSession,
+  });
+
+  final RuntimeInspectionTarget target;
+  final RuntimeInspectionSession? initiatingSession;
+  bool recordedStateChangingEvent = false;
 }

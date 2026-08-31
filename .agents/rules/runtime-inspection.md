@@ -51,8 +51,15 @@ private fields as the primary state interface when the protocol already exposes 
 - Read a fresh snapshot and pass its revision with `--expected-revision` before mutating state.
 - Treat `staleRevision` as a signal to inspect the returned current snapshot and reconsider the
   action; do not blindly retry it.
-- Use the snapshot returned by a command as the immediate postcondition, then use the event cursor
-  when transition history also matters.
+- Commands execute serially. Each result reports a `disposition` of `rejected`, `noChange`, or
+  `applied`; use the returned snapshot as the completed postcondition, then use the event cursor when
+  transition history also matters.
+- An applied command that emits no state-changing game event receives a generic `commandApplied`
+  fallback event. Unrelated events that occur while the command is pending do not fulfill this
+  revision guarantee.
+- A dispatch response keeps the session that accepted the command, and command-owned events are
+  publishable only through that initiating session. If the game remounted or another mount replaced
+  it while the command was running, discard the response instead of treating its snapshot as current.
 - Keep automated actions within the authority and task scope granted by the user. Runtime tooling
   changes how an action is expressed, not whether it is authorized.
 

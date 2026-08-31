@@ -61,12 +61,14 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
   );
 
   @override
-  RuntimeCommandOutcome dispatch(RuntimeCommandEnvelope envelope) {
+  Future<RuntimeCommandOutcome> dispatch(
+    RuntimeCommandEnvelope envelope,
+  ) async {
     final request = TinyTacticsCommandRequest.parse(envelope);
     final activeScene = scene();
     if (activeScene == null || !activeScene.isMounted) {
       return const RuntimeCommandOutcome(
-        accepted: false,
+        disposition: RuntimeCommandDisposition.rejected,
         code: 'gameNotReady',
         message: 'The Tiny Tactics scene is not mounted',
       );
@@ -109,7 +111,7 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
         'origin': GameActionOrigin.agent.name,
       }, changesState: false);
       return const RuntimeCommandOutcome(
-        accepted: false,
+        disposition: RuntimeCommandDisposition.rejected,
         code: 'outOfRange',
         message: 'Cell must be between 0 and 8',
       );
@@ -117,7 +119,9 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
 
     final outcome = activeScene.playCell(cell, origin: GameActionOrigin.agent);
     return RuntimeCommandOutcome(
-      accepted: outcome == MoveOutcome.accepted,
+      disposition: outcome == MoveOutcome.accepted
+          ? RuntimeCommandDisposition.applied
+          : RuntimeCommandDisposition.rejected,
       code: outcome.name,
       message: switch (outcome) {
         MoveOutcome.accepted => 'Played cell $cell',
@@ -133,7 +137,7 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
   }) {
     action(origin: GameActionOrigin.agent);
     return RuntimeCommandOutcome(
-      accepted: true,
+      disposition: RuntimeCommandDisposition.applied,
       code: 'applied',
       message: message,
     );
@@ -145,7 +149,9 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
   }) {
     final changed = action();
     return RuntimeCommandOutcome(
-      accepted: true,
+      disposition: changed
+          ? RuntimeCommandDisposition.applied
+          : RuntimeCommandDisposition.noChange,
       code: changed ? 'applied' : 'noChange',
       message: changed
           ? changedMessage
