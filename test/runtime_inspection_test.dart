@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Runtime inspection kernel', () {
     test('keeps a bounded, sequence-addressable event journal', () {
-      expect(RuntimeSnapshot.protocolVersion, 2);
+      expect(RuntimeSnapshot.protocolVersion, 1);
       final journal = RuntimeEventJournal(capacity: 2);
 
       for (var revision = 1; revision <= 3; revision += 1) {

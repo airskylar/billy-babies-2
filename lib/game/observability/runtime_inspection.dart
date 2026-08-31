@@ -235,7 +235,7 @@ class RuntimeSnapshot {
     required this.components,
   });
 
-  static const protocolVersion = 2;
+  static const protocolVersion = 1;
 
   final int revision;
   final SnapshotDetail detail;

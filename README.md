@@ -62,7 +62,9 @@ and strict command parameters; the CLI does not hard-code Tiny Tactics actions.
 Run `dart run tool/coreflame_inspect.dart --help` for the transport commands.
 The custom service extensions are debug-only. Snapshots carry a generic
 `protocolVersion` and a separate `game.schemaVersion`; event batches report
-their available sequence range and whether older history was truncated.
+their available sequence range and whether older history was truncated. The
+template is pre-alpha, so `protocolVersion` remains 1 while this contract
+evolves.
 Commands execute serially and return only after their adapter work completes.
 Each result reports a `disposition` of `rejected`, `noChange`, or `applied` and
 includes the completed semantic snapshot. Expected revisions are checked when

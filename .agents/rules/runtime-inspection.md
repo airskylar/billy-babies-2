@@ -80,8 +80,8 @@ When an implementation task changes state that agents need to reason about or ma
 - expose agent mutations as strict typed commands with revision checks rather than arbitrary method
   invocation;
 - keep state mutation in update, lifecycle, or semantic action paths so `render` remains observational;
-- bump the adapter's game schema version for an incompatible game-state change; bump the runtime
-  protocol version only when the generic envelope changes; and
+- bump the adapter's game schema version for an incompatible game-state change; while Coreflame is
+  pre-alpha, keep the runtime protocol at version 1 as its generic envelope evolves; and
 - update the CLI help, README, and focused snapshot/event/command tests when the public inspection
   contract changes.
 
