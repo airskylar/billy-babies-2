@@ -64,7 +64,10 @@ The custom service extensions are debug-only. Snapshots carry a generic
 `protocolVersion` and a separate `game.schemaVersion`; event batches report
 their available sequence range and whether older history was truncated.
 Commands return their resulting snapshot so automation can observe each
-transition directly.
+transition directly. Every `capabilities`, `snapshot`, `events`, and `dispatch`
+response—and every pushed Coreflame event—also carries a top-level `sessionId`
+identifying the current game mount. If it changes, discard cached revisions and
+event cursors before continuing.
 
 ## Launch scenarios
 

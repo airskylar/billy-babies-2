@@ -15,16 +15,36 @@ abstract interface class RuntimeInspectionTarget {
   RuntimeCommandResult dispatch(RuntimeCommandEnvelope command);
 }
 
+final class RuntimeInspectionSession {
+  const RuntimeInspectionSession._({required this.id, required this.target});
+
+  final int id;
+  final RuntimeInspectionTarget target;
+
+  bool get isActive => identical(CoreflameDebugBridge._session, this);
+
+  Map<String, Object?> envelope(Map<String, Object?> payload) => {
+    ...payload,
+    'sessionId': id,
+  };
+}
+
 class CoreflameDebugBridge {
   CoreflameDebugBridge._();
 
-  static RuntimeInspectionTarget? _target;
+  static RuntimeInspectionSession? _session;
+  static int _nextSessionId = 1;
   static bool _registered = false;
 
-  static void attach(RuntimeInspectionTarget target) {
-    if (!kDebugMode) return;
-    _target = target;
-    if (_registered) return;
+  static RuntimeInspectionSession? attach(RuntimeInspectionTarget target) {
+    if (!kDebugMode) return null;
+    final session = RuntimeInspectionSession._(
+      id: _nextSessionId,
+      target: target,
+    );
+    _nextSessionId += 1;
+    _session = session;
+    if (_registered) return session;
 
     developer.registerExtension(
       'ext.coreflame.getCapabilities',
@@ -34,30 +54,44 @@ class CoreflameDebugBridge {
     developer.registerExtension('ext.coreflame.getEvents', _getEvents);
     developer.registerExtension('ext.coreflame.dispatch', _dispatch);
     _registered = true;
+    return session;
   }
 
-  static void detach(RuntimeInspectionTarget target) {
-    if (identical(_target, target)) {
-      _target = null;
+  static void detach({
+    required RuntimeInspectionTarget target,
+    required RuntimeInspectionSession session,
+  }) {
+    if (identical(_session, session) && identical(session.target, target)) {
+      _session = null;
     }
   }
 
-  static void publish(RuntimeEvent event) {
-    if (!kDebugMode) return;
-    developer.postEvent('Coreflame.Event', event.toJson());
+  static bool publish({
+    required RuntimeInspectionTarget target,
+    required RuntimeInspectionSession session,
+    required RuntimeEvent event,
+  }) {
+    if (!kDebugMode ||
+        !identical(_session, session) ||
+        !identical(session.target, target)) {
+      return false;
+    }
+    developer.postEvent('Coreflame.Event', session.envelope(event.toJson()));
+    return true;
   }
 
   static Future<developer.ServiceExtensionResponse> _getCapabilities(
     String method,
     Map<String, String> parameters,
   ) async {
-    final target = _target;
-    if (target == null) return _unavailable();
+    final session = _session;
+    if (session == null) return _unavailable();
+    final target = session.target;
 
     try {
       final arguments = _requestArguments(parameters);
       _rejectUnexpected(arguments, const {});
-      return _result(target.capabilities().toJson());
+      return _result(session: session, value: target.capabilities().toJson());
     } on FormatException catch (error) {
       return _invalidParameters(error.message);
     }
@@ -67,14 +101,15 @@ class CoreflameDebugBridge {
     String method,
     Map<String, String> parameters,
   ) async {
-    final target = _target;
-    if (target == null) return _unavailable();
+    final session = _session;
+    if (session == null) return _unavailable();
+    final target = session.target;
 
     try {
       final arguments = _requestArguments(parameters);
       _rejectUnexpected(arguments, const {'detail'});
       final detail = SnapshotDetail.parse(arguments['detail']);
-      return _result(target.snapshot(detail).toJson());
+      return _result(session: session, value: target.snapshot(detail).toJson());
     } on FormatException catch (error) {
       return _invalidParameters(error.message);
     }
@@ -84,8 +119,9 @@ class CoreflameDebugBridge {
     String method,
     Map<String, String> parameters,
   ) async {
-    final target = _target;
-    if (target == null) return _unavailable();
+    final session = _session;
+    if (session == null) return _unavailable();
+    final target = session.target;
 
     try {
       final arguments = _requestArguments(parameters);
@@ -97,7 +133,10 @@ class CoreflameDebugBridge {
           'Expected after to be a non-negative integer',
         );
       }
-      return _result(target.eventBatchAfter(after).toJson());
+      return _result(
+        session: session,
+        value: target.eventBatchAfter(after).toJson(),
+      );
     } on FormatException catch (error) {
       return _invalidParameters(error.message);
     }
@@ -107,14 +146,18 @@ class CoreflameDebugBridge {
     String method,
     Map<String, String> parameters,
   ) async {
-    final target = _target;
-    if (target == null) return _unavailable();
+    final session = _session;
+    if (session == null) return _unavailable();
+    final target = session.target;
 
     try {
       final request = RuntimeCommandEnvelope.parse(
         _requestArguments(parameters),
       );
-      return _result(target.dispatch(request).toJson());
+      return _result(
+        session: session,
+        value: target.dispatch(request).toJson(),
+      );
     } on FormatException catch (error) {
       return _invalidParameters(error.message);
     } on RangeError catch (error) {
@@ -142,10 +185,13 @@ class CoreflameDebugBridge {
     parameters.entries.where((entry) => entry.key != 'isolateId'),
   );
 
-  static developer.ServiceExtensionResponse _result(
-    Map<String, Object?> value,
-  ) {
-    return developer.ServiceExtensionResponse.result(jsonEncode(value));
+  static developer.ServiceExtensionResponse _result({
+    required RuntimeInspectionSession session,
+    required Map<String, Object?> value,
+  }) {
+    return developer.ServiceExtensionResponse.result(
+      jsonEncode(session.envelope(value)),
+    );
   }
 
   static developer.ServiceExtensionResponse _unavailable() {

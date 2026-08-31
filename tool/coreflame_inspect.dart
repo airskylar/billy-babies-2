@@ -329,4 +329,7 @@ Use capabilities to discover the active game's commands and their parameters.
 Command arguments use NAME=VALUE and remain game-defined. Set
 COREFLAME_VM_SERVICE_URL instead of passing --uri on every call. Use --isolate
 with an isolate ID or name when the VM contains multiple matching isolates.
+Every capabilities, snapshot, events, and dispatch response includes a
+mount-scoped sessionId. If it changes, reacquire a snapshot and reset cached
+revisions and event cursors.
 ''';

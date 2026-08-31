@@ -12,11 +12,10 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     super.world,
     super.camera,
     RuntimeEventJournal? inspectionJournal,
-  }) : _journal = inspectionJournal ?? RuntimeEventJournal() {
-    CoreflameDebugBridge.attach(this);
-  }
+  }) : _journal = inspectionJournal ?? RuntimeEventJournal();
 
   final RuntimeEventJournal _journal;
+  RuntimeInspectionSession? _inspectionSession;
   EdgeInsets _safePadding = EdgeInsets.zero;
   AppLifecycleState? _appLifecycleState;
   Vector2? _viewportSize;
@@ -31,6 +30,8 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   String get inspectionId => 'game';
 
   int get revision => _revision;
+
+  RuntimeInspectionSession? get inspectionSession => _inspectionSession;
 
   EdgeInsets get safePadding => _safePadding;
 
@@ -50,6 +51,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   @override
   void onMount() {
     super.onMount();
+    _inspectionSession = CoreflameDebugBridge.attach(this);
     if (_recordedGameLoaded) return;
     _recordedGameLoaded = true;
     recordInspectionEvent(RuntimeEventKind.gameLoaded, {
@@ -123,7 +125,11 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   @override
   void onRemove() {
     recordInspectionEvent(RuntimeEventKind.gameRemoved, const {});
-    CoreflameDebugBridge.detach(this);
+    final session = _inspectionSession;
+    _inspectionSession = null;
+    if (session != null) {
+      CoreflameDebugBridge.detach(target: this, session: session);
+    }
     super.onRemove();
   }
 
@@ -222,7 +228,14 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       kind: kind,
       payload: payload,
     );
-    CoreflameDebugBridge.publish(event);
+    final session = _inspectionSession;
+    if (session != null) {
+      CoreflameDebugBridge.publish(
+        target: this,
+        session: session,
+        event: event,
+      );
+    }
   }
 
   RuntimeCommandResult _commandResult({

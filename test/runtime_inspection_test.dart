@@ -1,3 +1,4 @@
+import 'package:coreflame/game/observability/coreflame_debug_bridge.dart';
 import 'package:coreflame/game/observability/inspectable_flame_game.dart';
 import 'package:coreflame/game/observability/runtime_inspection.dart';
 import 'package:flame/camera.dart';
@@ -162,6 +163,138 @@ void main() {
         _expectRect(initialChild.screenBounds, x: 7, y: 8, width: 3, height: 4);
       },
     );
+
+    testWithGame<_HierarchyGame>(
+      'does not attach inspection while a game is only constructed',
+      _HierarchyGame.new,
+      (mountedGame) async {
+        await mountedGame.ready();
+        final mountedSession = mountedGame.inspectionSession;
+        expect(mountedSession, isNotNull);
+        expect(mountedSession!.isActive, isTrue);
+
+        final constructedGame = _HierarchyGame();
+
+        expect(constructedGame.inspectionSession, isNull);
+        expect(mountedSession.isActive, isTrue);
+      },
+    );
+
+    testWithGame<_HierarchyGame>(
+      'identifies every pull response with the active mount session',
+      _HierarchyGame.new,
+      (game) async {
+        await game.ready();
+        final session = game.inspectionSession!;
+        final responses = <String, Map<String, Object?>>{
+          'capabilities': game.capabilities().toJson(),
+          'snapshot': game.snapshot(SnapshotDetail.semantic).toJson(),
+          'events': game.eventBatchAfter(0).toJson(),
+          'dispatch': game
+              .dispatch(
+                RuntimeCommandEnvelope(
+                  name: 'increment',
+                  expectedRevision: game.revision,
+                  arguments: const {'amount': '1'},
+                ),
+              )
+              .toJson(),
+        };
+
+        for (final MapEntry(:key, :value) in responses.entries) {
+          expect(session.envelope(value)['sessionId'], session.id, reason: key);
+        }
+      },
+    );
+
+    test(
+      'keeps a replacement active and rejects stale event publishers',
+      () async {
+        final firstGame = await initializeGame<_HierarchyGame>(
+          _HierarchyGame.new,
+        );
+        var firstRemoved = false;
+        _HierarchyGame? secondGame;
+        var secondRemoved = false;
+        addTearDown(() {
+          if (!firstRemoved) firstGame.onRemove();
+          if (!secondRemoved) secondGame?.onRemove();
+        });
+
+        final firstSession = firstGame.inspectionSession!;
+        secondGame = await initializeGame<_HierarchyGame>(_HierarchyGame.new);
+        final secondSession = secondGame.inspectionSession!;
+
+        expect(firstSession.isActive, isFalse);
+        expect(secondSession.isActive, isTrue);
+
+        final event = RuntimeEvent(
+          sequence: 1,
+          revision: 1,
+          gameTimeSeconds: 0,
+          kind: RuntimeEventKind.enginePaused,
+        );
+        expect(
+          CoreflameDebugBridge.publish(
+            target: firstGame,
+            session: firstSession,
+            event: event,
+          ),
+          isFalse,
+        );
+        expect(
+          CoreflameDebugBridge.publish(
+            target: firstGame,
+            session: secondSession,
+            event: event,
+          ),
+          isFalse,
+        );
+        expect(
+          CoreflameDebugBridge.publish(
+            target: secondGame,
+            session: secondSession,
+            event: event,
+          ),
+          isTrue,
+        );
+
+        firstRemoved = true;
+        firstGame.onRemove();
+        expect(secondSession.isActive, isTrue);
+
+        secondRemoved = true;
+        secondGame.onRemove();
+        expect(secondSession.isActive, isFalse);
+      },
+    );
+
+    test('creates a fresh inspection session when remounted', () async {
+      final game = await initializeGame<_HierarchyGame>(_HierarchyGame.new);
+      var mounted = true;
+      addTearDown(() {
+        if (mounted) {
+          // ignore: invalid_use_of_internal_member
+          game.finalizeRemoval();
+        }
+      });
+
+      final firstSession = game.inspectionSession!;
+      // ignore: invalid_use_of_internal_member
+      game.finalizeRemoval();
+      mounted = false;
+
+      expect(game.inspectionSession, isNull);
+      expect(firstSession.isActive, isFalse);
+
+      // ignore: invalid_use_of_internal_member
+      game.mount();
+      mounted = true;
+      final secondSession = game.inspectionSession!;
+
+      expect(secondSession.id, isNot(firstSession.id));
+      expect(secondSession.isActive, isTrue);
+    });
   });
 }
 

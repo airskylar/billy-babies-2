@@ -19,7 +19,10 @@ Copy the VM service URL printed by `flutter run` and pass it with `--uri` or set
 `COREFLAME_VM_SERVICE_URL`. Treat the URL as ephemeral local access data: do not commit it or place it
 in durable logs. Use `dart run tool/coreflame_inspect.dart --help` as the canonical command catalog
 and the README for the human-facing quick start. Run `capabilities` before driving an unfamiliar or
-newly replaced game. The custom Coreflame extensions are available only in debug builds.
+newly replaced game. Every `capabilities`, `snapshot`, `events`, and `dispatch` response—and every
+pushed Coreflame event—carries a top-level `sessionId` for the current game mount. If it changes,
+discard cached revisions and event cursors before continuing. The custom Coreflame extensions are
+available only in debug builds.
 
 ## Inspection workflow
 
