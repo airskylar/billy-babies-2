@@ -6,13 +6,14 @@ import 'package:flame/events.dart';
 import 'package:flame_svg/flame_svg.dart';
 import 'package:flutter/material.dart';
 
-import '../game_action_origin.dart';
-import '../observability/runtime_inspection.dart';
-import '../observability/tiny_tactics_inspection.dart';
-import '../services/game_feedback.dart';
-import '../services/game_platform_services.dart';
+import '../../runtime/game_services/game_platform_services.dart';
+import '../../runtime/inspection/runtime_inspection.dart';
+import '../domain/game_action_origin.dart';
+import '../domain/tic_tac_toe_match.dart';
+import '../feedback/tiny_tactics_feedback.dart';
+import '../inspection/tiny_tactics_inspection.dart';
+import '../services/tiny_tactics_game_service_ids.dart';
 import '../theme/game_palette.dart';
-import '../tic_tac_toe_match.dart';
 
 class CozyTicTacToeScene extends PositionComponent
     with TapCallbacks
@@ -32,7 +33,7 @@ class CozyTicTacToeScene extends PositionComponent
   static const _fontFamily = 'Gluten';
 
   final TicTacToeMatch match;
-  final GameFeedback feedback;
+  final TinyTacticsFeedback feedback;
   final GamePlatformServices platformServices;
   final RuntimeEventRecorder recordEvent;
   final _BoardStateComponent _boardState;
@@ -248,10 +249,14 @@ class CozyTicTacToeScene extends PositionComponent
   void _reportFinishedRound() {
     switch (match.result) {
       case RoundResult.xWon || RoundResult.oWon:
-        unawaited(platformServices.unlockAchievement(GameAchievement.firstWin));
+        unawaited(
+          platformServices.unlockAchievement(
+            TinyTacticsGameServiceIds.firstWinAchievement,
+          ),
+        );
         unawaited(
           platformServices.submitScore(
-            leaderboard: GameLeaderboard.matchWins,
+            leaderboard: TinyTacticsGameServiceIds.matchWinsLeaderboard,
             score: math.max(match.xScore, match.oScore),
           ),
         );

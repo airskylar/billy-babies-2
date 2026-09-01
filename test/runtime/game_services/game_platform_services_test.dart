@@ -1,21 +1,37 @@
 import 'dart:convert';
 
-import 'package:coreflame/game/services/fake_game_platform_services.dart';
-import 'package:coreflame/game/services/game_platform_services.dart';
+import 'package:coreflame/runtime/game_services/game_platform_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../support/fake_game_platform_services.dart';
+
+const _testAchievement = GameAchievementId('achievement.test');
+const _testLeaderboard = GameLeaderboardId('leaderboard.test');
+const _testSaveSlot = GameSaveSlotId('save.test');
+
 void main() {
+  test('logical IDs compare by value without mixing identifier kinds', () {
+    expect(
+      const GameAchievementId('achievement.test'),
+      const GameAchievementId('achievement.test'),
+    );
+    expect(
+      const GameAchievementId('same.value'),
+      isNot(equals(const GameLeaderboardId('same.value'))),
+    );
+  });
+
   group('VersionedGameSave', () {
     test('round-trips strict JSON and records revision ancestry', () {
       final first = VersionedGameSave.initial(
         schemaVersion: 1,
         writtenAtUtc: DateTime.utc(2026, 8, 30, 12),
-        payload: '{"wins":1}',
+        payload: '{"value":1}',
       );
       final second = first.next(
         schemaVersion: 2,
         writtenAtUtc: DateTime.utc(2026, 8, 30, 13),
-        payload: '{"wins":2}',
+        payload: '{"value":2}',
       );
 
       final decoded = VersionedGameSave.fromEncodedJson(second.toEncodedJson());
@@ -24,7 +40,7 @@ void main() {
       expect(decoded.revision, 2);
       expect(decoded.parentRevision, 1);
       expect(decoded.writtenAtUtc, DateTime.utc(2026, 8, 30, 13));
-      expect(decoded.payload, '{"wins":2}');
+      expect(decoded.payload, '{"value":2}');
     });
 
     test('rejects unknown JSON fields', () {
@@ -86,8 +102,8 @@ void main() {
       final configuration = GameServicesConfiguration(
         enabled: true,
         cloudSavesEnabled: false,
-        achievementIds: const {
-          GameAchievement.firstWin: PlatformGameServiceIds(
+        achievementIds: {
+          _testAchievement: PlatformGameServiceIds(
             android: 'android-id',
             ios: '',
           ),
@@ -95,7 +111,7 @@ void main() {
         leaderboardIds: const {},
       );
 
-      expect(configuration.validate(), contains('first_win'));
+      expect(configuration.validate(), contains('achievement.test'));
     });
   });
 
@@ -106,27 +122,16 @@ void main() {
         final services = FakeGamePlatformServices();
 
         await services.authenticate();
-        final achievement = await services.unlockAchievement(
-          GameAchievement.firstWin,
-        );
-        await services.submitScore(
-          leaderboard: GameLeaderboard.matchWins,
-          score: 3,
-        );
-        await services.submitScore(
-          leaderboard: GameLeaderboard.matchWins,
-          score: 2,
-        );
+        final achievement = await services.unlockAchievement(_testAchievement);
+        await services.submitScore(leaderboard: _testLeaderboard, score: 3);
+        await services.submitScore(leaderboard: _testLeaderboard, score: 2);
 
         expect(achievement.isSuccess, isTrue);
-        expect(
-          services.unlockedAchievements,
-          contains(GameAchievement.firstWin),
-        );
-        expect(services.scores[GameLeaderboard.matchWins], 3);
+        expect(services.unlockedAchievements, contains(_testAchievement));
+        expect(services.scores[_testLeaderboard], 3);
         expect(
           services.calls.map((call) => call.logicalId),
-          containsAll(['first_win', 'match_wins']),
+          containsAll(['achievement.test', 'leaderboard.test']),
         );
       },
     );
@@ -136,17 +141,17 @@ void main() {
       final save = VersionedGameSave.initial(
         schemaVersion: 1,
         writtenAtUtc: DateTime.utc(2026, 8, 30),
-        payload: '{"wins":4}',
+        payload: '{"value":4}',
       );
 
       await services.authenticate();
-      await services.saveGame(slot: GameSaveSlot.progress, save: save);
-      final result = await services.loadGame(GameSaveSlot.progress);
+      await services.saveGame(slot: _testSaveSlot, save: save);
+      final result = await services.loadGame(_testSaveSlot);
 
       expect(result, isA<GameServiceSuccess<VersionedGameSave?>>());
       final loaded = (result as GameServiceSuccess<VersionedGameSave?>).value;
       expect(loaded?.revision, 1);
-      expect(loaded?.payload, '{"wins":4}');
+      expect(loaded?.payload, '{"value":4}');
       expect(
         services.cloudSaveConflictBehavior,
         GameSaveConflictBehavior.platformResolved,
@@ -156,7 +161,7 @@ void main() {
     test('returns a typed failure before authentication', () async {
       final services = FakeGamePlatformServices();
 
-      final result = await services.unlockAchievement(GameAchievement.firstWin);
+      final result = await services.unlockAchievement(_testAchievement);
 
       expect(result, isA<GameServiceFailure<GameServiceUnit>>());
       final failure = result as GameServiceFailure<GameServiceUnit>;

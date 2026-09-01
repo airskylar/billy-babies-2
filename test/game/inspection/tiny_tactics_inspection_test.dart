@@ -1,5 +1,5 @@
-import 'package:coreflame/game/observability/runtime_inspection.dart';
-import 'package:coreflame/game/observability/tiny_tactics_inspection.dart';
+import 'package:coreflame/game/inspection/tiny_tactics_inspection.dart';
+import 'package:coreflame/runtime/inspection/runtime_inspection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

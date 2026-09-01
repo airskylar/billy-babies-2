@@ -2,30 +2,30 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'components/cozy_tic_tac_toe_scene.dart';
-import 'observability/inspectable_flame_game.dart';
-import 'observability/runtime_inspection.dart';
-import 'observability/tiny_tactics_inspection.dart';
-import 'observability/tiny_tactics_inspection_adapter.dart';
-import 'services/game_feedback.dart';
-import 'services/game_platform_services.dart';
+import '../runtime/game_services/game_platform_services.dart';
+import '../runtime/inspection/inspectable_flame_game.dart';
+import '../runtime/inspection/runtime_inspection.dart';
+import 'domain/tic_tac_toe_match.dart';
+import 'feedback/tiny_tactics_feedback.dart';
+import 'inspection/tiny_tactics_inspection.dart';
+import 'inspection/tiny_tactics_inspection_adapter.dart';
+import 'scene/cozy_tic_tac_toe_scene.dart';
 import 'theme/game_palette.dart';
-import 'tic_tac_toe_match.dart';
 
-class CoreflameGame extends InspectableFlameGame {
-  CoreflameGame({
+class TinyTacticsGame extends InspectableFlameGame {
+  TinyTacticsGame({
     required this.platformServices,
     TicTacToeMatch? match,
-    GameFeedback? feedback,
+    TinyTacticsFeedback? feedback,
     RuntimeEventJournal? journal,
   }) : match = match ?? TicTacToeMatch(),
-       feedback = feedback ?? GameFeedback(),
+       feedback = feedback ?? TinyTacticsFeedback(),
        super(inspectionJournal: journal) {
     this.feedback.addObserver(_onFeedbackEvent);
   }
 
   final TicTacToeMatch match;
-  final GameFeedback feedback;
+  final TinyTacticsFeedback feedback;
   final GamePlatformServices platformServices;
   CozyTicTacToeScene? _scene;
 
@@ -74,11 +74,11 @@ class CoreflameGame extends InspectableFlameGame {
     );
   }
 
-  void _onFeedbackEvent(GameFeedbackEvent event) {
-    final failure = event.kind == GameFeedbackEventKind.failure;
+  void _onFeedbackEvent(TinyTacticsFeedbackEvent event) {
+    final failure = event.kind == TinyTacticsFeedbackEventKind.failure;
     final changesState =
-        event.kind == GameFeedbackEventKind.settingsLoaded ||
-        event.kind == GameFeedbackEventKind.settingChanged;
+        event.kind == TinyTacticsFeedbackEventKind.settingsLoaded ||
+        event.kind == TinyTacticsFeedbackEventKind.settingChanged;
     recordInspectionEvent(
       failure
           ? TinyTacticsEventKind.feedbackFailure

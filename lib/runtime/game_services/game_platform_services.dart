@@ -4,28 +4,34 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'game_platform_services.g.dart';
 
-enum GameAchievement {
-  firstWin('first_win');
-
-  const GameAchievement(this.logicalId);
+sealed class GameServiceId {
+  const GameServiceId(this.logicalId);
 
   final String logicalId;
+
+  @override
+  bool operator ==(Object other) =>
+      other.runtimeType == runtimeType &&
+      other is GameServiceId &&
+      other.logicalId == logicalId;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, logicalId);
+
+  @override
+  String toString() => logicalId;
 }
 
-enum GameLeaderboard {
-  matchWins('match_wins');
-
-  const GameLeaderboard(this.logicalId);
-
-  final String logicalId;
+final class GameAchievementId extends GameServiceId {
+  const GameAchievementId(super.logicalId);
 }
 
-enum GameSaveSlot {
-  progress('progress');
+final class GameLeaderboardId extends GameServiceId {
+  const GameLeaderboardId(super.logicalId);
+}
 
-  const GameSaveSlot(this.logicalId);
-
-  final String logicalId;
+final class GameSaveSlotId extends GameServiceId {
+  const GameSaveSlotId(super.logicalId);
 }
 
 enum GameServiceCapability {
@@ -86,8 +92,8 @@ final class GameServicesConfiguration {
   GameServicesConfiguration({
     required this.enabled,
     required this.cloudSavesEnabled,
-    required Map<GameAchievement, PlatformGameServiceIds> achievementIds,
-    required Map<GameLeaderboard, PlatformGameServiceIds> leaderboardIds,
+    required Map<GameAchievementId, PlatformGameServiceIds> achievementIds,
+    required Map<GameLeaderboardId, PlatformGameServiceIds> leaderboardIds,
     this.appStoreId = '',
     this.androidServerClientId = '',
   }) : achievementIds = Map.unmodifiable(achievementIds),
@@ -95,8 +101,8 @@ final class GameServicesConfiguration {
 
   final bool enabled;
   final bool cloudSavesEnabled;
-  final Map<GameAchievement, PlatformGameServiceIds> achievementIds;
-  final Map<GameLeaderboard, PlatformGameServiceIds> leaderboardIds;
+  final Map<GameAchievementId, PlatformGameServiceIds> achievementIds;
+  final Map<GameLeaderboardId, PlatformGameServiceIds> leaderboardIds;
   final String appStoreId;
   final String androidServerClientId;
 
@@ -296,28 +302,28 @@ abstract interface class GamePlatformServices {
   Future<GameServiceResult<GamePlayer>> authenticate();
 
   Future<GameServiceResult<GameServiceUnit>> unlockAchievement(
-    GameAchievement achievement,
+    GameAchievementId achievement,
   );
 
   Future<GameServiceResult<GameServiceUnit>> submitScore({
-    required GameLeaderboard leaderboard,
+    required GameLeaderboardId leaderboard,
     required int score,
   });
 
   Future<GameServiceResult<GameServiceUnit>> showAchievements();
 
   Future<GameServiceResult<GameServiceUnit>> showLeaderboard(
-    GameLeaderboard leaderboard,
+    GameLeaderboardId leaderboard,
   );
 
   Future<GameServiceResult<GameServiceUnit>> saveGame({
-    required GameSaveSlot slot,
+    required GameSaveSlotId slot,
     required VersionedGameSave save,
   });
 
-  Future<GameServiceResult<VersionedGameSave?>> loadGame(GameSaveSlot slot);
+  Future<GameServiceResult<VersionedGameSave?>> loadGame(GameSaveSlotId slot);
 
-  Future<GameServiceResult<GameServiceUnit>> deleteGame(GameSaveSlot slot);
+  Future<GameServiceResult<GameServiceUnit>> deleteGame(GameSaveSlotId slot);
 
   Future<GameServiceResult<GameServiceUnit>> requestReview();
 

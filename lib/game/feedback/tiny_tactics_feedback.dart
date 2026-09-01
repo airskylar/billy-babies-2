@@ -6,10 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:pulsar_haptics/pulsar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../game_action_origin.dart';
-import '../tic_tac_toe_match.dart';
+import '../domain/game_action_origin.dart';
+import '../domain/tic_tac_toe_match.dart';
 
-enum GameFeedbackLifecycle { created, loading, ready, disposing, disposed }
+enum TinyTacticsFeedbackLifecycle {
+  created,
+  loading,
+  ready,
+  disposing,
+  disposed,
+}
 
 enum BackgroundMusicPhase {
   uninitialized,
@@ -29,7 +35,7 @@ enum BackgroundMusicPhase {
   };
 }
 
-enum GameFeedbackEventKind {
+enum TinyTacticsFeedbackEventKind {
   lifecycleChanged,
   backgroundMusicChanged,
   settingsLoaded,
@@ -39,8 +45,8 @@ enum GameFeedbackEventKind {
 
 enum FeedbackSetting { sound, music, vibration }
 
-class GameFeedbackFailure {
-  const GameFeedbackFailure({
+class TinyTacticsFeedbackFailure {
+  const TinyTacticsFeedbackFailure({
     required this.feature,
     required this.errorType,
     required this.message,
@@ -57,17 +63,18 @@ class GameFeedbackFailure {
   };
 }
 
-class GameFeedbackEvent {
-  GameFeedbackEvent({
+class TinyTacticsFeedbackEvent {
+  TinyTacticsFeedbackEvent({
     required this.kind,
     Map<String, Object?> payload = const {},
   }) : payload = Map.unmodifiable(payload);
 
-  final GameFeedbackEventKind kind;
+  final TinyTacticsFeedbackEventKind kind;
   final Map<String, Object?> payload;
 }
 
-typedef GameFeedbackObserver = void Function(GameFeedbackEvent event);
+typedef TinyTacticsFeedbackObserver =
+    void Function(TinyTacticsFeedbackEvent event);
 
 abstract interface class BackgroundMusicController {
   Future<void> initialize();
@@ -100,10 +107,12 @@ class _FlameBackgroundMusicController implements BackgroundMusicController {
   }
 }
 
-class GameFeedback {
-  GameFeedback({Pulsar? pulsar, BackgroundMusicController? backgroundMusic})
-    : _pulsar = pulsar ?? Pulsar(),
-      _backgroundMusic = backgroundMusic ?? _FlameBackgroundMusicController();
+class TinyTacticsFeedback {
+  TinyTacticsFeedback({
+    Pulsar? pulsar,
+    BackgroundMusicController? backgroundMusic,
+  }) : _pulsar = pulsar ?? Pulsar(),
+       _backgroundMusic = backgroundMusic ?? _FlameBackgroundMusicController();
 
   static const xSound = 'place_x.mp3';
   static const oSound = 'place_o.mp3';
@@ -116,43 +125,44 @@ class GameFeedback {
   final Pulsar _pulsar;
   final BackgroundMusicController _backgroundMusic;
   SharedPreferences? _preferences;
-  final List<GameFeedbackObserver> _observers = [];
+  final List<TinyTacticsFeedbackObserver> _observers = [];
   Future<void> _backgroundOperation = Future.value();
   bool _pulsarSoundDisabled = false;
   bool _preferencesLoaded = false;
   bool _soundEnabled = true;
   bool _musicEnabled = true;
   bool _vibrationEnabled = true;
-  GameFeedbackLifecycle _lifecycle = GameFeedbackLifecycle.created;
+  TinyTacticsFeedbackLifecycle _lifecycle =
+      TinyTacticsFeedbackLifecycle.created;
   BackgroundMusicPhase _backgroundMusicPhase =
       BackgroundMusicPhase.uninitialized;
-  GameFeedbackFailure? _lastFailure;
+  TinyTacticsFeedbackFailure? _lastFailure;
 
   bool get soundEnabled => _soundEnabled;
   bool get musicEnabled => _musicEnabled;
   bool get vibrationEnabled => _vibrationEnabled;
   bool get preferencesLoaded => _preferencesLoaded;
-  GameFeedbackLifecycle get lifecycle => _lifecycle;
+  TinyTacticsFeedbackLifecycle get lifecycle => _lifecycle;
   BackgroundMusicPhase get backgroundMusicPhase => _backgroundMusicPhase;
-  GameFeedbackFailure? get lastFailure => _lastFailure;
+  TinyTacticsFeedbackFailure? get lastFailure => _lastFailure;
 
-  void addObserver(GameFeedbackObserver observer) {
+  void addObserver(TinyTacticsFeedbackObserver observer) {
     if (!_observers.contains(observer)) {
       _observers.add(observer);
     }
   }
 
-  void removeObserver(GameFeedbackObserver observer) {
+  void removeObserver(TinyTacticsFeedbackObserver observer) {
     _observers.remove(observer);
   }
 
   Future<void> preload() async {
-    if (_lifecycle == GameFeedbackLifecycle.ready) return;
-    if (_lifecycle != GameFeedbackLifecycle.created) {
+    if (_lifecycle == TinyTacticsFeedbackLifecycle.ready) return;
+    if (_lifecycle != TinyTacticsFeedbackLifecycle.created) {
       throw StateError('Cannot preload feedback while ${_lifecycle.name}');
     }
 
-    _setLifecycle(GameFeedbackLifecycle.loading);
+    _setLifecycle(TinyTacticsFeedbackLifecycle.loading);
     await _loadPreferences();
 
     try {
@@ -162,14 +172,14 @@ class GameFeedback {
     }
 
     await _enqueueBackgroundOperation(_ensureBackgroundMusicInitialized);
-    _setLifecycle(GameFeedbackLifecycle.ready);
+    _setLifecycle(TinyTacticsFeedbackLifecycle.ready);
   }
 
   Future<void> startBackgroundMusic({bool fromUserGesture = false}) {
     return _enqueueBackgroundOperation(() async {
       if (!_musicEnabled ||
-          _lifecycle == GameFeedbackLifecycle.disposing ||
-          _lifecycle == GameFeedbackLifecycle.disposed ||
+          _lifecycle == TinyTacticsFeedbackLifecycle.disposing ||
+          _lifecycle == TinyTacticsFeedbackLifecycle.disposed ||
           _backgroundMusicPhase == BackgroundMusicPhase.playing ||
           (kIsWeb && !fromUserGesture)) {
         return;
@@ -183,8 +193,8 @@ class GameFeedback {
           volume: backgroundMusicVolume,
         );
         if (!_musicEnabled ||
-            _lifecycle == GameFeedbackLifecycle.disposing ||
-            _lifecycle == GameFeedbackLifecycle.disposed) {
+            _lifecycle == TinyTacticsFeedbackLifecycle.disposing ||
+            _lifecycle == TinyTacticsFeedbackLifecycle.disposed) {
           await _backgroundMusic.stop();
           _setBackgroundMusicPhase(BackgroundMusicPhase.ready);
         } else {
@@ -245,12 +255,12 @@ class GameFeedback {
   }
 
   Future<void> dispose() {
-    if (_lifecycle == GameFeedbackLifecycle.disposed ||
-        _lifecycle == GameFeedbackLifecycle.disposing) {
+    if (_lifecycle == TinyTacticsFeedbackLifecycle.disposed ||
+        _lifecycle == TinyTacticsFeedbackLifecycle.disposing) {
       return _backgroundOperation;
     }
 
-    _setLifecycle(GameFeedbackLifecycle.disposing);
+    _setLifecycle(TinyTacticsFeedbackLifecycle.disposing);
     return _enqueueBackgroundOperation(() async {
       try {
         await _backgroundMusic.dispose();
@@ -258,7 +268,7 @@ class GameFeedback {
         _reportOptionalFailure('Background music dispose', error, stackTrace);
       } finally {
         _setBackgroundMusicPhase(BackgroundMusicPhase.disposed);
-        _setLifecycle(GameFeedbackLifecycle.disposed);
+        _setLifecycle(TinyTacticsFeedbackLifecycle.disposed);
       }
     });
   }
@@ -286,7 +296,7 @@ class GameFeedback {
       _musicEnabled = preferences.getBool(_musicPreference) ?? true;
       _vibrationEnabled = preferences.getBool(_vibrationPreference) ?? true;
       _preferencesLoaded = true;
-      _emit(GameFeedbackEventKind.settingsLoaded, {
+      _emit(TinyTacticsFeedbackEventKind.settingsLoaded, {
         'settings': {
           'soundEnabled': _soundEnabled,
           'musicEnabled': _musicEnabled,
@@ -311,8 +321,8 @@ class GameFeedback {
   Future<bool> _ensureBackgroundMusicInitialized() async {
     if (_backgroundMusicPhase.isInitialized) return true;
     if (_backgroundMusicPhase == BackgroundMusicPhase.disposed ||
-        _lifecycle == GameFeedbackLifecycle.disposing ||
-        _lifecycle == GameFeedbackLifecycle.disposed) {
+        _lifecycle == TinyTacticsFeedbackLifecycle.disposing ||
+        _lifecycle == TinyTacticsFeedbackLifecycle.disposed) {
       return false;
     }
 
@@ -420,11 +430,11 @@ class GameFeedback {
       (defaultTargetPlatform == TargetPlatform.android ||
           defaultTargetPlatform == TargetPlatform.iOS);
 
-  void _setLifecycle(GameFeedbackLifecycle value) {
+  void _setLifecycle(TinyTacticsFeedbackLifecycle value) {
     if (_lifecycle == value) return;
     final previous = _lifecycle;
     _lifecycle = value;
-    _emit(GameFeedbackEventKind.lifecycleChanged, {
+    _emit(TinyTacticsFeedbackEventKind.lifecycleChanged, {
       'from': previous.name,
       'to': value.name,
     });
@@ -434,7 +444,7 @@ class GameFeedback {
     if (_backgroundMusicPhase == value) return;
     final previous = _backgroundMusicPhase;
     _backgroundMusicPhase = value;
-    _emit(GameFeedbackEventKind.backgroundMusicChanged, {
+    _emit(TinyTacticsFeedbackEventKind.backgroundMusicChanged, {
       'from': previous.name,
       'to': value.name,
     });
@@ -445,7 +455,7 @@ class GameFeedback {
     bool enabled,
     GameActionOrigin origin,
   ) {
-    _emit(GameFeedbackEventKind.settingChanged, {
+    _emit(TinyTacticsFeedbackEventKind.settingChanged, {
       'setting': setting.name,
       'enabled': enabled,
       'origin': origin.name,
@@ -453,11 +463,11 @@ class GameFeedback {
   }
 
   void _emit(
-    GameFeedbackEventKind kind, [
+    TinyTacticsFeedbackEventKind kind, [
     Map<String, Object?> payload = const {},
   ]) {
-    final event = GameFeedbackEvent(kind: kind, payload: payload);
-    for (final observer in List<GameFeedbackObserver>.of(_observers)) {
+    final event = TinyTacticsFeedbackEvent(kind: kind, payload: payload);
+    for (final observer in List<TinyTacticsFeedbackObserver>.of(_observers)) {
       observer(event);
     }
   }
@@ -467,13 +477,13 @@ class GameFeedback {
     Object error,
     StackTrace stackTrace,
   ) {
-    final failure = GameFeedbackFailure(
+    final failure = TinyTacticsFeedbackFailure(
       feature: feature,
       errorType: error.runtimeType.toString(),
       message: error.toString(),
     );
     _lastFailure = failure;
-    _emit(GameFeedbackEventKind.failure, {
+    _emit(TinyTacticsFeedbackEventKind.failure, {
       ...failure.toEventPayload(),
       'stackTrace': stackTrace.toString(),
     });

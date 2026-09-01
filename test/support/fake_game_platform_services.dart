@@ -1,4 +1,4 @@
-import 'game_platform_services.dart';
+import 'package:coreflame/runtime/game_services/game_platform_services.dart';
 
 final class GameServiceCall {
   const GameServiceCall({
@@ -43,19 +43,19 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   final Map<GameServiceOperation, GameServiceError> _failures;
   final List<GameServiceCall> _calls = [];
-  final Set<GameAchievement> _unlockedAchievements = {};
-  final Map<GameLeaderboard, int> _scores = {};
-  final Map<GameSaveSlot, VersionedGameSave> _saves = {};
+  final Set<GameAchievementId> _unlockedAchievements = {};
+  final Map<GameLeaderboardId, int> _scores = {};
+  final Map<GameSaveSlotId, VersionedGameSave> _saves = {};
   bool _authenticated = false;
   bool _disposed = false;
   int _reviewRequests = 0;
   int _reviewPageOpens = 0;
 
   List<GameServiceCall> get calls => List.unmodifiable(_calls);
-  Set<GameAchievement> get unlockedAchievements =>
+  Set<GameAchievementId> get unlockedAchievements =>
       Set.unmodifiable(_unlockedAchievements);
-  Map<GameLeaderboard, int> get scores => Map.unmodifiable(_scores);
-  Map<GameSaveSlot, VersionedGameSave> get saves => Map.unmodifiable(_saves);
+  Map<GameLeaderboardId, int> get scores => Map.unmodifiable(_scores);
+  Map<GameSaveSlotId, VersionedGameSave> get saves => Map.unmodifiable(_saves);
   bool get isAuthenticated => _authenticated;
   bool get isDisposed => _disposed;
   int get reviewRequests => _reviewRequests;
@@ -80,7 +80,7 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> unlockAchievement(
-    GameAchievement achievement,
+    GameAchievementId achievement,
   ) async {
     _record(
       GameServiceOperation.unlockAchievement,
@@ -97,7 +97,7 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> submitScore({
-    required GameLeaderboard leaderboard,
+    required GameLeaderboardId leaderboard,
     required int score,
   }) async {
     _record(
@@ -136,7 +136,7 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> showLeaderboard(
-    GameLeaderboard leaderboard,
+    GameLeaderboardId leaderboard,
   ) async {
     _record(
       GameServiceOperation.showLeaderboard,
@@ -151,7 +151,7 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> saveGame({
-    required GameSaveSlot slot,
+    required GameSaveSlotId slot,
     required VersionedGameSave save,
   }) async {
     _record(
@@ -170,7 +170,7 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<VersionedGameSave?>> loadGame(
-    GameSaveSlot slot,
+    GameSaveSlotId slot,
   ) async {
     _record(GameServiceOperation.loadGame, logicalId: slot.logicalId);
     final failure = _guard<VersionedGameSave?>(
@@ -183,7 +183,7 @@ final class FakeGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> deleteGame(
-    GameSaveSlot slot,
+    GameSaveSlotId slot,
   ) async {
     _record(GameServiceOperation.deleteGame, logicalId: slot.logicalId);
     final failure = _guard<GameServiceUnit>(

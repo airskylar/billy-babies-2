@@ -1,8 +1,8 @@
-import '../components/cozy_tic_tac_toe_scene.dart';
-import '../game_action_origin.dart';
-import '../services/game_feedback.dart';
-import '../tic_tac_toe_match.dart';
-import 'runtime_inspection.dart';
+import '../../runtime/inspection/runtime_inspection.dart';
+import '../domain/game_action_origin.dart';
+import '../domain/tic_tac_toe_match.dart';
+import '../feedback/tiny_tactics_feedback.dart';
+import '../scene/cozy_tic_tac_toe_scene.dart';
 import 'tiny_tactics_inspection.dart';
 
 class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
@@ -14,7 +14,7 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
   });
 
   final TicTacToeMatch match;
-  final GameFeedback feedback;
+  final TinyTacticsFeedback feedback;
   final CozyTicTacToeScene? Function() scene;
   final RuntimeEventRecorder recordEvent;
 

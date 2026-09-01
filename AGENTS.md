@@ -30,6 +30,8 @@ replacing the placeholder game.
 - Flame owns the game loop, canvas rendering, resizing, and pointer input.
 - Keep game rules free of Flutter and Flame types so they remain quick to unit test and easy to
   replace.
+- Keep the single active game under `lib/game/` and reusable infrastructure under `lib/runtime/`.
+  Application composition may depend on both; runtime modules must never import the active game.
 
 ## Runtime inspection
 

@@ -80,7 +80,7 @@ final class MobileGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> unlockAchievement(
-    GameAchievement achievement,
+    GameAchievementId achievement,
   ) async {
     final failure = _preflight<GameServiceUnit>(
       GameServiceOperation.unlockAchievement,
@@ -106,7 +106,7 @@ final class MobileGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> submitScore({
-    required GameLeaderboard leaderboard,
+    required GameLeaderboardId leaderboard,
     required int score,
   }) async {
     final failure = _preflight<GameServiceUnit>(
@@ -158,7 +158,7 @@ final class MobileGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> showLeaderboard(
-    GameLeaderboard leaderboard,
+    GameLeaderboardId leaderboard,
   ) async {
     final failure = _preflight<GameServiceUnit>(
       GameServiceOperation.showLeaderboard,
@@ -185,7 +185,7 @@ final class MobileGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> saveGame({
-    required GameSaveSlot slot,
+    required GameSaveSlotId slot,
     required VersionedGameSave save,
   }) async {
     final failure = _preflight<GameServiceUnit>(
@@ -205,7 +205,7 @@ final class MobileGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<VersionedGameSave?>> loadGame(
-    GameSaveSlot slot,
+    GameSaveSlotId slot,
   ) async {
     final failure = _preflight<VersionedGameSave?>(
       GameServiceOperation.loadGame,
@@ -223,7 +223,7 @@ final class MobileGamePlatformServices implements GamePlatformServices {
 
   @override
   Future<GameServiceResult<GameServiceUnit>> deleteGame(
-    GameSaveSlot slot,
+    GameSaveSlotId slot,
   ) async {
     final failure = _preflight<GameServiceUnit>(
       GameServiceOperation.deleteGame,

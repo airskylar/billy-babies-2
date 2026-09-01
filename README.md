@@ -117,39 +117,43 @@ flutter run --release --dart-define=STATE_LAUNCHER_ENABLED=true
 
 ```text
 lib/
-├── main.dart                              Flutter app shell and launcher host
-├── scenarios/
-│   └── game_scenario.dart                 Scenario catalog and match factories
-└── game/
-    ├── coreflame_game.dart               Flame game root
-    ├── tic_tac_toe_match.dart            Pure, testable game rules
-    ├── components/
-    │   └── cozy_tic_tac_toe_scene.dart   Rendering, layout, input, animation
-    ├── observability/
-    │   ├── runtime_inspection_bridge.dart
-    │   │                                  Debug VM service extensions
-    │   ├── inspectable_flame_game.dart   Reusable Flame inspection host
-    │   ├── runtime_inspection.dart       Game-independent protocol kernel
-    │   ├── tiny_tactics_inspection.dart  Demo state and command schema
+├── main.dart                                  Process bootstrap
+├── app/
+│   └── coreflame_app.dart                     Flutter shell and composition
+├── runtime/
+│   ├── inspection/
+│   │   ├── runtime_inspection_bridge.dart     Debug VM service extensions
+│   │   ├── inspectable_flame_game.dart        Reusable Flame inspection host
+│   │   └── runtime_inspection.dart            Game-independent protocol kernel
+│   └── game_services/
+│       ├── game_platform_services.dart        Typed platform-neutral contract
+│       └── mobile_game_platform_services.dart Game Center / Play Games adapter
+└── game/                                      Single active game: Tiny Tactics
+    ├── tiny_tactics_game.dart                 Flame game root
+    ├── domain/
+    │   └── tic_tac_toe_match.dart             Pure, testable game rules
+    ├── scene/
+    │   └── cozy_tic_tac_toe_scene.dart        Rendering, input, and animation
+    ├── feedback/
+    │   └── tiny_tactics_feedback.dart         Pulsar haptics and Flame audio
+    ├── inspection/
+    │   ├── tiny_tactics_inspection.dart       Demo state and command schema
     │   └── tiny_tactics_inspection_adapter.dart
-    │                                      Demo snapshot/dispatch adapter
-    ├── services/
-    │   ├── game_feedback.dart             Pulsar haptics and Flame audio
-    │   ├── game_platform_services.dart    Typed, platform-neutral contract
-    │   ├── mobile_game_platform_services.dart
-    │   │                                  Game Center / Play Games adapter
-    │   └── fake_game_platform_services.dart
-    │                                      Deterministic in-memory fake
+    ├── scenarios/
+    │   └── tiny_tactics_scenario.dart         Scenario catalog and match factories
+    ├── services/                              Demo IDs and native configuration
     └── theme/
-        └── game_palette.dart              Shared colors
+        └── game_palette.dart                  Demo colors
 tool/
-└── coreflame_inspect.dart                 Agent-facing inspection CLI
+└── coreflame_inspect.dart                     Agent-facing inspection CLI
 ```
 
 Flutter owns the application shell and safe-area handling. Flame owns the game
 loop, canvas rendering, resizing, and pointer input. The match rules are kept
 free of Flutter and Flame types so they stay quick to unit test and easy to
-replace when using this project as a base for another game.
+replace when using this project as a base for another game. Application
+composition may import both `game/` and `runtime/`; reusable runtime modules
+never import the active game. An architecture test enforces that direction.
 
 ## Platform game services
 
@@ -158,7 +162,8 @@ through `games_services`. It provides authentication, logical achievement and
 leaderboard IDs, platform UI, versioned cloud-save documents, server
 credentials, and typed errors. Reviews use `in_app_review`. The Flutter screen
 owns authentication and disposal; Flame only receives the platform-neutral
-`GamePlatformServices` contract.
+`GamePlatformServices` contract. Tests use the deterministic implementation in
+`test/support/fake_game_platform_services.dart`; it is not shipped in `lib/`.
 
 Game services are disabled by default. Enable and configure them with
 `--dart-define` values:
@@ -171,9 +176,10 @@ Game services are disabled by default. Enable and configure them with
 - `APP_STORE_ID` when the iOS app opens its public review page
 
 The demo unlocks `first_win` and submits `match_wins` after a winning round.
-Add or replace the authoritative logical IDs in
-`lib/game/services/game_platform_services.dart`, then map them in
-`lib/game/services/game_services_config.dart`.
+Add or replace its authoritative logical IDs in
+`lib/game/services/tiny_tactics_game_service_ids.dart`, then map them in
+`lib/game/services/tiny_tactics_game_services_config.dart`. The reusable
+platform contract and mobile adapter remain identifier-neutral.
 
 Build-time IDs do not replace native store setup:
 
@@ -195,18 +201,18 @@ game requires either behavior.
 
 - Change the visual theme in `lib/game/theme/game_palette.dart`.
 - Replace move sounds in `assets/audio/` or change their mapping in
-  `lib/game/services/game_feedback.dart`.
+  `lib/game/feedback/tiny_tactics_feedback.dart`.
 - Replace `assets/audio/blossom.mp3` to swap the looping background track; its
-  volume is configured in `GameFeedback`.
+  volume is configured in `TinyTacticsFeedback`.
 - Replace interface icons in `assets/icons/`; the round button uses a MingCute
   refresh SVG and the settings modal uses a MingCute settings SVG through Flame
   SVG.
 - Replace `assets/fonts/gluten_variable.ttf` to change the registered `Gluten`
   typeface used by both Flutter widgets and Flame-rendered text.
-- Add components or split scenes under `lib/game/components/`.
+- Add components or split scenes under `lib/game/scene/`.
 - Replace `TicTacToeMatch` and `TinyTacticsInspectionAdapter` together when
   replacing the demo. A new game supplies its own `RuntimeInspectionAdapter`;
-  `InspectableFlameGame`, the VM bridge, and the CLI remain unchanged.
+  the reusable modules under `lib/runtime/` and the CLI remain unchanged.
 - Add sprite or audio folders under `assets/`, then register them in
   `pubspec.yaml`.
 - Replace the sample game-service IDs and versioned save payload with the

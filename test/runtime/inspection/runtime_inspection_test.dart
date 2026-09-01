@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:coreflame/game/observability/runtime_inspection_bridge.dart';
-import 'package:coreflame/game/observability/inspectable_flame_game.dart';
-import 'package:coreflame/game/observability/runtime_inspection.dart';
+import 'package:coreflame/runtime/inspection/inspectable_flame_game.dart';
+import 'package:coreflame/runtime/inspection/runtime_inspection_bridge.dart';
+import 'package:coreflame/runtime/inspection/runtime_inspection.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';

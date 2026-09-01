@@ -1,25 +1,26 @@
-import 'package:coreflame/game/coreflame_game.dart';
-import 'package:coreflame/game/observability/runtime_inspection.dart';
-import 'package:coreflame/game/observability/tiny_tactics_inspection.dart';
-import 'package:coreflame/game/services/fake_game_platform_services.dart';
-import 'package:coreflame/game/services/game_feedback.dart';
-import 'package:coreflame/game/services/game_platform_services.dart';
-import 'package:coreflame/game/tic_tac_toe_match.dart';
+import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
+import 'package:coreflame/game/feedback/tiny_tactics_feedback.dart';
+import 'package:coreflame/game/inspection/tiny_tactics_inspection.dart';
+import 'package:coreflame/game/services/tiny_tactics_game_service_ids.dart';
+import 'package:coreflame/game/tiny_tactics_game.dart';
+import 'package:coreflame/runtime/inspection/runtime_inspection.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../support/fake_game_platform_services.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('CoreflameGame observability', () {
-    testWithGame<CoreflameGame>(
+  group('TinyTacticsGame observability', () {
+    testWithGame<TinyTacticsGame>(
       'reports semantic and visual state through stable component IDs',
       () {
         SharedPreferences.setMockInitialValues({});
-        return CoreflameGame(
+        return TinyTacticsGame(
           platformServices: FakeGamePlatformServices(),
-          feedback: _FakeGameFeedback(),
+          feedback: _FakeTinyTacticsFeedback(),
         );
       },
       (game) async {
@@ -74,13 +75,13 @@ void main() {
       },
     );
 
-    testWithGame<CoreflameGame>(
+    testWithGame<TinyTacticsGame>(
       'dispatches revision-checked actions and records their outcomes',
       () {
         SharedPreferences.setMockInitialValues({});
-        return CoreflameGame(
+        return TinyTacticsGame(
           platformServices: FakeGamePlatformServices(),
-          feedback: _FakeGameFeedback(),
+          feedback: _FakeTinyTacticsFeedback(),
         );
       },
       (game) async {
@@ -157,13 +158,13 @@ void main() {
       },
     );
 
-    testWithGame<CoreflameGame>(
+    testWithGame<TinyTacticsGame>(
       'preserves platform achievement reporting for agent-dispatched wins',
       () {
         SharedPreferences.setMockInitialValues({});
-        return CoreflameGame(
+        return TinyTacticsGame(
           platformServices: FakeGamePlatformServices(),
-          feedback: _FakeGameFeedback(),
+          feedback: _FakeTinyTacticsFeedback(),
         );
       },
       (game) async {
@@ -184,16 +185,20 @@ void main() {
 
         expect(
           platformServices.unlockedAchievements,
-          contains(GameAchievement.firstWin),
+          contains(TinyTacticsGameServiceIds.firstWinAchievement),
         );
-        expect(platformServices.scores[GameLeaderboard.matchWins], 1);
+        expect(
+          platformServices.scores[TinyTacticsGameServiceIds
+              .matchWinsLeaderboard],
+          1,
+        );
       },
     );
   });
 }
 
-class _FakeGameFeedback extends GameFeedback {
-  _FakeGameFeedback() : super(backgroundMusic: _FakeBackgroundMusic());
+class _FakeTinyTacticsFeedback extends TinyTacticsFeedback {
+  _FakeTinyTacticsFeedback() : super(backgroundMusic: _FakeBackgroundMusic());
 
   @override
   Future<void> preload() async {}

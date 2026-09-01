@@ -1,12 +1,13 @@
-import 'package:coreflame/game/coreflame_game.dart';
-import 'package:coreflame/game/services/fake_game_platform_services.dart';
-import 'package:coreflame/game/services/game_platform_services.dart';
-import 'package:coreflame/game/tic_tac_toe_match.dart';
-import 'package:coreflame/main.dart';
+import 'package:coreflame/app/coreflame_app.dart';
+import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
+import 'package:coreflame/game/tiny_tactics_game.dart';
+import 'package:coreflame/runtime/game_services/game_platform_services.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../support/fake_game_platform_services.dart';
 
 void main() {
   testWidgets('hosts the Flame game without owning injected services', (
@@ -17,7 +18,7 @@ void main() {
     await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
     await tester.pump();
 
-    expect(find.byType(GameWidget<CoreflameGame>), findsOneWidget);
+    expect(find.byType(GameWidget<TinyTacticsGame>), findsOneWidget);
     expect(gameServices.isAuthenticated, isTrue);
     expect(
       gameServices.calls.map((call) => call.operation),
@@ -85,7 +86,9 @@ void main() {
     await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
     await tester.pump();
 
-    final gameContext = tester.element(find.byType(GameWidget<CoreflameGame>));
+    final gameContext = tester.element(
+      find.byType(GameWidget<TinyTacticsGame>),
+    );
     final result = showScenarioLauncher(gameContext);
     await tester.pumpAndSettle();
 
@@ -97,8 +100,10 @@ void main() {
   });
 }
 
-CoreflameGame _currentGame(WidgetTester tester) => tester
-    .widget<GameWidget<CoreflameGame>>(find.byType(GameWidget<CoreflameGame>))
+TinyTacticsGame _currentGame(WidgetTester tester) => tester
+    .widget<GameWidget<TinyTacticsGame>>(
+      find.byType(GameWidget<TinyTacticsGame>),
+    )
     .game!;
 
 Future<void> _openLauncherWithGesture(WidgetTester tester) async {

@@ -1,19 +1,19 @@
-import 'package:coreflame/game/game_action_origin.dart';
-import 'package:coreflame/game/services/game_feedback.dart';
+import 'package:coreflame/game/domain/game_action_origin.dart';
+import 'package:coreflame/game/feedback/tiny_tactics_feedback.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('GameFeedback', () {
+  group('TinyTacticsFeedback', () {
     test(
       'reports typed setting changes and an explicit disposal phase',
       () async {
         SharedPreferences.setMockInitialValues({});
         final backgroundMusic = _FakeBackgroundMusic();
-        final feedback = GameFeedback(backgroundMusic: backgroundMusic);
-        final events = <GameFeedbackEvent>[];
+        final feedback = TinyTacticsFeedback(backgroundMusic: backgroundMusic);
+        final events = <TinyTacticsFeedbackEvent>[];
         feedback.addObserver(events.add);
 
         await feedback.startBackgroundMusic();
@@ -28,7 +28,8 @@ void main() {
         expect(
           events
               .singleWhere(
-                (event) => event.kind == GameFeedbackEventKind.settingChanged,
+                (event) =>
+                    event.kind == TinyTacticsFeedbackEventKind.settingChanged,
               )
               .payload,
           containsPair('origin', GameActionOrigin.test.name),
@@ -36,19 +37,19 @@ void main() {
 
         await feedback.dispose();
 
-        expect(feedback.lifecycle, GameFeedbackLifecycle.disposed);
+        expect(feedback.lifecycle, TinyTacticsFeedbackLifecycle.disposed);
         expect(feedback.backgroundMusicPhase, BackgroundMusicPhase.disposed);
         expect(backgroundMusic.disposeCalls, 1);
       },
     );
 
     test('does not eagerly initialize the platform music player', () async {
-      final feedback = GameFeedback();
+      final feedback = TinyTacticsFeedback();
 
       expect(feedback.backgroundMusicPhase, BackgroundMusicPhase.uninitialized);
 
       await feedback.dispose();
-      expect(feedback.lifecycle, GameFeedbackLifecycle.disposed);
+      expect(feedback.lifecycle, TinyTacticsFeedbackLifecycle.disposed);
     });
   });
 }

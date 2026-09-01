@@ -1,6 +1,6 @@
 import 'package:state_launcher_flutter/state_launcher_flutter.dart';
 
-import '../game/tic_tac_toe_match.dart';
+import '../domain/tic_tac_toe_match.dart';
 
 enum GameScenario {
   empty(
