@@ -9,29 +9,26 @@ import 'package:flutter/services.dart';
 import 'package:state_launcher_flutter/state_launcher_flutter.dart';
 
 import 'game/coreflame_game.dart';
-import 'game/services/coreflame_game_services_config.dart';
+import 'game/services/game_services_config.dart';
 import 'game/services/game_platform_services.dart';
 import 'game/services/mobile_game_platform_services.dart';
 import 'game/theme/game_palette.dart';
-import 'scenarios/coreflame_scenario.dart';
+import 'scenarios/game_scenario.dart';
 
 const _scenarioLauncherEnabled = bool.fromEnvironment(
-  'COREFLAME_SCENARIOS',
+  'STATE_LAUNCHER_ENABLED',
   defaultValue: !kReleaseMode,
 );
-const _initialScenarioId = String.fromEnvironment('COREFLAME_SCENARIO');
+const _initialScenarioId = String.fromEnvironment('STATE_LAUNCHER_SCENARIO');
 
-/// Shows the Coreflame scenario launcher above the nearest game screen.
+/// Shows the scenario launcher above the nearest game screen.
 ///
-/// The supplied [context] must be below [CoreflameGameScreen], and scenario
+/// The supplied [context] must be below [GameScreen], and scenario
 /// launching must be enabled for the current build.
-Future<String?> showCoreflameScenarioLauncher(BuildContext context) {
-  final host = context
-      .getInheritedWidgetOfExactType<_CoreflameScenarioLauncherHost>();
+Future<String?> showScenarioLauncher(BuildContext context) {
+  final host = context.getInheritedWidgetOfExactType<_ScenarioLauncherHost>();
   if (host == null) {
-    throw StateError(
-      'No enabled Coreflame scenario launcher exists above this context.',
-    );
+    throw StateError('No enabled scenario launcher exists above this context.');
   }
   return host.showLauncher();
 }
@@ -69,21 +66,21 @@ class CoreflameApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: GamePalette.cream,
       ),
-      home: CoreflameGameScreen(gameServices: gameServices),
+      home: GameScreen(gameServices: gameServices),
     );
   }
 }
 
-class CoreflameGameScreen extends StatefulWidget {
-  const CoreflameGameScreen({super.key, this.gameServices});
+class GameScreen extends StatefulWidget {
+  const GameScreen({super.key, this.gameServices});
 
   final GamePlatformServices? gameServices;
 
   @override
-  State<CoreflameGameScreen> createState() => _CoreflameGameScreenState();
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
+class _GameScreenState extends State<GameScreen> {
   late final bool _ownsGameServices;
   late final GamePlatformServices _gameServices;
   late CoreflameGame _game;
@@ -98,20 +95,18 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
     _ownsGameServices = injectedGameServices == null;
     _gameServices =
         injectedGameServices ??
-        MobileGamePlatformServices(
-          configuration: coreflameGameServicesConfiguration,
-        );
+        MobileGamePlatformServices(configuration: gameServicesConfiguration);
     final initialScenario = _resolveInitialScenario();
     _game = _createGame(initialScenario);
     _scenarioLauncher = StateLauncherController(
       entries: [
-        for (final scenario in CoreflameScenario.values) scenario.launcherEntry,
+        for (final scenario in GameScenario.values) scenario.launcherEntry,
       ],
       activeEntryId: initialScenario?.id,
       onLaunch: (entry) {
-        final scenario = CoreflameScenario.findById(entry.id);
+        final scenario = GameScenario.findById(entry.id);
         if (scenario == null) {
-          throw StateError('Unknown Coreflame scenario: ${entry.id}');
+          throw StateError('Unknown game scenario: ${entry.id}');
         }
         _replaceGame(_createGame(scenario));
       },
@@ -150,7 +145,7 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
       ),
     );
     if (!_scenarioLauncherEnabled) return scaffold;
-    return _CoreflameScenarioLauncherHost(
+    return _ScenarioLauncherHost(
       showLauncher: _showScenarioLauncher,
       child: StateLauncherTrigger(
         onOpen: () => unawaited(_showScenarioLauncher()),
@@ -159,20 +154,20 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
     );
   }
 
-  CoreflameScenario? _resolveInitialScenario() {
+  GameScenario? _resolveInitialScenario() {
     if (!_scenarioLauncherEnabled || _initialScenarioId.isEmpty) return null;
-    final scenario = CoreflameScenario.findById(_initialScenarioId);
+    final scenario = GameScenario.findById(_initialScenarioId);
     if (scenario == null) {
       throw ArgumentError.value(
         _initialScenarioId,
-        'COREFLAME_SCENARIO',
-        'No Coreflame scenario has this ID.',
+        'STATE_LAUNCHER_SCENARIO',
+        'No game scenario has this ID.',
       );
     }
     return scenario;
   }
 
-  CoreflameGame _createGame(CoreflameScenario? scenario) => CoreflameGame(
+  CoreflameGame _createGame(GameScenario? scenario) => CoreflameGame(
     platformServices: _gameServices,
     match: scenario?.createMatch(),
   );
@@ -189,8 +184,8 @@ class _CoreflameGameScreenState extends State<CoreflameGameScreen> {
       showStateLauncher(context: context, controller: _scenarioLauncher);
 }
 
-class _CoreflameScenarioLauncherHost extends InheritedWidget {
-  const _CoreflameScenarioLauncherHost({
+class _ScenarioLauncherHost extends InheritedWidget {
+  const _ScenarioLauncherHost({
     required this.showLauncher,
     required super.child,
   });
@@ -198,7 +193,7 @@ class _CoreflameScenarioLauncherHost extends InheritedWidget {
   final Future<String?> Function() showLauncher;
 
   @override
-  bool updateShouldNotify(_CoreflameScenarioLauncherHost oldWidget) => false;
+  bool updateShouldNotify(_ScenarioLauncherHost oldWidget) => false;
 }
 
 EdgeInsets _safePaddingFor(MediaQueryData mediaQuery) {

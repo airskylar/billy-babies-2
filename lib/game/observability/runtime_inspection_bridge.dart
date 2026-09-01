@@ -25,7 +25,7 @@ final class RuntimeInspectionSession {
   final int id;
   final RuntimeInspectionTarget target;
 
-  bool get isActive => identical(CoreflameDebugBridge._session, this);
+  bool get isActive => identical(RuntimeInspectionBridge._session, this);
 
   Map<String, Object?> envelope(Map<String, Object?> payload) => {
     ...payload,
@@ -43,8 +43,8 @@ final class RuntimeInspectionSession {
   }
 }
 
-class CoreflameDebugBridge {
-  CoreflameDebugBridge._();
+class RuntimeInspectionBridge {
+  RuntimeInspectionBridge._();
 
   static RuntimeInspectionSession? _session;
   static int _nextSessionId = 1;
@@ -209,7 +209,7 @@ class CoreflameDebugBridge {
   static developer.ServiceExtensionResponse _unavailable() {
     return developer.ServiceExtensionResponse.error(
       developer.ServiceExtensionResponse.extensionError,
-      'No active Coreflame game is attached',
+      'No active game is attached',
     );
   }
 

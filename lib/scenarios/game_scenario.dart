@@ -2,7 +2,7 @@ import 'package:state_launcher_flutter/state_launcher_flutter.dart';
 
 import '../game/tic_tac_toe_match.dart';
 
-enum CoreflameScenario {
+enum GameScenario {
   empty(
     id: 'round.empty',
     label: 'Empty round',
@@ -32,7 +32,7 @@ enum CoreflameScenario {
     moves: [0, 1, 2, 4, 3, 5, 7, 6],
   );
 
-  const CoreflameScenario({
+  const GameScenario({
     required this.id,
     required this.label,
     required this.description,
@@ -64,7 +64,7 @@ enum CoreflameScenario {
     return match;
   }
 
-  static CoreflameScenario? findById(String id) {
+  static GameScenario? findById(String id) {
     for (final scenario in values) {
       if (scenario.id == id) return scenario;
     }

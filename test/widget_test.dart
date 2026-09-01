@@ -86,7 +86,7 @@ void main() {
     await tester.pump();
 
     final gameContext = tester.element(find.byType(GameWidget<CoreflameGame>));
-    final result = showCoreflameScenarioLauncher(gameContext);
+    final result = showScenarioLauncher(gameContext);
     await tester.pumpAndSettle();
 
     expect(find.text('Scenarios'), findsOneWidget);

@@ -91,11 +91,11 @@ Command-Shift-P. Launching, restarting, or clearing a scenario creates a fresh
 Flame game root so components, services, and transient input state do not leak
 between runs.
 
-Flutter widgets below `CoreflameGameScreen` can open the same UI
+Flutter widgets below `GameScreen` can open the same UI
 programmatically:
 
 ```dart
-await showCoreflameScenarioLauncher(context);
+await showScenarioLauncher(context);
 ```
 
 The function is available when scenario launching is enabled for the build.
@@ -103,14 +103,14 @@ The function is available when scenario launching is enabled for the build.
 Start directly in a named scenario with a compilation variable:
 
 ```sh
-flutter run --dart-define=COREFLAME_SCENARIO=round.x-about-to-win
+flutter run --dart-define=STATE_LAUNCHER_SCENARIO=round.x-about-to-win
 ```
 
 The launcher is excluded from release builds by default. Enable it explicitly
 when producing an internal release build:
 
 ```sh
-flutter run --release --dart-define=COREFLAME_SCENARIOS=true
+flutter run --release --dart-define=STATE_LAUNCHER_ENABLED=true
 ```
 
 ## Project shape
@@ -119,14 +119,15 @@ flutter run --release --dart-define=COREFLAME_SCENARIOS=true
 lib/
 ├── main.dart                              Flutter app shell and launcher host
 ├── scenarios/
-│   └── coreflame_scenario.dart            Scenario catalog and match factories
+│   └── game_scenario.dart                 Scenario catalog and match factories
 └── game/
     ├── coreflame_game.dart               Flame game root
     ├── tic_tac_toe_match.dart            Pure, testable game rules
     ├── components/
     │   └── cozy_tic_tac_toe_scene.dart   Rendering, layout, input, animation
     ├── observability/
-    │   ├── coreflame_debug_bridge.dart   Debug VM service extensions
+    │   ├── runtime_inspection_bridge.dart
+    │   │                                  Debug VM service extensions
     │   ├── inspectable_flame_game.dart   Reusable Flame inspection host
     │   ├── runtime_inspection.dart       Game-independent protocol kernel
     │   ├── tiny_tactics_inspection.dart  Demo state and command schema
@@ -172,7 +173,7 @@ Game services are disabled by default. Enable and configure them with
 The demo unlocks `first_win` and submits `match_wins` after a winning round.
 Add or replace the authoritative logical IDs in
 `lib/game/services/game_platform_services.dart`, then map them in
-`lib/game/services/coreflame_game_services_config.dart`.
+`lib/game/services/game_services_config.dart`.
 
 Build-time IDs do not replace native store setup:
 

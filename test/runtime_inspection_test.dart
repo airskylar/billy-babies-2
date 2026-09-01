@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:coreflame/game/observability/coreflame_debug_bridge.dart';
+import 'package:coreflame/game/observability/runtime_inspection_bridge.dart';
 import 'package:coreflame/game/observability/inspectable_flame_game.dart';
 import 'package:coreflame/game/observability/runtime_inspection.dart';
 import 'package:flame/camera.dart';
@@ -418,7 +418,7 @@ void main() {
           kind: RuntimeEventKind.enginePaused,
         );
         expect(
-          CoreflameDebugBridge.publish(
+          RuntimeInspectionBridge.publish(
             target: firstGame,
             session: firstSession,
             event: event,
@@ -426,7 +426,7 @@ void main() {
           isFalse,
         );
         expect(
-          CoreflameDebugBridge.publish(
+          RuntimeInspectionBridge.publish(
             target: firstGame,
             session: secondSession,
             event: event,
@@ -434,7 +434,7 @@ void main() {
           isFalse,
         );
         expect(
-          CoreflameDebugBridge.publish(
+          RuntimeInspectionBridge.publish(
             target: secondGame,
             session: secondSession,
             event: event,

@@ -1,6 +1,6 @@
 import 'game_platform_services.dart';
 
-final coreflameGameServicesConfiguration = GameServicesConfiguration(
+final gameServicesConfiguration = GameServicesConfiguration(
   enabled: const bool.fromEnvironment('GAME_SERVICES_ENABLED'),
   cloudSavesEnabled: const bool.fromEnvironment('GAME_SERVICES_CLOUD_SAVES'),
   achievementIds: const {

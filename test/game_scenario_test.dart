@@ -1,18 +1,18 @@
 import 'package:coreflame/game/tic_tac_toe_match.dart';
-import 'package:coreflame/scenarios/coreflame_scenario.dart';
+import 'package:coreflame/scenarios/game_scenario.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('scenario IDs and launcher entries come from the enum catalog', () {
     expect(
-      CoreflameScenario.values.map((scenario) => scenario.launcherEntry.id),
-      CoreflameScenario.values.map((scenario) => scenario.id),
+      GameScenario.values.map((scenario) => scenario.launcherEntry.id),
+      GameScenario.values.map((scenario) => scenario.id),
     );
   });
 
   test('X-about-to-win creates a fresh match with one winning move', () {
-    final first = CoreflameScenario.xAboutToWin.createMatch();
-    final second = CoreflameScenario.xAboutToWin.createMatch();
+    final first = GameScenario.xAboutToWin.createMatch();
+    final second = GameScenario.xAboutToWin.createMatch();
 
     expect(first, isNot(same(second)));
     expect(first.turn, Mark.x);
@@ -32,7 +32,7 @@ void main() {
   });
 
   test('O-about-to-win creates a match with one winning move', () {
-    final match = CoreflameScenario.oAboutToWin.createMatch();
+    final match = GameScenario.oAboutToWin.createMatch();
 
     expect(match.turn, Mark.o);
     expect(match.play(5), MoveOutcome.accepted);
@@ -40,7 +40,7 @@ void main() {
   });
 
   test('draw-about-to-finish creates a match with one empty cell', () {
-    final match = CoreflameScenario.drawAboutToFinish.createMatch();
+    final match = GameScenario.drawAboutToFinish.createMatch();
 
     expect(match.cells.where((mark) => mark == null), hasLength(1));
     expect(match.play(8), MoveOutcome.accepted);

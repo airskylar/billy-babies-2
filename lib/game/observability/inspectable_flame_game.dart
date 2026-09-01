@@ -4,7 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import 'coreflame_debug_bridge.dart';
+import 'runtime_inspection_bridge.dart';
 import 'runtime_inspection.dart';
 
 final _inspectionCommandTransactionKey = Object();
@@ -56,7 +56,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   @override
   void onMount() {
     super.onMount();
-    _inspectionSession = CoreflameDebugBridge.attach(this);
+    _inspectionSession = RuntimeInspectionBridge.attach(this);
     if (_recordedGameLoaded) return;
     _recordedGameLoaded = true;
     recordInspectionEvent(RuntimeEventKind.gameLoaded, {
@@ -133,7 +133,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     final session = _inspectionSession;
     _inspectionSession = null;
     if (session != null) {
-      CoreflameDebugBridge.detach(target: this, session: session);
+      RuntimeInspectionBridge.detach(target: this, session: session);
     }
     super.onRemove();
   }
@@ -280,7 +280,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     );
     final session = transaction?.initiatingSession ?? _inspectionSession;
     if (session != null) {
-      return CoreflameDebugBridge.publish(
+      return RuntimeInspectionBridge.publish(
         target: this,
         session: session,
         event: event,
