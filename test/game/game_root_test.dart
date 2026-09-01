@@ -1,8 +1,8 @@
 import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
-import 'package:coreflame/game/feedback/tiny_tactics_feedback.dart';
-import 'package:coreflame/game/inspection/tiny_tactics_inspection.dart';
-import 'package:coreflame/game/services/tiny_tactics_game_service_ids.dart';
-import 'package:coreflame/game/tiny_tactics_game.dart';
+import 'package:coreflame/game/feedback/feedback.dart';
+import 'package:coreflame/game/inspection/protocol.dart';
+import 'package:coreflame/game/services/service_ids.dart';
+import 'package:coreflame/game/game_root.dart';
 import 'package:coreflame/runtime/inspection/runtime_inspection.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';

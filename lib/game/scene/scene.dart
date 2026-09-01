@@ -10,9 +10,9 @@ import '../../runtime/game_services/game_platform_services.dart';
 import '../../runtime/inspection/runtime_inspection.dart';
 import '../domain/game_action_origin.dart';
 import '../domain/tic_tac_toe_match.dart';
-import '../feedback/tiny_tactics_feedback.dart';
-import '../inspection/tiny_tactics_inspection.dart';
-import '../services/tiny_tactics_game_service_ids.dart';
+import '../feedback/feedback.dart';
+import '../inspection/protocol.dart';
+import '../services/service_ids.dart';
 import '../theme/game_palette.dart';
 
 class CozyTicTacToeScene extends PositionComponent

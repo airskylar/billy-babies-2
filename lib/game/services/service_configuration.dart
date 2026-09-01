@@ -1,6 +1,6 @@
 import '../../runtime/game_services/game_platform_services.dart';
 
-import 'tiny_tactics_game_service_ids.dart';
+import 'service_ids.dart';
 
 final gameServicesConfiguration = GameServicesConfiguration(
   enabled: const bool.fromEnvironment('GAME_SERVICES_ENABLED'),

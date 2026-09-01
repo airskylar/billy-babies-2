@@ -129,19 +129,21 @@ lib/
 │       ├── game_platform_services.dart        Typed platform-neutral contract
 │       └── mobile_game_platform_services.dart Game Center / Play Games adapter
 └── game/                                      Single active game: Tiny Tactics
-    ├── tiny_tactics_game.dart                 Flame game root
+    ├── game_root.dart                         Flame game root
     ├── domain/
     │   └── tic_tac_toe_match.dart             Pure, testable game rules
     ├── scene/
-    │   └── cozy_tic_tac_toe_scene.dart        Rendering, input, and animation
+    │   └── scene.dart                         Rendering, input, and animation
     ├── feedback/
-    │   └── tiny_tactics_feedback.dart         Pulsar haptics and Flame audio
+    │   └── feedback.dart                      Pulsar haptics and Flame audio
     ├── inspection/
-    │   ├── tiny_tactics_inspection.dart       Demo state and command schema
-    │   └── tiny_tactics_inspection_adapter.dart
+    │   ├── protocol.dart                      Demo state and command schema
+    │   └── adapter.dart                       Demo snapshot/dispatch adapter
     ├── scenarios/
-    │   └── tiny_tactics_scenario.dart         Scenario catalog and match factories
-    ├── services/                              Demo IDs and native configuration
+    │   └── catalog.dart                       Scenario catalog and match factories
+    ├── services/
+    │   ├── service_ids.dart                   Demo logical IDs
+    │   └── service_configuration.dart         Native service configuration
     └── theme/
         └── game_palette.dart                  Demo colors
 tool/
@@ -177,8 +179,8 @@ Game services are disabled by default. Enable and configure them with
 
 The demo unlocks `first_win` and submits `match_wins` after a winning round.
 Add or replace its authoritative logical IDs in
-`lib/game/services/tiny_tactics_game_service_ids.dart`, then map them in
-`lib/game/services/tiny_tactics_game_services_config.dart`. The reusable
+`lib/game/services/service_ids.dart`, then map them in
+`lib/game/services/service_configuration.dart`. The reusable
 platform contract and mobile adapter remain identifier-neutral.
 
 Build-time IDs do not replace native store setup:
@@ -201,7 +203,7 @@ game requires either behavior.
 
 - Change the visual theme in `lib/game/theme/game_palette.dart`.
 - Replace move sounds in `assets/audio/` or change their mapping in
-  `lib/game/feedback/tiny_tactics_feedback.dart`.
+  `lib/game/feedback/feedback.dart`.
 - Replace `assets/audio/blossom.mp3` to swap the looping background track; its
   volume is configured in `TinyTacticsFeedback`.
 - Replace interface icons in `assets/icons/`; the round button uses a MingCute

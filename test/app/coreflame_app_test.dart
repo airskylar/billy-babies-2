@@ -1,6 +1,6 @@
 import 'package:coreflame/app/coreflame_app.dart';
 import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
-import 'package:coreflame/game/tiny_tactics_game.dart';
+import 'package:coreflame/game/game_root.dart';
 import 'package:coreflame/runtime/game_services/game_platform_services.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';

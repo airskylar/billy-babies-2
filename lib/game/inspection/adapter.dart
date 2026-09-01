@@ -1,9 +1,9 @@
 import '../../runtime/inspection/runtime_inspection.dart';
 import '../domain/game_action_origin.dart';
 import '../domain/tic_tac_toe_match.dart';
-import '../feedback/tiny_tactics_feedback.dart';
-import '../scene/cozy_tic_tac_toe_scene.dart';
-import 'tiny_tactics_inspection.dart';
+import '../feedback/feedback.dart';
+import '../scene/scene.dart';
+import 'protocol.dart';
 
 class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
   TinyTacticsInspectionAdapter({

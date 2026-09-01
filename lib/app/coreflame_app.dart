@@ -7,10 +7,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:state_launcher_flutter/state_launcher_flutter.dart';
 
-import '../game/scenarios/tiny_tactics_scenario.dart';
-import '../game/services/tiny_tactics_game_services_config.dart';
+import '../game/scenarios/catalog.dart';
+import '../game/services/service_configuration.dart';
 import '../game/theme/game_palette.dart';
-import '../game/tiny_tactics_game.dart';
+import '../game/game_root.dart';
 import '../runtime/game_services/game_platform_services.dart';
 import '../runtime/game_services/mobile_game_platform_services.dart';
 

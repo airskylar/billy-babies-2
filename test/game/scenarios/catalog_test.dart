@@ -1,5 +1,5 @@
 import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
-import 'package:coreflame/game/scenarios/tiny_tactics_scenario.dart';
+import 'package:coreflame/game/scenarios/catalog.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

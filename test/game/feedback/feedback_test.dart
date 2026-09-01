@@ -1,5 +1,5 @@
 import 'package:coreflame/game/domain/game_action_origin.dart';
-import 'package:coreflame/game/feedback/tiny_tactics_feedback.dart';
+import 'package:coreflame/game/feedback/feedback.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,7 +1,7 @@
 import '../../runtime/inspection/runtime_inspection.dart';
-import '../feedback/tiny_tactics_feedback.dart' show FeedbackSetting;
+import '../feedback/feedback.dart' show FeedbackSetting;
 
-export '../feedback/tiny_tactics_feedback.dart' show FeedbackSetting;
+export '../feedback/feedback.dart' show FeedbackSetting;
 
 class MatchSnapshot {
   const MatchSnapshot({
