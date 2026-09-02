@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' show DisplayFeatureType;
 
-import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:state_launcher_flutter/state_launcher_flutter.dart';
@@ -13,6 +12,7 @@ import '../game/theme/game_palette.dart';
 import '../game/game_root.dart';
 import '../runtime/game_services/game_platform_services.dart';
 import '../runtime/game_services/mobile_game_platform_services.dart';
+import '../runtime/inspection/inspection_surface.dart';
 
 const _scenarioLauncherEnabled = bool.fromEnvironment(
   'STATE_LAUNCHER_ENABLED',
@@ -124,7 +124,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final scaffold = Scaffold(
-      body: GameWidget<TinyTacticsGame>(
+      body: InspectableGameSurface<TinyTacticsGame>(
         key: ValueKey(_gameGeneration),
         game: _game,
       ),

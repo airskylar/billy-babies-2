@@ -55,7 +55,32 @@ dart run tool/coreflame_inspect.dart dispatch playCell cell=4 \
 dart run tool/coreflame_inspect.dart dispatch setSettingsOpen open=true
 dart run tool/coreflame_inspect.dart pause
 dart run tool/coreflame_inspect.dart step --seconds 0.0166667
+dart run tool/coreflame_inspect.dart capture --step 0.0166667 --out frame.png
 ```
+
+`capture` is the frame-accurate path for rendered evidence: while paused, it
+optionally advances the engine, waits for that exact frame to paint, and returns
+the matching snapshot and PNG together. The snapshot reports both its updated
+`frameNumber` and `presentedFrameNumber`.
+
+Pointer traces are reserved for testing real gesture and hit-test behavior.
+They use surface pixels or normalized coordinates, monotonically increasing
+microsecond timestamps, and complete down/move/up/cancel lifecycles:
+
+```json
+{
+  "protocolVersion": 1,
+  "coordinateSpace": "normalized",
+  "events": [
+    {"timeMicros": 0, "pointer": 1, "phase": "down", "x": 0.5, "y": 0.5},
+    {"timeMicros": 16000, "pointer": 1, "phase": "up", "x": 0.5, "y": 0.5}
+  ]
+}
+```
+
+Replay a trace against a paused game with
+`dart run tool/coreflame_inspect.dart replay --trace trace.json`. Prefer typed
+semantic commands for ordinary automation.
 
 Run `capabilities` to discover the active game ID, game-state schema version,
 and strict command parameters; the CLI does not hard-code Tiny Tactics actions.
@@ -124,7 +149,12 @@ lib/
 │   ├── inspection/
 │   │   ├── runtime_inspection_bridge.dart     Debug VM service extensions
 │   │   ├── inspectable_flame_game.dart        Reusable Flame inspection host
+│   │   ├── inspection_surface.dart             Atomic frames and pointer replay
 │   │   └── runtime_inspection.dart            Game-independent protocol kernel
+│   ├── input/
+│   │   └── pointer_trace.dart                  Validated portable pointer traces
+│   ├── motion/
+│   │   └── motion.dart                         Timed and spring motion primitives
 │   └── game_services/
 │       ├── game_platform_services.dart        Typed platform-neutral contract
 │       └── mobile_game_platform_services.dart Game Center / Play Games adapter
@@ -147,7 +177,8 @@ lib/
     └── theme/
         └── game_palette.dart                  Demo colors
 tool/
-└── coreflame_inspect.dart                     Agent-facing inspection CLI
+├── coreflame_inspect.dart                     Agent-facing inspection CLI
+└── coreflame_device.dart                      Device and migration utilities
 ```
 
 Flutter owns the application shell and safe-area handling. Flame owns the game
@@ -219,6 +250,33 @@ game requires either behavior.
   `pubspec.yaml`.
 - Replace the sample game-service IDs and versioned save payload with the
   domain types for your game.
+
+Reusable animation state lives in `lib/runtime/motion/motion.dart`.
+`TimedProgress` uses Flame's effect-controller timing, while `SpringDouble`
+uses a closed-form damped spring so one large deterministic step reaches the
+same state as many smaller steps. Compose independently owned animations with
+`MotionGroup` rather than adding scene-specific timing branches.
+
+## Device and migration utilities
+
+The repository CLI covers the common native handoff steps without hiding the
+underlying Flutter, Xcode, or Android tools:
+
+```sh
+dart run tool/coreflame_device.dart doctor
+dart run tool/coreflame_device.dart devices
+dart run tool/coreflame_device.dart install --device <device-id>
+dart run tool/coreflame_device.dart screenshot \
+  --platform ios --device <simulator-udid> --out build/screenshots/home.png
+dart run tool/coreflame_device.dart screenshot \
+  --platform android --device <adb-serial> --out build/screenshots/home.png
+dart run tool/coreflame_device.dart icons --source path/to/icon-1024.png
+```
+
+`icons` requires macOS `sips`, validates a square source of at least 1024px,
+and regenerates the launcher icon files already declared by the Android and
+iOS projects. `doctor` checks for `flutter`, `xcrun`, `adb`, and `sips` so a
+missing native prerequisite is visible before a release handoff.
 
 ## Checks
 

@@ -586,36 +586,29 @@ class _CounterAdapter implements RuntimeInspectionAdapter {
   int get schemaVersion => 1;
 
   @override
-  List<CommandDescriptor> get commands => const [
-    CommandDescriptor(
-      name: 'increment',
-      description: 'Increment the counter.',
-      parameters: [
-        CommandParameterDescriptor(
-          name: 'amount',
-          type: CommandParameterType.integer,
-          required: true,
-          description: 'Amount to add.',
+  late final RuntimeCommandRegistry commandRegistry = RuntimeCommandRegistry([
+    RuntimeCommandHandler<int>(
+      spec: RuntimeCommandSpec<int>(
+        descriptor: const CommandDescriptor(
+          name: 'increment',
+          description: 'Increment the counter.',
+          parameters: [
+            CommandParameterDescriptor(
+              name: 'amount',
+              type: CommandParameterType.integer,
+              required: true,
+              description: 'Amount to add.',
+            ),
+          ],
         ),
-      ],
+        decode: (arguments) => arguments.requireInt('amount'),
+        encode: (amount) => {'amount': '$amount'},
+      ),
+      handle: _increment,
     ),
-  ];
+  ]);
 
-  @override
-  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope command) async {
-    if (command.name != 'increment') {
-      throw FormatException('Unknown command: ${command.name}');
-    }
-    if (command.arguments.keys.toSet().difference(const {
-      'amount',
-    }).isNotEmpty) {
-      throw const FormatException('Unexpected increment parameter');
-    }
-    final amount = int.tryParse(command.arguments['amount'] ?? '');
-    if (amount == null) {
-      throw const FormatException('Expected integer parameter: amount');
-    }
-
+  Future<RuntimeCommandOutcome> _increment(int amount) async {
     dispatchCount += 1;
     dispatchStarted?.complete();
     dispatchStarted = null;

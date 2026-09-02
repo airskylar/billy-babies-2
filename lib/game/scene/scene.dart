@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../runtime/game_services/game_platform_services.dart';
 import '../../runtime/inspection/runtime_inspection.dart';
+import '../../runtime/motion/motion.dart';
 import '../domain/game_action_origin.dart';
 import '../domain/tic_tac_toe_match.dart';
 import '../feedback/feedback.dart';
@@ -115,11 +116,13 @@ class CozyTicTacToeScene extends PositionComponent
     final placedMark = match.turn;
     final outcome = match.play(cell);
     if (outcome != MoveOutcome.accepted) {
-      recordEvent(TinyTacticsEventKind.moveRejected, {
-        'cell': cell,
-        'reason': outcome.name,
-        'origin': origin.name,
-      }, changesState: false);
+      recordEvent(
+        TinyTacticsEvent.moveRejected(
+          cell: cell,
+          reason: outcome.name,
+          origin: origin.name,
+        ),
+      );
       return outcome;
     }
 
@@ -130,30 +133,34 @@ class CozyTicTacToeScene extends PositionComponent
       _boardState.onRoundFinished();
       _reportFinishedRound();
     }
-    recordEvent(TinyTacticsEventKind.moveAccepted, {
-      'cell': cell,
-      'mark': placedMark.name,
-      'result': match.result.name,
-      'winningCells': match.winningCells,
-      'origin': origin.name,
-    });
+    recordEvent(
+      TinyTacticsEvent.moveAccepted(
+        cell: cell,
+        mark: placedMark.name,
+        result: match.result.name,
+        winningCells: match.winningCells,
+        origin: origin.name,
+      ),
+    );
     return outcome;
   }
 
   void startNextRound({GameActionOrigin origin = GameActionOrigin.system}) {
     match.startNextRound();
     _boardState.onRoundStarted();
-    recordEvent(TinyTacticsEventKind.roundStarted, {
-      'starter': match.starter.name,
-      'origin': origin.name,
-    });
+    recordEvent(
+      TinyTacticsEvent.roundStarted(
+        starter: match.starter.name,
+        origin: origin.name,
+      ),
+    );
   }
 
   void resetMatch({GameActionOrigin origin = GameActionOrigin.system}) {
     match.resetMatch();
     _boardState.onRoundStarted();
     _elapsed = 0;
-    recordEvent(TinyTacticsEventKind.matchReset, {'origin': origin.name});
+    recordEvent(TinyTacticsEvent.matchReset(origin: origin.name));
   }
 
   bool setSettingsOpen(
@@ -166,10 +173,7 @@ class CozyTicTacToeScene extends PositionComponent
       _roundControl.release();
     }
     recordEvent(
-      open
-          ? TinyTacticsEventKind.settingsOpened
-          : TinyTacticsEventKind.settingsClosed,
-      {'origin': origin.name},
+      TinyTacticsEvent.settingsChanged(open: open, origin: origin.name),
     );
     return true;
   }
@@ -1534,44 +1538,56 @@ RectSnapshot _rectSnapshot(Rect rect) => RectSnapshot(
 
 class _BoardStateComponent extends Component implements RuntimeInspectable {
   _BoardStateComponent(this.match)
-    : super(key: ComponentKey.named('board-state'));
+    : _markProgress = List.generate(
+        9,
+        (_) => TimedProgress(duration: 0.24, initiallyComplete: true),
+      ),
+      _winningLineProgress = TimedProgress(duration: 0.42),
+      super(key: ComponentKey.named('board-state'));
 
   final TicTacToeMatch match;
-  final List<double> markProgress = List<double>.filled(9, 1);
+  final List<TimedProgress> _markProgress;
+  final TimedProgress _winningLineProgress;
   int? lastPlacedCell;
-  double winningLineProgress = 0;
+
+  List<double> get markProgress =>
+      _markProgress.map((progress) => progress.value).toList(growable: false);
+
+  double get winningLineProgress => _winningLineProgress.value;
 
   @override
   String get inspectionId => 'board-state';
 
   bool get animationsSettled =>
-      markProgress.every((progress) => progress >= 1) &&
-      (match.winningCells.isEmpty || winningLineProgress >= 1);
+      _markProgress.every((progress) => progress.isSettled) &&
+      (match.winningCells.isEmpty || _winningLineProgress.isSettled);
 
   void onMovePlaced(int cell) {
     lastPlacedCell = cell;
-    markProgress[cell] = 0;
+    _markProgress[cell].restart();
   }
 
   void onRoundFinished() {
-    winningLineProgress = 0;
+    _winningLineProgress.restart();
   }
 
   void onRoundStarted() {
     lastPlacedCell = null;
-    markProgress.fillRange(0, markProgress.length, 1);
-    winningLineProgress = 0;
+    for (final progress in _markProgress) {
+      progress.complete();
+    }
+    _winningLineProgress.restart();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     final cell = lastPlacedCell;
-    if (cell != null && markProgress[cell] < 1) {
-      markProgress[cell] = math.min(1, markProgress[cell] + (dt / 0.24));
+    if (cell != null) {
+      _markProgress[cell].advance(dt);
     }
-    if (match.winningCells.isNotEmpty && winningLineProgress < 1) {
-      winningLineProgress = math.min(1, winningLineProgress + (dt / 0.42));
+    if (match.winningCells.isNotEmpty) {
+      _winningLineProgress.advance(dt);
     }
   }
 
@@ -1591,46 +1607,37 @@ enum _RoundButtonPhase { idle, pressed }
 class _RoundControlStateComponent extends Component
     implements RuntimeInspectable {
   _RoundControlStateComponent()
-    : super(key: ComponentKey.named('round-control-state'));
+    : _spring = SpringDouble(value: 0),
+      super(key: ComponentKey.named('round-control-state'));
 
   _RoundButtonPhase phase = _RoundButtonPhase.idle;
-  double sink = 0;
-  double velocity = 0;
+  final SpringDouble _spring;
+
+  double get sink => _spring.value;
+
+  double get velocity => _spring.velocity;
 
   @override
   String get inspectionId => 'round-control-state';
 
   bool get animationSettled =>
-      phase == _RoundButtonPhase.idle &&
-      sink.abs() < 0.001 &&
-      velocity.abs() < 0.001;
+      phase == _RoundButtonPhase.idle && _spring.isSettled;
 
   void press() {
     phase = _RoundButtonPhase.pressed;
-    sink = math.max(sink, 0.08);
-    velocity = math.max(velocity, 6.0);
+    if (_spring.value < 0.08) _spring.value = 0.08;
+    _spring.setTarget(1, minimumVelocity: 6);
   }
 
   void release() {
     phase = _RoundButtonPhase.idle;
+    _spring.setTarget(0);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    final step = math.min(dt, 1 / 30);
-    final target = phase == _RoundButtonPhase.pressed ? 1.0 : 0.0;
-    const stiffness = 310.0;
-    const damping = 22.0;
-    final acceleration = stiffness * (target - sink) - damping * velocity;
-
-    velocity += acceleration * step;
-    sink += velocity * step;
-
-    if (phase == _RoundButtonPhase.idle && animationSettled) {
-      sink = 0;
-      velocity = 0;
-    }
+    _spring.advance(dt);
   }
 
   @override

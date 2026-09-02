@@ -45,9 +45,21 @@ Future<void> main(List<String> arguments) async {
           args: call.cleanupArguments,
         );
       }
-      stdout.writeln(
-        const JsonEncoder.withIndent('  ').convert(response.json ?? const {}),
-      );
+      final responseJson = Map<String, dynamic>.from(response.json ?? const {});
+      final outputPath = invocation.options['out'];
+      if (invocation.command == 'capture' && outputPath != null) {
+        final encodedPng = responseJson.remove('pngBase64');
+        if (encodedPng is! String) {
+          throw const FormatException(
+            'The capture response did not contain PNG data',
+          );
+        }
+        final output = File(outputPath);
+        await output.parent.create(recursive: true);
+        await output.writeAsBytes(base64Decode(encodedPng), flush: true);
+        responseJson['pngPath'] = output.absolute.path;
+      }
+      stdout.writeln(const JsonEncoder.withIndent('  ').convert(responseJson));
     } finally {
       await service.dispose();
     }
@@ -161,6 +173,8 @@ class _Invocation {
     'snapshot' => _snapshotCall(),
     'events' => _eventsCall(),
     'dispatch' => _dispatchCall(),
+    'capture' => _captureCall(),
+    'replay' => _replayCall(),
     'tree' => _treeCall(),
     'widget-tree' => _widgetTreeCall(),
     'pause' => _pausedCall(true),
@@ -225,6 +239,67 @@ class _Invocation {
       arguments[name] = value;
     }
     return _ServiceCall('ext.coreflame.dispatch', arguments);
+  }
+
+  _ServiceCall _captureCall() {
+    _expectPositionals(0);
+    _expectOptions(const {
+      'uri',
+      'isolate',
+      'step',
+      'detail',
+      'out',
+      'pixel-ratio',
+    });
+    final arguments = <String, dynamic>{
+      'detail': options['detail'] ?? 'visual',
+      'include_png': options.containsKey('out'),
+    };
+    final detail = arguments['detail'];
+    if (detail != 'semantic' && detail != 'visual') {
+      throw FormatException('Unknown snapshot detail: $detail');
+    }
+    if (options['step'] case final rawStep?) {
+      final step = double.tryParse(rawStep);
+      if (step == null || !step.isFinite || step < 0) {
+        throw const FormatException(
+          'Expected --step to be a finite non-negative number',
+        );
+      }
+      arguments['step_seconds'] = step;
+    }
+    if (options['pixel-ratio'] case final rawPixelRatio?) {
+      final pixelRatio = double.tryParse(rawPixelRatio);
+      if (pixelRatio == null || !pixelRatio.isFinite || pixelRatio <= 0) {
+        throw const FormatException(
+          'Expected --pixel-ratio to be a finite positive number',
+        );
+      }
+      arguments['pixel_ratio'] = pixelRatio;
+    }
+    return _ServiceCall('ext.coreflame.captureFrame', arguments);
+  }
+
+  _ServiceCall _replayCall() {
+    _expectPositionals(0);
+    _expectOptions(const {'uri', 'isolate', 'trace'});
+    final tracePath = options['trace'];
+    if (tracePath == null) {
+      throw const FormatException('Provide --trace JSON_FILE');
+    }
+    final traceFile = File(tracePath);
+    if (!traceFile.existsSync()) {
+      throw FormatException('Pointer trace does not exist: $tracePath');
+    }
+    final contents = traceFile.readAsStringSync();
+    try {
+      jsonDecode(contents);
+    } on FormatException catch (error) {
+      throw FormatException('Invalid pointer trace JSON: ${error.message}');
+    }
+    return _ServiceCall('ext.coreflame.replayPointerTrace', {
+      'trace': base64Encode(utf8.encode(contents)),
+    });
   }
 
   _ServiceCall _treeCall() {
@@ -321,6 +396,9 @@ Usage:
   dart run tool/coreflame_inspect.dart events [--after SEQUENCE] --uri URL
   dart run tool/coreflame_inspect.dart dispatch COMMAND [NAME=VALUE ...]
     [--expected-revision REVISION] --uri URL
+  dart run tool/coreflame_inspect.dart capture [--step NUMBER]
+    [--detail semantic|visual] [--out PNG] [--pixel-ratio NUMBER] --uri URL
+  dart run tool/coreflame_inspect.dart replay --trace JSON_FILE --uri URL
   dart run tool/coreflame_inspect.dart tree|widget-tree --uri URL
   dart run tool/coreflame_inspect.dart pause|resume --uri URL
   dart run tool/coreflame_inspect.dart step [--seconds NUMBER] --uri URL

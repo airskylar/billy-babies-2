@@ -1,4 +1,7 @@
 import 'dart:collection';
+import 'dart:convert';
+
+import '../input/pointer_trace.dart';
 
 enum SnapshotDetail {
   semantic,
@@ -145,6 +148,7 @@ class EngineSnapshot {
     required this.attached,
     required this.paused,
     required this.frameNumber,
+    required this.presentedFrameNumber,
     required this.gameTimeSeconds,
     required this.appLifecycle,
   });
@@ -155,6 +159,7 @@ class EngineSnapshot {
   final bool attached;
   final bool paused;
   final int frameNumber;
+  final int presentedFrameNumber;
   final double gameTimeSeconds;
   final String? appLifecycle;
 
@@ -168,8 +173,64 @@ class EngineSnapshot {
     },
     'paused': paused,
     'frameNumber': frameNumber,
+    'presentedFrameNumber': presentedFrameNumber,
     'gameTimeSeconds': gameTimeSeconds,
   };
+}
+
+class InspectionCaptureRequest {
+  const InspectionCaptureRequest({
+    this.stepSeconds,
+    this.detail = SnapshotDetail.visual,
+    this.includePng = false,
+    this.pixelRatio = 1,
+  });
+
+  final double? stepSeconds;
+  final SnapshotDetail detail;
+  final bool includePng;
+  final double pixelRatio;
+}
+
+class InspectionCaptureResult {
+  const InspectionCaptureResult({
+    required this.snapshot,
+    required this.presentedFrameNumber,
+    this.pngBytes,
+  });
+
+  final RuntimeSnapshot snapshot;
+  final int presentedFrameNumber;
+  final List<int>? pngBytes;
+
+  Map<String, Object?> toJson() => {
+    'presentedFrameNumber': presentedFrameNumber,
+    'snapshot': snapshot.toJson(),
+    if (pngBytes case final bytes?) 'pngBase64': base64Encode(bytes),
+  };
+}
+
+class PointerReplayResult {
+  const PointerReplayResult({
+    required this.eventsDispatched,
+    required this.snapshot,
+  });
+
+  final int eventsDispatched;
+  final RuntimeSnapshot snapshot;
+
+  Map<String, Object?> toJson() => {
+    'eventsDispatched': eventsDispatched,
+    'snapshot': snapshot.toJson(),
+  };
+}
+
+abstract interface class RuntimeInspectionSurface {
+  Future<InspectionCaptureResult> capture(InspectionCaptureRequest request);
+
+  Future<PointerReplayResult> replay(PointerTrace trace);
+
+  void didPresentFrame(int frameNumber);
 }
 
 class ViewportSnapshot {
@@ -406,6 +467,151 @@ class CommandDescriptor {
   };
 }
 
+final class CommandArguments {
+  CommandArguments(Map<String, String> values)
+    : _values = Map.unmodifiable(values);
+
+  final Map<String, String> _values;
+  final Set<String> _consumed = {};
+
+  String requireString(String name) {
+    final value = _values[name];
+    if (value == null) {
+      throw FormatException('Expected string parameter: $name');
+    }
+    _consumed.add(name);
+    return value;
+  }
+
+  int requireInt(String name) {
+    final value = requireString(name);
+    final parsed = int.tryParse(value);
+    if (parsed == null) {
+      throw FormatException('Expected integer parameter: $name');
+    }
+    return parsed;
+  }
+
+  double requireFiniteDouble(String name) {
+    final value = requireString(name);
+    final parsed = double.tryParse(value);
+    if (parsed == null || !parsed.isFinite) {
+      throw FormatException('Expected finite number parameter: $name');
+    }
+    return parsed;
+  }
+
+  bool requireBool(String name) => switch (requireString(name)) {
+    'true' => true,
+    'false' => false,
+    _ => throw FormatException('Expected boolean parameter: $name'),
+  };
+
+  T requireEnum<T extends Enum>(
+    String name,
+    Iterable<T> values, {
+    String Function(T value)? wireName,
+  }) {
+    final value = requireString(name);
+    final encode = wireName ?? (candidate) => candidate.name;
+    for (final candidate in values) {
+      if (encode(candidate) == value) return candidate;
+    }
+    final expected = values.map(encode).join(', ');
+    throw FormatException('Expected $name parameter: $expected');
+  }
+
+  void rejectUnknown() {
+    final unexpected = _values.keys
+        .where((key) => !_consumed.contains(key))
+        .toList(growable: false);
+    if (unexpected.isNotEmpty) {
+      throw FormatException(
+        'Unexpected command parameter(s): ${unexpected.join(', ')}',
+      );
+    }
+  }
+}
+
+final class RuntimeCommandSpec<C> {
+  const RuntimeCommandSpec({
+    required this.descriptor,
+    required this.decode,
+    required this.encode,
+  });
+
+  final CommandDescriptor descriptor;
+  final C Function(CommandArguments arguments) decode;
+  final Map<String, String> Function(C command) encode;
+
+  C decodeEnvelope(RuntimeCommandEnvelope envelope) {
+    if (envelope.name != descriptor.name) {
+      throw FormatException(
+        'Expected command ${descriptor.name}, received ${envelope.name}',
+      );
+    }
+    final arguments = CommandArguments(envelope.arguments);
+    final command = decode(arguments);
+    arguments.rejectUnknown();
+    return command;
+  }
+
+  RuntimeCommandEnvelope envelope(C command, {int? expectedRevision}) =>
+      RuntimeCommandEnvelope(
+        name: descriptor.name,
+        expectedRevision: expectedRevision,
+        arguments: encode(command),
+      );
+}
+
+abstract interface class RuntimeCommandRoute {
+  CommandDescriptor get descriptor;
+
+  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope envelope);
+}
+
+final class RuntimeCommandHandler<C> implements RuntimeCommandRoute {
+  const RuntimeCommandHandler({required this.spec, required this.handle});
+
+  final RuntimeCommandSpec<C> spec;
+  final Future<RuntimeCommandOutcome> Function(C command) handle;
+
+  @override
+  CommandDescriptor get descriptor => spec.descriptor;
+
+  @override
+  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope envelope) =>
+      handle(spec.decodeEnvelope(envelope));
+}
+
+final class RuntimeCommandRegistry {
+  factory RuntimeCommandRegistry(Iterable<RuntimeCommandRoute> routes) {
+    final routeList = routes.toList(growable: false);
+    final routesByName = {
+      for (final route in routeList) route.descriptor.name: route,
+    };
+    if (routesByName.length != routeList.length) {
+      throw ArgumentError('Command names must be unique');
+    }
+    return RuntimeCommandRegistry._(Map.unmodifiable(routesByName));
+  }
+
+  const RuntimeCommandRegistry._(this._routes);
+
+  final Map<String, RuntimeCommandRoute> _routes;
+
+  List<CommandDescriptor> get descriptors =>
+      _routes.values.map((route) => route.descriptor).toList(growable: false);
+
+  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope envelope) {
+    final route = _routes[envelope.name];
+    if (route == null) {
+      throw FormatException('Unknown command: ${envelope.name}');
+    }
+    return route.dispatch(envelope);
+  }
+}
+
 class RuntimeInspectionCapabilities {
   RuntimeInspectionCapabilities({
     required this.gameId,
@@ -532,16 +738,17 @@ abstract interface class RuntimeInspectionAdapter {
 
   int get schemaVersion;
 
-  List<CommandDescriptor> get commands;
+  RuntimeCommandRegistry get commandRegistry;
 
   GameInspectionState snapshot(SnapshotDetail detail);
-
-  Future<RuntimeCommandOutcome> dispatch(RuntimeCommandEnvelope command);
 }
 
-typedef RuntimeEventRecorder =
-    void Function(
-      InspectionEventKind kind,
-      Map<String, Object?> payload, {
-      bool changesState,
-    });
+abstract interface class InspectionEventData {
+  InspectionEventKind get kind;
+
+  Map<String, Object?> get payload;
+
+  bool get changesState;
+}
+
+typedef RuntimeEventRecorder = void Function(InspectionEventData event);

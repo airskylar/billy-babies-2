@@ -34,7 +34,7 @@ class TinyTacticsGame extends InspectableFlameGame {
         match: match,
         feedback: feedback,
         scene: () => _scene,
-        recordEvent: recordInspectionEvent,
+        recordEvent: recordTypedInspectionEvent,
       );
 
   @override
@@ -51,7 +51,7 @@ class TinyTacticsGame extends InspectableFlameGame {
       match: match,
       feedback: feedback,
       platformServices: platformServices,
-      recordEvent: recordInspectionEvent,
+      recordEvent: recordTypedInspectionEvent,
     );
     _scene = scene;
     await add(scene);
@@ -79,12 +79,13 @@ class TinyTacticsGame extends InspectableFlameGame {
     final changesState =
         event.kind == TinyTacticsFeedbackEventKind.settingsLoaded ||
         event.kind == TinyTacticsFeedbackEventKind.settingChanged;
-    recordInspectionEvent(
-      failure
-          ? TinyTacticsEventKind.feedbackFailure
-          : TinyTacticsEventKind.feedbackStateChanged,
-      {'feedbackEvent': event.kind.name, ...event.payload},
-      changesState: changesState,
+    recordTypedInspectionEvent(
+      TinyTacticsEvent.feedback(
+        failure: failure,
+        changesState: changesState,
+        feedbackEvent: event.kind.name,
+        details: event.payload,
+      ),
     );
   }
 }

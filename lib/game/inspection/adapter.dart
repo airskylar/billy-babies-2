@@ -25,9 +25,54 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
   int get schemaVersion => 1;
 
   @override
-  List<CommandDescriptor> get commands => TinyTacticsCommandKind.values
-      .map((kind) => kind.descriptor)
-      .toList(growable: false);
+  late final RuntimeCommandRegistry commandRegistry = RuntimeCommandRegistry([
+    RuntimeCommandHandler<PlayCellCommand>(
+      spec: PlayCellCommand.spec,
+      handle: (command) =>
+          _withActiveScene((scene) => _dispatchPlayCell(scene, command.cell)),
+    ),
+    RuntimeCommandHandler<StartNextRoundCommand>(
+      spec: StartNextRoundCommand.spec,
+      handle: (_) => _withActiveScene(
+        (scene) => _dispatchAction(
+          scene.startNextRound,
+          message: 'Started the next round',
+        ),
+      ),
+    ),
+    RuntimeCommandHandler<ResetMatchCommand>(
+      spec: ResetMatchCommand.spec,
+      handle: (_) => _withActiveScene(
+        (scene) =>
+            _dispatchAction(scene.resetMatch, message: 'Reset the match'),
+      ),
+    ),
+    RuntimeCommandHandler<SetSettingsOpenCommand>(
+      spec: SetSettingsOpenCommand.spec,
+      handle: (command) => _withActiveScene(
+        (scene) => _dispatchChange(
+          () => scene.setSettingsOpen(
+            command.open,
+            origin: GameActionOrigin.agent,
+          ),
+          changedMessage: command.open ? 'Opened settings' : 'Closed settings',
+        ),
+      ),
+    ),
+    RuntimeCommandHandler<SetFeedbackSettingCommand>(
+      spec: SetFeedbackSettingCommand.spec,
+      handle: (command) => _withActiveScene(
+        (scene) => _dispatchChange(
+          () => scene.setFeedbackSetting(
+            command.setting,
+            command.enabled,
+            origin: GameActionOrigin.agent,
+          ),
+          changedMessage: 'Set ${command.setting.name} to ${command.enabled}',
+        ),
+      ),
+    ),
+  ]);
 
   @override
   TinyTacticsSnapshot snapshot(SnapshotDetail detail) => TinyTacticsSnapshot(
@@ -60,11 +105,9 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
     scene: scene()?.snapshot(detail),
   );
 
-  @override
-  Future<RuntimeCommandOutcome> dispatch(
-    RuntimeCommandEnvelope envelope,
+  Future<RuntimeCommandOutcome> _withActiveScene(
+    RuntimeCommandOutcome Function(CozyTicTacToeScene scene) action,
   ) async {
-    final request = TinyTacticsCommandRequest.parse(envelope);
     final activeScene = scene();
     if (activeScene == null || !activeScene.isMounted) {
       return const RuntimeCommandOutcome(
@@ -73,31 +116,7 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
         message: 'The Tiny Tactics scene is not mounted',
       );
     }
-
-    return switch (request.command) {
-      PlayCellCommand(:final cell) => _dispatchPlayCell(activeScene, cell),
-      StartNextRoundCommand() => _dispatchAction(
-        activeScene.startNextRound,
-        message: 'Started the next round',
-      ),
-      ResetMatchCommand() => _dispatchAction(
-        activeScene.resetMatch,
-        message: 'Reset the match',
-      ),
-      SetSettingsOpenCommand(:final open) => _dispatchChange(
-        () => activeScene.setSettingsOpen(open, origin: GameActionOrigin.agent),
-        changedMessage: open ? 'Opened settings' : 'Closed settings',
-      ),
-      SetFeedbackSettingCommand(:final setting, :final enabled) =>
-        _dispatchChange(
-          () => activeScene.setFeedbackSetting(
-            setting,
-            enabled,
-            origin: GameActionOrigin.agent,
-          ),
-          changedMessage: 'Set ${setting.name} to $enabled',
-        ),
-    };
+    return action(activeScene);
   }
 
   RuntimeCommandOutcome _dispatchPlayCell(
@@ -105,11 +124,13 @@ class TinyTacticsInspectionAdapter implements RuntimeInspectionAdapter {
     int cell,
   ) {
     if (cell < 0 || cell >= match.cells.length) {
-      recordEvent(TinyTacticsEventKind.moveRejected, {
-        'cell': cell,
-        'reason': 'outOfRange',
-        'origin': GameActionOrigin.agent.name,
-      }, changesState: false);
+      recordEvent(
+        TinyTacticsEvent.moveRejected(
+          cell: cell,
+          reason: 'outOfRange',
+          origin: GameActionOrigin.agent.name,
+        ),
+      );
       return const RuntimeCommandOutcome(
         disposition: RuntimeCommandDisposition.rejected,
         code: 'outOfRange',

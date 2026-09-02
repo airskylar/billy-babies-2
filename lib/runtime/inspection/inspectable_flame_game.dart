@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
+import '../input/pointer_trace.dart';
 import 'runtime_inspection_bridge.dart';
 import 'runtime_inspection.dart';
 
@@ -25,9 +26,11 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   Vector2? _viewportSize;
   int _revision = 0;
   int _frameNumber = 0;
+  int _presentedFrameNumber = 0;
   double _gameTimeSeconds = 0;
   bool _recordedGameLoaded = false;
-  Future<void> _commandTail = Future.value();
+  Future<void> _operationTail = Future.value();
+  RuntimeInspectionSurface? _inspectionSurface;
 
   RuntimeInspectionAdapter get inspectionAdapter;
 
@@ -37,6 +40,10 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   int get revision => _revision;
 
   RuntimeInspectionSession? get inspectionSession => _inspectionSession;
+
+  int get frameNumber => _frameNumber;
+
+  int get presentedFrameNumber => _presentedFrameNumber;
 
   EdgeInsets get safePadding => _safePadding;
 
@@ -70,6 +77,21 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     _frameNumber += 1;
     _gameTimeSeconds += dt;
     super.update(dt);
+  }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    _presentedFrameNumber = _frameNumber;
+    _inspectionSurface?.didPresentFrame(_presentedFrameNumber);
+  }
+
+  void attachInspectionSurface(RuntimeInspectionSurface surface) {
+    _inspectionSurface = surface;
+  }
+
+  void detachInspectionSurface(RuntimeInspectionSurface surface) {
+    if (identical(_inspectionSurface, surface)) _inspectionSurface = null;
   }
 
   @override
@@ -142,7 +164,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
   RuntimeInspectionCapabilities capabilities() => RuntimeInspectionCapabilities(
     gameId: inspectionAdapter.gameId,
     gameSchemaVersion: inspectionAdapter.schemaVersion,
-    commands: inspectionAdapter.commands,
+    commands: inspectionAdapter.commandRegistry.descriptors,
   );
 
   @override
@@ -161,6 +183,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
         attached: isAttached,
         paused: paused,
         frameNumber: _frameNumber,
+        presentedFrameNumber: _presentedFrameNumber,
         gameTimeSeconds: _gameTimeSeconds,
         appLifecycle: _appLifecycleState?.name,
       ),
@@ -197,6 +220,31 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       _journal.batchAfter(sequence);
 
   @override
+  Future<InspectionCaptureResult> captureFrame(
+    InspectionCaptureRequest request,
+  ) => _enqueueInspectionOperation(() {
+    final surface = _inspectionSurface;
+    if (surface == null) {
+      throw const FormatException(
+        'No inspectable Flutter game surface is attached',
+      );
+    }
+    return surface.capture(request);
+  });
+
+  @override
+  Future<PointerReplayResult> replayPointerTrace(PointerTrace trace) =>
+      _enqueueInspectionOperation(() {
+        final surface = _inspectionSurface;
+        if (surface == null) {
+          throw const FormatException(
+            'No inspectable Flutter game surface is attached',
+          );
+        }
+        return surface.replay(trace);
+      });
+
+  @override
   Future<RuntimeCommandResult> dispatch(
     RuntimeCommandEnvelope command, {
     RuntimeInspectionSession? initiatingSession,
@@ -210,12 +258,16 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       );
     }
     final commandSession = initiatingSession ?? _inspectionSession;
-    // Recover the shared tail so one adapter error reaches only its caller and
-    // cannot prevent later commands from entering the serialized queue.
-    final transaction = _commandTail.then(
-      (_) => _dispatchTransaction(command, initiatingSession: commandSession),
+    return _enqueueInspectionOperation(
+      () => _dispatchTransaction(command, initiatingSession: commandSession),
     );
-    _commandTail = transaction.then<void>(
+  }
+
+  Future<T> _enqueueInspectionOperation<T>(Future<T> Function() operation) {
+    // Recover the shared tail so one operation error reaches only its caller
+    // and cannot prevent later operations from entering the serialized queue.
+    final transaction = _operationTail.then((_) => operation());
+    _operationTail = transaction.then<void>(
       (_) {},
       onError: (Object _, StackTrace _) {},
     );
@@ -248,7 +300,7 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
     // A zone follows the adapter's asynchronous call chain without claiming
     // unrelated game events that happen while the command Future is pending.
     final outcome = await runZoned(() async {
-      final outcome = await inspectionAdapter.dispatch(command);
+      final outcome = await inspectionAdapter.commandRegistry.dispatch(command);
       if (outcome.disposition == RuntimeCommandDisposition.applied &&
           !transaction.recordedStateChangingEvent) {
         recordInspectionEvent(RuntimeEventKind.commandApplied, {
@@ -287,6 +339,14 @@ abstract class InspectableFlameGame<W extends World> extends FlameGame<W>
       );
     }
     return false;
+  }
+
+  void recordTypedInspectionEvent(InspectionEventData event) {
+    recordInspectionEvent(
+      event.kind,
+      event.payload,
+      changesState: event.changesState,
+    );
   }
 
   _InspectionCommandTransaction? get _currentCommandTransaction {

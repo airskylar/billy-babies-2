@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/foundation.dart';
 
+import '../input/pointer_trace.dart';
 import 'runtime_inspection.dart';
 
 abstract interface class RuntimeInspectionTarget {
@@ -11,6 +12,12 @@ abstract interface class RuntimeInspectionTarget {
   RuntimeSnapshot snapshot(SnapshotDetail detail);
 
   RuntimeEventBatch eventBatchAfter(int sequence);
+
+  Future<InspectionCaptureResult> captureFrame(
+    InspectionCaptureRequest request,
+  );
+
+  Future<PointerReplayResult> replayPointerTrace(PointerTrace trace);
 
   /// [initiatingSession] owns command events and the response across awaits.
   Future<RuntimeCommandResult> dispatch(
@@ -67,6 +74,11 @@ class RuntimeInspectionBridge {
     developer.registerExtension('ext.coreflame.getSnapshot', _getSnapshot);
     developer.registerExtension('ext.coreflame.getEvents', _getEvents);
     developer.registerExtension('ext.coreflame.dispatch', _dispatch);
+    developer.registerExtension('ext.coreflame.captureFrame', _captureFrame);
+    developer.registerExtension(
+      'ext.coreflame.replayPointerTrace',
+      _replayPointerTrace,
+    );
     _registered = true;
     return session;
   }
@@ -171,6 +183,92 @@ class RuntimeInspectionBridge {
     } on FormatException catch (error) {
       return _invalidParameters(error.message);
     } on RangeError catch (error) {
+      return _invalidParameters(error.message);
+    }
+  }
+
+  static Future<developer.ServiceExtensionResponse> _captureFrame(
+    String method,
+    Map<String, String> parameters,
+  ) async {
+    final session = _session;
+    if (session == null) return _unavailable();
+
+    try {
+      final arguments = _requestArguments(parameters);
+      _rejectUnexpected(arguments, const {
+        'step_seconds',
+        'detail',
+        'include_png',
+        'pixel_ratio',
+      });
+      final rawStep = arguments['step_seconds'];
+      final step = rawStep == null ? null : double.tryParse(rawStep);
+      final pixelRatio = double.tryParse(arguments['pixel_ratio'] ?? '1');
+      final includePng = switch (arguments['include_png']) {
+        null || 'false' => false,
+        'true' => true,
+        _ => throw const FormatException(
+          'Expected include_png to be true or false',
+        ),
+      };
+      if (rawStep != null && (step == null || !step.isFinite || step < 0)) {
+        throw const FormatException(
+          'Expected step_seconds to be a finite non-negative number',
+        );
+      }
+      if (pixelRatio == null || !pixelRatio.isFinite || pixelRatio <= 0) {
+        throw const FormatException(
+          'Expected pixel_ratio to be a finite positive number',
+        );
+      }
+      final result = await session.target.captureFrame(
+        InspectionCaptureRequest(
+          stepSeconds: step,
+          detail: SnapshotDetail.parse(arguments['detail']),
+          includePng: includePng,
+          pixelRatio: pixelRatio,
+        ),
+      );
+      if (!session.isActive) {
+        throw const FormatException(
+          'The game session changed while capturing the frame',
+        );
+      }
+      return _result(session: session, value: result.toJson());
+    } on FormatException catch (error) {
+      return _invalidParameters(error.message);
+    }
+  }
+
+  static Future<developer.ServiceExtensionResponse> _replayPointerTrace(
+    String method,
+    Map<String, String> parameters,
+  ) async {
+    final session = _session;
+    if (session == null) return _unavailable();
+
+    try {
+      final arguments = _requestArguments(parameters);
+      _rejectUnexpected(arguments, const {'trace'});
+      final encodedTrace = arguments['trace'];
+      if (encodedTrace == null) {
+        throw const FormatException('Missing pointer trace');
+      }
+      final decoded = jsonDecode(utf8.decode(base64Decode(encodedTrace)));
+      if (decoded is! Map<Object?, Object?>) {
+        throw const FormatException('Expected pointer trace object');
+      }
+      final result = await session.target.replayPointerTrace(
+        PointerTrace.fromJson(decoded.cast<String, Object?>()),
+      );
+      if (!session.isActive) {
+        throw const FormatException(
+          'The game session changed while replaying pointer input',
+        );
+      }
+      return _result(session: session, value: result.toJson());
+    } on FormatException catch (error) {
       return _invalidParameters(error.message);
     }
   }

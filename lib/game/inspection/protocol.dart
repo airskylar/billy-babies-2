@@ -1,7 +1,11 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../runtime/inspection/runtime_inspection.dart';
 import '../feedback/feedback.dart' show FeedbackSetting;
 
 export '../feedback/feedback.dart' show FeedbackSetting;
+
+part 'protocol.g.dart';
 
 class MatchSnapshot {
   const MatchSnapshot({
@@ -37,6 +41,7 @@ class MatchSnapshot {
   };
 }
 
+@JsonSerializable(createFactory: false)
 class FeedbackFailureSnapshot {
   const FeedbackFailureSnapshot({
     required this.feature,
@@ -48,11 +53,7 @@ class FeedbackFailureSnapshot {
   final String errorType;
   final String message;
 
-  Map<String, Object?> toJson() => {
-    'feature': feature,
-    'errorType': errorType,
-    'message': message,
-  };
+  Map<String, Object?> toJson() => _$FeedbackFailureSnapshotToJson(this);
 }
 
 class FeedbackSnapshot {
@@ -87,6 +88,7 @@ class FeedbackSnapshot {
   };
 }
 
+@JsonSerializable(createFactory: false, explicitToJson: true)
 class SceneLayoutSnapshot {
   const SceneLayoutSnapshot({
     required this.isLandscape,
@@ -100,6 +102,7 @@ class SceneLayoutSnapshot {
     required this.settingRows,
   });
 
+  @JsonKey(name: 'orientation', toJson: _orientationToJson)
   final bool isLandscape;
   final RectSnapshot panel;
   final RectSnapshot board;
@@ -110,21 +113,14 @@ class SceneLayoutSnapshot {
   final RectSnapshot settingsCloseButton;
   final List<RectSnapshot> settingRows;
 
-  Map<String, Object?> toJson() => {
-    'orientation': isLandscape ? 'landscape' : 'portrait',
-    'panel': panel.toJson(),
-    'board': board.toJson(),
-    'cells': cells.map((cell) => cell.toJson()).toList(growable: false),
-    'roundButton': roundButton.toJson(),
-    'settingsButton': settingsButton.toJson(),
-    'settingsCard': settingsCard.toJson(),
-    'settingsCloseButton': settingsCloseButton.toJson(),
-    'settingRows': settingRows
-        .map((row) => row.toJson())
-        .toList(growable: false),
-  };
+  Map<String, Object?> toJson() => _$SceneLayoutSnapshotToJson(this);
 }
 
+@JsonSerializable(
+  createFactory: false,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class SceneSnapshot {
   const SceneSnapshot({
     required this.overlay,
@@ -143,6 +139,7 @@ class SceneSnapshot {
   final String overlay;
   final bool assetsLoaded;
   final bool animationsSettled;
+  @JsonKey(includeIfNull: true)
   final int? lastPlacedCell;
   final double? elapsedSeconds;
   final List<double>? markProgress;
@@ -152,21 +149,10 @@ class SceneSnapshot {
   final double? roundButtonVelocity;
   final SceneLayoutSnapshot? layout;
 
-  Map<String, Object?> toJson() => {
-    'overlay': overlay,
-    'assetsLoaded': assetsLoaded,
-    'animationsSettled': animationsSettled,
-    'lastPlacedCell': lastPlacedCell,
-    'elapsedSeconds': ?elapsedSeconds,
-    'markProgress': ?markProgress,
-    'winningLineProgress': ?winningLineProgress,
-    'roundButtonPhase': ?roundButtonPhase,
-    'roundButtonSink': ?roundButtonSink,
-    'roundButtonVelocity': ?roundButtonVelocity,
-    if (layout case final value?) 'layout': value.toJson(),
-  };
+  Map<String, Object?> toJson() => _$SceneSnapshotToJson(this);
 }
 
+@JsonSerializable(createFactory: false, explicitToJson: true)
 class TinyTacticsSnapshot implements GameInspectionState {
   const TinyTacticsSnapshot({
     required this.match,
@@ -179,12 +165,11 @@ class TinyTacticsSnapshot implements GameInspectionState {
   final SceneSnapshot? scene;
 
   @override
-  Map<String, Object?> toJson() => {
-    'match': match.toJson(),
-    'feedback': feedback.toJson(),
-    'scene': scene?.toJson(),
-  };
+  Map<String, Object?> toJson() => _$TinyTacticsSnapshotToJson(this);
 }
+
+String _orientationToJson(bool isLandscape) =>
+    isLandscape ? 'landscape' : 'portrait';
 
 enum TinyTacticsEventKind implements InspectionEventKind {
   moveAccepted,
@@ -200,123 +185,173 @@ enum TinyTacticsEventKind implements InspectionEventKind {
   String get wireName => name;
 }
 
-enum TinyTacticsCommandKind {
-  playCell(
-    wireName: 'playCell',
-    description: 'Place the current player mark in a board cell.',
-    parameters: [
-      CommandParameterDescriptor(
-        name: 'cell',
-        type: CommandParameterType.integer,
-        required: true,
-        description: 'Zero-based board cell index.',
-      ),
-    ],
-  ),
-  startNextRound(
-    wireName: 'startNextRound',
-    description: 'Clear the board and alternate the starting player.',
-  ),
-  resetMatch(
-    wireName: 'resetMatch',
-    description: 'Reset the board, scores, and starting player.',
-  ),
-  setSettingsOpen(
-    wireName: 'setSettingsOpen',
-    description: 'Open or close the settings overlay.',
-    parameters: [
-      CommandParameterDescriptor(
-        name: 'open',
-        type: CommandParameterType.boolean,
-        required: true,
-        description: 'Whether the settings overlay should be open.',
-      ),
-    ],
-  ),
-  setFeedbackSetting(
-    wireName: 'setFeedbackSetting',
-    description: 'Enable or disable a sound, music, or vibration setting.',
-    parameters: [
-      CommandParameterDescriptor(
-        name: 'setting',
-        type: CommandParameterType.string,
-        required: true,
-        description: 'One of sound, music, or vibration.',
-      ),
-      CommandParameterDescriptor(
-        name: 'enabled',
-        type: CommandParameterType.boolean,
-        required: true,
-        description: 'Whether the setting should be enabled.',
-      ),
-    ],
-  );
-
-  const TinyTacticsCommandKind({
-    required this.wireName,
-    required this.description,
-    this.parameters = const [],
+final class TinyTacticsEvent implements InspectionEventData {
+  const TinyTacticsEvent._({
+    required this.kind,
+    required this.payload,
+    this.changesState = true,
   });
 
-  final String wireName;
-  final String description;
-  final List<CommandParameterDescriptor> parameters;
-
-  CommandDescriptor get descriptor => CommandDescriptor(
-    name: wireName,
-    description: description,
-    parameters: parameters,
+  factory TinyTacticsEvent.moveAccepted({
+    required int cell,
+    required String mark,
+    required String result,
+    required List<int> winningCells,
+    required String origin,
+  }) => TinyTacticsEvent._(
+    kind: TinyTacticsEventKind.moveAccepted,
+    payload: {
+      'cell': cell,
+      'mark': mark,
+      'result': result,
+      'winningCells': winningCells,
+      'origin': origin,
+    },
   );
 
-  static TinyTacticsCommandKind parse(String wireName) {
-    for (final kind in values) {
-      if (kind.wireName == wireName) return kind;
-    }
-    throw FormatException('Unknown command: $wireName');
-  }
+  factory TinyTacticsEvent.moveRejected({
+    required int cell,
+    required String reason,
+    required String origin,
+  }) => TinyTacticsEvent._(
+    kind: TinyTacticsEventKind.moveRejected,
+    payload: {'cell': cell, 'reason': reason, 'origin': origin},
+    changesState: false,
+  );
+
+  factory TinyTacticsEvent.roundStarted({
+    required String starter,
+    required String origin,
+  }) => TinyTacticsEvent._(
+    kind: TinyTacticsEventKind.roundStarted,
+    payload: {'starter': starter, 'origin': origin},
+  );
+
+  factory TinyTacticsEvent.matchReset({required String origin}) =>
+      TinyTacticsEvent._(
+        kind: TinyTacticsEventKind.matchReset,
+        payload: {'origin': origin},
+      );
+
+  factory TinyTacticsEvent.settingsChanged({
+    required bool open,
+    required String origin,
+  }) => TinyTacticsEvent._(
+    kind: open
+        ? TinyTacticsEventKind.settingsOpened
+        : TinyTacticsEventKind.settingsClosed,
+    payload: {'origin': origin},
+  );
+
+  factory TinyTacticsEvent.feedback({
+    required bool failure,
+    required bool changesState,
+    required String feedbackEvent,
+    required Map<String, Object?> details,
+  }) => TinyTacticsEvent._(
+    kind: failure
+        ? TinyTacticsEventKind.feedbackFailure
+        : TinyTacticsEventKind.feedbackStateChanged,
+    payload: {'feedbackEvent': feedbackEvent, ...details},
+    changesState: changesState,
+  );
+
+  @override
+  final TinyTacticsEventKind kind;
+
+  @override
+  final Map<String, Object?> payload;
+
+  @override
+  final bool changesState;
 }
 
-sealed class TinyTacticsCommand {
-  const TinyTacticsCommand();
-
-  TinyTacticsCommandKind get kind;
-
-  String get name => kind.wireName;
-}
-
-class PlayCellCommand extends TinyTacticsCommand {
+class PlayCellCommand {
   const PlayCellCommand(this.cell);
 
   final int cell;
 
-  @override
-  TinyTacticsCommandKind get kind => TinyTacticsCommandKind.playCell;
+  static final spec = RuntimeCommandSpec<PlayCellCommand>(
+    descriptor: const CommandDescriptor(
+      name: 'playCell',
+      description: 'Place the current player mark in a board cell.',
+      parameters: [
+        CommandParameterDescriptor(
+          name: 'cell',
+          type: CommandParameterType.integer,
+          required: true,
+          description: 'Zero-based board cell index.',
+        ),
+      ],
+    ),
+    decode: (arguments) => PlayCellCommand(arguments.requireInt('cell')),
+    encode: (command) => {'cell': '${command.cell}'},
+  );
+
+  RuntimeCommandEnvelope toEnvelope({int? expectedRevision}) =>
+      spec.envelope(this, expectedRevision: expectedRevision);
 }
 
-class StartNextRoundCommand extends TinyTacticsCommand {
+class StartNextRoundCommand {
   const StartNextRoundCommand();
 
-  @override
-  TinyTacticsCommandKind get kind => TinyTacticsCommandKind.startNextRound;
+  static final spec = RuntimeCommandSpec<StartNextRoundCommand>(
+    descriptor: const CommandDescriptor(
+      name: 'startNextRound',
+      description: 'Clear the board and alternate the starting player.',
+    ),
+    decode: (_) => const StartNextRoundCommand(),
+    encode: (_) => const {},
+  );
+
+  RuntimeCommandEnvelope toEnvelope({int? expectedRevision}) =>
+      spec.envelope(this, expectedRevision: expectedRevision);
 }
 
-class ResetMatchCommand extends TinyTacticsCommand {
+class ResetMatchCommand {
   const ResetMatchCommand();
 
-  @override
-  TinyTacticsCommandKind get kind => TinyTacticsCommandKind.resetMatch;
+  static final spec = RuntimeCommandSpec<ResetMatchCommand>(
+    descriptor: const CommandDescriptor(
+      name: 'resetMatch',
+      description: 'Reset the board, scores, and starting player.',
+    ),
+    decode: (_) => const ResetMatchCommand(),
+    encode: (_) => const {},
+  );
+
+  RuntimeCommandEnvelope toEnvelope({int? expectedRevision}) =>
+      spec.envelope(this, expectedRevision: expectedRevision);
 }
 
-class SetSettingsOpenCommand extends TinyTacticsCommand {
+class SetSettingsOpenCommand {
   const SetSettingsOpenCommand(this.open);
 
   final bool open;
 
-  @override
-  TinyTacticsCommandKind get kind => TinyTacticsCommandKind.setSettingsOpen;
+  static final spec = RuntimeCommandSpec<SetSettingsOpenCommand>(
+    descriptor: const CommandDescriptor(
+      name: 'setSettingsOpen',
+      description: 'Open or close the settings overlay.',
+      parameters: [
+        CommandParameterDescriptor(
+          name: 'open',
+          type: CommandParameterType.boolean,
+          required: true,
+          description: 'Whether the settings overlay should be open.',
+        ),
+      ],
+    ),
+    decode: (arguments) =>
+        SetSettingsOpenCommand(arguments.requireBool('open')),
+    encode: (command) => {'open': '${command.open}'},
+  );
+
+  RuntimeCommandEnvelope toEnvelope({int? expectedRevision}) =>
+      spec.envelope(this, expectedRevision: expectedRevision);
 }
 
-class SetFeedbackSettingCommand extends TinyTacticsCommand {
+class SetFeedbackSettingCommand {
   const SetFeedbackSettingCommand({
     required this.setting,
     required this.enabled,
@@ -325,98 +360,35 @@ class SetFeedbackSettingCommand extends TinyTacticsCommand {
   final FeedbackSetting setting;
   final bool enabled;
 
-  @override
-  TinyTacticsCommandKind get kind => TinyTacticsCommandKind.setFeedbackSetting;
-}
+  static final spec = RuntimeCommandSpec<SetFeedbackSettingCommand>(
+    descriptor: const CommandDescriptor(
+      name: 'setFeedbackSetting',
+      description: 'Enable or disable a sound, music, or vibration setting.',
+      parameters: [
+        CommandParameterDescriptor(
+          name: 'setting',
+          type: CommandParameterType.string,
+          required: true,
+          description: 'One of sound, music, or vibration.',
+        ),
+        CommandParameterDescriptor(
+          name: 'enabled',
+          type: CommandParameterType.boolean,
+          required: true,
+          description: 'Whether the setting should be enabled.',
+        ),
+      ],
+    ),
+    decode: (arguments) => SetFeedbackSettingCommand(
+      setting: arguments.requireEnum('setting', FeedbackSetting.values),
+      enabled: arguments.requireBool('enabled'),
+    ),
+    encode: (command) => {
+      'setting': command.setting.name,
+      'enabled': '${command.enabled}',
+    },
+  );
 
-class TinyTacticsCommandRequest {
-  const TinyTacticsCommandRequest({
-    required this.command,
-    this.expectedRevision,
-  });
-
-  final TinyTacticsCommand command;
-  final int? expectedRevision;
-
-  static TinyTacticsCommandRequest parse(RuntimeCommandEnvelope envelope) {
-    final arguments = envelope.arguments;
-    final kind = TinyTacticsCommandKind.parse(envelope.name);
-    final command = switch (kind) {
-      TinyTacticsCommandKind.playCell => PlayCellCommand(
-        _requiredInt(arguments, 'cell'),
-      ),
-      TinyTacticsCommandKind.startNextRound => const StartNextRoundCommand(),
-      TinyTacticsCommandKind.resetMatch => const ResetMatchCommand(),
-      TinyTacticsCommandKind.setSettingsOpen => SetSettingsOpenCommand(
-        _requiredBool(arguments, 'open'),
-      ),
-      TinyTacticsCommandKind.setFeedbackSetting => SetFeedbackSettingCommand(
-        setting: _requiredSetting(arguments),
-        enabled: _requiredBool(arguments, 'enabled'),
-      ),
-    };
-
-    final allowedKeys = kind.parameters
-        .map((parameter) => parameter.name)
-        .toSet();
-    final unexpectedKeys = arguments.keys
-        .where((key) => !allowedKeys.contains(key))
-        .toList(growable: false);
-    if (unexpectedKeys.isNotEmpty) {
-      throw FormatException(
-        'Unexpected command parameter(s): ${unexpectedKeys.join(', ')}',
-      );
-    }
-
-    return TinyTacticsCommandRequest(
-      command: command,
-      expectedRevision: envelope.expectedRevision,
-    );
-  }
-
-  RuntimeCommandEnvelope toEnvelope() {
-    final arguments = switch (command) {
-      PlayCellCommand(:final cell) => {'cell': '$cell'},
-      StartNextRoundCommand() ||
-      ResetMatchCommand() => const <String, String>{},
-      SetSettingsOpenCommand(:final open) => {'open': '$open'},
-      SetFeedbackSettingCommand(:final setting, :final enabled) => {
-        'setting': setting.name,
-        'enabled': '$enabled',
-      },
-    };
-    return RuntimeCommandEnvelope(
-      name: command.name,
-      expectedRevision: expectedRevision,
-      arguments: arguments,
-    );
-  }
-
-  static int _requiredInt(Map<String, String> arguments, String key) {
-    final value = arguments[key];
-    final parsed = value == null ? null : int.tryParse(value);
-    if (parsed == null) {
-      throw FormatException('Expected integer parameter: $key');
-    }
-    return parsed;
-  }
-
-  static bool _requiredBool(Map<String, String> arguments, String key) {
-    return switch (arguments[key]) {
-      'true' => true,
-      'false' => false,
-      _ => throw FormatException('Expected boolean parameter: $key'),
-    };
-  }
-
-  static FeedbackSetting _requiredSetting(Map<String, String> arguments) {
-    return switch (arguments['setting']) {
-      'sound' => FeedbackSetting.sound,
-      'music' => FeedbackSetting.music,
-      'vibration' => FeedbackSetting.vibration,
-      _ => throw const FormatException(
-        'Expected setting parameter: sound, music, or vibration',
-      ),
-    };
-  }
+  RuntimeCommandEnvelope toEnvelope({int? expectedRevision}) =>
+      spec.envelope(this, expectedRevision: expectedRevision);
 }

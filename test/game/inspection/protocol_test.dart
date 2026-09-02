@@ -5,18 +5,17 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Tiny Tactics inspection protocol', () {
     test('parses typed commands and rejects unknown parameters', () {
-      final request = TinyTacticsCommandRequest.parse(
-        RuntimeCommandEnvelope.parse(const {
-          'command': 'setFeedbackSetting',
-          'setting': 'music',
-          'enabled': 'false',
-          'expected_revision': '12',
-        }),
-      );
+      final envelope = RuntimeCommandEnvelope.parse(const {
+        'command': 'setFeedbackSetting',
+        'setting': 'music',
+        'enabled': 'false',
+        'expected_revision': '12',
+      });
+      final command = SetFeedbackSettingCommand.spec.decodeEnvelope(envelope);
 
-      expect(request.expectedRevision, 12);
+      expect(envelope.expectedRevision, 12);
       expect(
-        request.command,
+        command,
         isA<SetFeedbackSettingCommand>()
             .having(
               (command) => command.setting,
@@ -26,7 +25,7 @@ void main() {
             .having((command) => command.enabled, 'enabled', isFalse),
       );
       expect(
-        () => TinyTacticsCommandRequest.parse(
+        () => ResetMatchCommand.spec.decodeEnvelope(
           RuntimeCommandEnvelope.parse(const {
             'command': 'resetMatch',
             'unexpected': 'value',

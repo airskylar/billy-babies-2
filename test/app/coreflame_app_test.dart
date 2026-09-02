@@ -2,7 +2,7 @@ import 'package:coreflame/app/coreflame_app.dart';
 import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
 import 'package:coreflame/game/game_root.dart';
 import 'package:coreflame/runtime/game_services/game_platform_services.dart';
-import 'package:flame/game.dart';
+import 'package:coreflame/runtime/inspection/inspection_surface.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +18,10 @@ void main() {
     await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
     await tester.pump();
 
-    expect(find.byType(GameWidget<TinyTacticsGame>), findsOneWidget);
+    expect(
+      find.byType(InspectableGameSurface<TinyTacticsGame>),
+      findsOneWidget,
+    );
     expect(gameServices.isAuthenticated, isTrue);
     expect(
       gameServices.calls.map((call) => call.operation),
@@ -87,7 +90,7 @@ void main() {
     await tester.pump();
 
     final gameContext = tester.element(
-      find.byType(GameWidget<TinyTacticsGame>),
+      find.byType(InspectableGameSurface<TinyTacticsGame>),
     );
     final result = showScenarioLauncher(gameContext);
     await tester.pumpAndSettle();
@@ -101,10 +104,10 @@ void main() {
 }
 
 TinyTacticsGame _currentGame(WidgetTester tester) => tester
-    .widget<GameWidget<TinyTacticsGame>>(
-      find.byType(GameWidget<TinyTacticsGame>),
+    .widget<InspectableGameSurface<TinyTacticsGame>>(
+      find.byType(InspectableGameSurface<TinyTacticsGame>),
     )
-    .game!;
+    .game;
 
 Future<void> _openLauncherWithGesture(WidgetTester tester) async {
   final gestures = <TestGesture>[];

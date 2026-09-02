@@ -13,7 +13,8 @@ at `tool/coreflame_inspect.dart` provides:
 - a bounded, sequence-addressable event journal;
 - a discoverable command manifest and revision-checked semantic actions;
 - the Flame component tree and Flutter widget tree; and
-- pause, resume, and deterministic step controls.
+- pause, resume, deterministic step controls, atomic frame capture, and
+  validated pointer-trace replay.
 
 Copy the VM service URL printed by `flutter run` and pass it with `--uri` or set
 `COREFLAME_VM_SERVICE_URL`. Treat the URL as ephemeral local access data: do not commit it or place it
@@ -36,7 +37,9 @@ Prefer the narrowest structured query that answers the question:
 3. Use `tree` for Flame ownership and `widget-tree` for the Flutter shell and widget composition.
 4. Request a visual snapshot only when the task depends on bounds, transforms, hit targets, or
    animation progress.
-5. Use `pause` and `step` when a frame-stable observation matters.
+5. Use `pause` and `capture --step` when a frame-stable rendered observation
+   matters. The returned snapshot and optional PNG describe the same presented
+   frame.
 
 Use screenshots for rendered appearance, golden comparison, or evidence that structured state cannot
 represent. Do not treat screenshots, coordinate tapping, ad hoc debug prints, or debugger reads of
@@ -46,6 +49,9 @@ private fields as the primary state interface when the protocol already exposes 
 
 - Prefer `dispatch` actions over pointer coordinates unless the task specifically tests hit testing
   or gesture routing.
+- Replay pointer traces only while paused. Use complete, timestamp-ordered
+  pointer lifecycles and prefer normalized coordinates for traces intended to
+  survive viewport changes.
 - Discover command names and parameter types with `capabilities`; pass game-defined parameters as
   `NAME=VALUE` arguments instead of assuming Tiny Tactics commands.
 - Read a fresh snapshot and pass its revision with `--expected-revision` before mutating state.
@@ -71,6 +77,9 @@ When an implementation task changes state that agents need to reason about or ma
   demo imports, state names, event kinds, and commands;
 - put game-specific snapshots, typed event kinds, strict command parsing, and semantic dispatch in
   that game's inspection protocol and `RuntimeInspectionAdapter`;
+- define commands with `RuntimeCommandSpec` and register typed handlers in one
+  `RuntimeCommandRegistry`; use `InspectionEventData` for game events so wire
+  names and state-change semantics remain centralized;
 - derive snapshots from the authoritative state owner instead of maintaining a parallel debug model;
 - preserve stable component IDs and derive parent/child relationships from the component tree;
 - keep semantic snapshots compact and deterministic, placing geometry and continuously changing
