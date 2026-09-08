@@ -2,6 +2,16 @@
 
 Status: proposed implementation plan, September 8, 2026. No gameplay implementation or card-design changes are included in this document.
 
+## Detailed milestone plans
+
+1. [Prototype contract and starter replacement](docs/plans/billy-babies-duel/01-foundation.md)
+2. [Rules engine and 12-card interaction harness](docs/plans/billy-babies-duel/02-rules-and-interactions.md)
+3. [Complete card pool and five preset decks](docs/plans/billy-babies-duel/03-cards-and-decks.md)
+4. [Human-versus-computer playable duel](docs/plans/billy-babies-duel/04-playable-duel.md)
+5. [Replays, verification, and playtesting](docs/plans/billy-babies-duel/05-verification-and-playtests.md)
+
+Finish milestone 1 first. Milestone 3's card writing can proceed while milestone 2 is implemented; executable content depends on milestone 2's domain contracts. Milestone 4 can begin with interaction scenarios, but its completion requires milestones 2 and 3. Build inspection and replay foundations as state is introduced; milestone 5 completes and verifies them against the playable game. These dependencies describe work order, not authorization to start implementation or delegate work.
+
 ## Goal
 
 Build an offline, single-player Billy Babies Duel prototype in Coreflame. A human plays complete best-of-three matches against a computer opponent to test the rules, card interactions, deck strategies, and clarity of decisions.
@@ -81,7 +91,7 @@ The heuristic should prefer taking or preserving contested lanes over adding sur
 
 Evaluate play and likely discard together, then choose the actual normal discard when that phase arrives using the information revealed by resolution. Decide whether to spend 200 wand magic based on the declared play's threat and the value of retaining cancellation for replacement plays or later rounds. Cover optional-action skips, short hands, repeated cancellations, and all printed choices in the finalized pool.
 
-The bot sees its own hand and legitimately revealed information. It cannot inspect the human hand, either draw order, future qualities, or the match RNG state. Candidate evaluation must not mutate the live match. Add a test showing that changing unseen information leaves its decision unchanged when its observation and policy seed are unchanged.
+The bot sees its own hand and legitimately revealed information, including cards explicitly revealed to it by a card effect. It cannot inspect the human hand, unrevealed draw-pile order, future qualities, or the match RNG state. Candidate evaluation must not mutate the live match. Add a test showing that changing unseen information leaves its decision unchanged when its observation and policy seed are unchanged.
 
 Expose a short decision reason in debug mode, such as “contests two close lanes” or “saves wand for a stronger threat.” Add a small presentation delay to make computer actions readable; resolve within the legal response window and cancel pending bot work on pause, restart, or game removal. Validate the current match/decision identity before applying a scheduled action.
 
