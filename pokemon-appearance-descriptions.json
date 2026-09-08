@@ -1,0 +1,3194 @@
+[
+  {
+    "name": "Squishimuh",
+    "descriptions": [
+      "A squishy lavender calf with a cream belly, floppy square ears, and tiny plum hooves.",
+      "A peach gelatinous creature with a flattened oval body, mitten hands, and turquoise cheek bubbles.",
+      "A mint-green, pillow-shaped beast with stubby legs, soft ivory horns, and a broad, sleepy face."
+    ]
+  },
+  {
+    "name": "Petalune",
+    "descriptions": [
+      "An ivory rabbit with crescent ears, layered pink petal fur, and a silver moon marking.",
+      "A floating lilac blossom creature with a golden crescent core and trailing dark-blue root ribbons.",
+      "A midnight-blue moth with pale peach petal wings and luminous white crescents along their edges."
+    ]
+  },
+  {
+    "name": "Mipchirp",
+    "descriptions": [
+      "A tiny lemon-yellow songbird with an oversized teal beak, round cheeks, and three upright feathers.",
+      "A coral feathered mouse with narrow violet wings, whisker-like cheek plumes, and a forked tail.",
+      "A mint-green, egg-shaped bird with orange stilt legs and a throat pouch resembling a musical note."
+    ]
+  },
+  {
+    "name": "Muuberry",
+    "descriptions": [
+      "A blueberry-purple calf with cream patches, leaf-shaped ears, and little raspberry horns.",
+      "A round strawberry-red forest beast with seed freckles, moss-green wool, and a broad bovine muzzle.",
+      "A translucent deep-purple blackberry jelly creature with four pale pink hooves and a green leafy crown between drooping ears."
+    ]
+  },
+  {
+    "name": "Blushimi",
+    "descriptions": [
+      "A pear-shaped cream sprite with enormous rose-pink cheeks, ribbon arms, and bashfully lowered amber eyes.",
+      "A silky white fish with salmon-pink fins folded over its face and a heart-shaped tail.",
+      "A pale lavender mothling with fuzzy pink antennae and peach blush circles visible through translucent wings."
+    ]
+  },
+  {
+    "name": "Lumipa",
+    "descriptions": [
+      "A golden, teardrop-shaped energy being with paddle feet, glowing white eyes, and a transparent amber belly.",
+      "A powder-blue fairy creature with long silver fingers, luminous lime freckles, and floating oval wings.",
+      "A squat ivory living lantern with peach ceramic plates and a yellow core shining through leaf-shaped openings."
+    ]
+  },
+  {
+    "name": "Bunshine",
+    "descriptions": [
+      "A butter-yellow bunny with sunray ears, an orange cheek ruff, and a tiny white cloud tail.",
+      "A golden-brown bun creature with rabbit paws, cream icing whiskers, and a glowing apricot spiral belly.",
+      "A white airborne rabbit with translucent amber wings and a small orange sun suspended between its ears."
+    ]
+  },
+  {
+    "name": "Neno",
+    "descriptions": [
+      "A compact turquoise alien creature with oversized coral feet, a domed head, and two pearl antennae.",
+      "A lavender, loop-shaped dream creature with floating mint hands and one large, sleepy golden eye.",
+      "A cream, quadrupedal magical familiar with velvet navy ears, a forked tail, and tiny pink nose gems."
+    ]
+  },
+  {
+    "name": "Opaluu",
+    "descriptions": [
+      "A milky-white seal with opalescent pink and aqua patches, glassy flippers, and round pearl eyes.",
+      "A floating violet mineral creature with an open opal ring body and three suspended silver feet.",
+      "A chubby cream snail with a faceted blue-pink shell and soft lilac antennae tipped with pearls."
+    ]
+  },
+  {
+    "name": "Twilumi",
+    "descriptions": [
+      "A dusky purple fox with sunset-orange ears, a luminous blue tail tip, and silver cheek stars.",
+      "A translucent indigo jellyfish with a peach twilight gradient and tiny golden lights inside its bell.",
+      "A lavender owl with a crescent face, navy wing edges, and pale yellow feather tips glowing softly."
+    ]
+  },
+  {
+    "name": "Clovercup",
+    "descriptions": [
+      "A tiny green creature nestled in a white flower cup, with clover ears and honey-yellow feet.",
+      "A jade frog with a cupped lily-pad back, cream toes, and a four-leaf clover crown.",
+      "A terracotta teacup golem with mint leaf handles, a pink flower face, and root-like brown legs."
+    ]
+  },
+  {
+    "name": "Vellumi",
+    "descriptions": [
+      "A velvety mauve spirit creature with a tapered body, cream ribbon wings, and a luminous turquoise collar.",
+      "An ivory, scroll-shaped living construct with curled gold edges, tiny blue hands, and glowing ink eyes.",
+      "A midnight-blue quadruped with silky silver fur panels and an exposed lavender light nestled between its horns."
+    ]
+  },
+  {
+    "name": "Purrsimian",
+    "descriptions": [
+      "A cinnamon monkey with a cream cat muzzle, triangular ears, and a striped prehensile tail.",
+      "A silver feline with long lilac grasping arms, golden eyes, and a curled monkey-like tail.",
+      "A moss-green tree monkey with plush peach cheek tufts, feline slit pupils, and white mitten paws."
+    ]
+  },
+  {
+    "name": "Fuwara",
+    "descriptions": [
+      "A floating blush-pink dream creature with feathery ribbon limbs, an ivory belly, and a soft cloud crest.",
+      "A mint, pear-shaped fairy creature with downy white wings, long lilac toes, and gently closed eyes.",
+      "A round apricot magical familiar with shaggy cream fur, broad ears, and a fan of pale blue tails."
+    ]
+  },
+  {
+    "name": "Pomeloo",
+    "descriptions": [
+      "A pale yellow elephant calf with a pomelo-shaped body, green leaf ears, and a short pink trunk.",
+      "A round lime-green creature with citrus-segment armor, cream limbs, and a coral sprout curling overhead.",
+      "A peach fruit bat with thick yellow rind wings, a white belly, and tiny leaf-shaped feet."
+    ]
+  },
+  {
+    "name": "Cuttletoad",
+    "descriptions": [
+      "A teal toad with a rippling cuttlefish mantle, lilac tentacle whiskers, and orange suction-cup toes.",
+      "A sandy-yellow cuttlefish with squat frog legs, a mint belly, and dark brown pebble spots.",
+      "A translucent pink amphibian with a broad fin skirt, purple ink freckles, and two curled tentacle arms."
+    ]
+  },
+  {
+    "name": "Shybluum",
+    "descriptions": [
+      "A lavender flower creature hiding its cream face behind oversized pink petals, with tiny green root feet.",
+      "A pale blue deerling with closed rosebud antlers, moss-green shoulder fluff, and heavy-lidded violet eyes.",
+      "A mint seed spirit with a drooping ivory blossom hood and small peach hands covering its cheeks."
+    ]
+  },
+  {
+    "name": "Paralune",
+    "descriptions": [
+      "A navy manta creature with crescent-shaped silver fins and twin golden moons floating above its back.",
+      "A pale lilac moth with two parallel crescent wings, teal antennae, and a pearl-gray segmented body.",
+      "A cream lunar sprite with an arched blue parasol crest and long silver ribbon legs."
+    ]
+  },
+  {
+    "name": "Trufflet",
+    "descriptions": [
+      "A cocoa-brown piglet with a knobbly truffle back, pink snout, and tiny cream mushroom ears.",
+      "A round chocolate creature with a cracked dark shell, golden ganache core, and three almond-shaped feet.",
+      "A russet mole with a pale beige mushroom cap, soft black paws, and crumb-like cheek freckles."
+    ]
+  },
+  {
+    "name": "Cloudseed",
+    "descriptions": [
+      "A white seedling creature with cloud-fluff leaves, a pale blue seed body, and dangling golden roots.",
+      "A floating mint seedpod with a cottony lavender parachute and a tiny peach face beneath its seam.",
+      "A sky-blue bird with a seed-shaped brown belly and a crown of white dandelion-cloud tufts."
+    ]
+  },
+  {
+    "name": "Jaspurr",
+    "descriptions": [
+      "A russet kitten with cream jasper bands, polished stone paws, and luminous green eyes.",
+      "A squat ocher mineral cat with faceted ears, burgundy marbling, and a ring-shaped tail.",
+      "A smoky-gray feline spirit with floating red jasper shoulder stones and long golden crystal whiskers."
+    ]
+  },
+  {
+    "name": "Starluma",
+    "descriptions": [
+      "A pale yellow star creature with a glowing white core, rounded points, and tiny lavender mitten hands.",
+      "An indigo fawn with luminous gold star antlers, silver spots, and a soft blue comet tail.",
+      "A translucent pink ray with five star-shaped fins and small white lights scattered across its belly."
+    ]
+  },
+  {
+    "name": "Aerimun",
+    "descriptions": [
+      "A sky-blue airborne creature with a crescent body, ivory membrane wings, and long silver antennae.",
+      "A mint, hollow-bodied elemental with cloud-white shoulder rings and a tiny gold face suspended inside.",
+      "A violet wyvern-like familiar with narrow teal wings, feathery ankles, and a silver moon-shaped throat patch."
+    ]
+  },
+  {
+    "name": "Afonella",
+    "descriptions": [
+      "A turquoise river sprite with ribbon limbs, a pearl-white bell skirt, and tiny orange fin ears.",
+      "A cream, long-necked fairy creature with lavender frills, glassy blue feet, and a delicate spiral crest.",
+      "A pale green water familiar with a rounded shell, gold vein patterns, and a flowing silver tail."
+    ]
+  },
+  {
+    "name": "Alifae",
+    "descriptions": [
+      "A lilac fairy creature with leaf-shaped turquoise wings, long ivory fingers, and a golden seed crown.",
+      "A tiny peach winged humanoid with translucent blue moth wings and an oversized white flower hood.",
+      "A jade, deer-shaped familiar with pink butterfly ears, gold freckles, and four slender violet legs."
+    ]
+  },
+  {
+    "name": "Amberdrule",
+    "descriptions": [
+      "A squat amber dragon with translucent honey armor, a dark brown belly, and drooping ivory horns.",
+      "A rust-orange drake with a glossy golden throat pouch and resin droplets hanging from its whiskers.",
+      "A smoky-brown, serpentine creature with amber crystal plates and tiny cream wings trapped inside its glassy crest."
+    ]
+  },
+  {
+    "name": "Anaminii",
+    "descriptions": [
+      "A tiny mint homunculus with a large cream head, six pink fingers, and a sprouting gold antenna.",
+      "A coral, nested-bodied spirit with a smaller ivory face inside its belly and delicate blue ribbon feet.",
+      "A lilac pixie-like creature with a narrow silver body, oversized peach ears, and floating bead-shaped hands."
+    ]
+  },
+  {
+    "name": "Arabesk",
+    "descriptions": [
+      "A cream dancer-like creature with curling teal horns, long ribbon arms, and gold filigree markings.",
+      "A cobalt serpent with interlacing silver loops along its body and an ornate peach fan crest.",
+      "A rose-pink moth with lace-like ivory wings, symmetrical green scroll patterns, and slender golden legs."
+    ]
+  },
+  {
+    "name": "Astrabud",
+    "descriptions": [
+      "A navy flower bud with glowing yellow star petals peeking through and tiny mint root legs.",
+      "A silver seed creature with a transparent violet husk and three small golden stars orbiting its head.",
+      "A lavender sauropod sprout with a white star-shaped face frill and blue flower buds along its spine."
+    ]
+  },
+  {
+    "name": "Azulami",
+    "descriptions": [
+      "A cobalt, ribbon-limbed water spirit with a pale aqua belly and pearlescent pink fin crests.",
+      "A sky-blue folded creature with angular ivory wings, a tiny orange beak, and a fan-shaped tail.",
+      "A turquoise, long-necked familiar with navy spiral markings and silky white frills flowing from its elbows."
+    ]
+  },
+  {
+    "name": "Azuritusk",
+    "descriptions": [
+      "A deep blue boar with jagged azurite armor, cream tusks, and tiny copper hooves.",
+      "A pale aqua elephant with faceted cobalt tusks, silver ear rims, and a stocky crystalline body.",
+      "A navy walrus creature with blue-green mineral bands, translucent sky-blue tusks, and broad gray flippers."
+    ]
+  },
+  {
+    "name": "Ballunette",
+    "descriptions": [
+      "A pink balloon creature with a cream lace collar, blue ribbon legs, and a tiny knotted tail.",
+      "A lavender floating rabbit with inflated oval ears, golden seam markings, and a pearl-white belly.",
+      "A translucent aqua jellyfish with a spherical bell, peach bead tentacles, and a scalloped violet rim."
+    ]
+  },
+  {
+    "name": "Bambaloo",
+    "descriptions": [
+      "A lime-green bamboo lemur with cream joint bands, brown paws, and a curled leaf tail.",
+      "A tawny fawn with pale green bamboo antlers, white spots, and oversized moss-colored ears.",
+      "A hollow emerald bamboo creature with a round yellow face, broad root feet, and pink shoot horns."
+    ]
+  },
+  {
+    "name": "Beanboo",
+    "descriptions": [
+      "A mint bean-shaped ghost with a translucent ivory sheet crest, tiny purple feet, and bashful black eyes.",
+      "A tan bean sprout panda with dark green eye patches and a pair of broad jade leaf ears.",
+      "A glossy maroon seed creature with cream root arms and a pale pink blossom hiding its face."
+    ]
+  },
+  {
+    "name": "Beetli",
+    "descriptions": [
+      "A turquoise beetle with a round golden shell, stubby orange legs, and bright white cheek spots.",
+      "A burgundy beetle grub with lavender belly segments and tiny green leaf-shaped wing cases.",
+      "A pearl-white jewel beetle with faceted cobalt armor and two long copper antennae ending in flat paddles."
+    ]
+  },
+  {
+    "name": "Berryshade",
+    "descriptions": [
+      "A dark plum fox with berry-cluster ear tips, a lavender belly, and a smoky green leaf tail.",
+      "A charcoal mushroom creature beneath an umbrella of blue berries, with pale violet root feet.",
+      "A translucent blackberry spirit with mint eyes and a trailing cloak edged in small scarlet fruit beads."
+    ]
+  },
+  {
+    "name": "Bloopi",
+    "descriptions": [
+      "A translucent aqua blob with rosy cheek bubbles, tiny flippers, and an oversized round mouth.",
+      "A squat violet alien creature with a ring-shaped head, yellow webbed hands, and lime spots.",
+      "A peach, foam-bodied creature with three rounded lobes, pearl eyes, and a blue fin down its back."
+    ]
+  },
+  {
+    "name": "Bobbin",
+    "descriptions": [
+      "A cream spool creature wrapped in coral thread, with needle-thin silver legs and button-blue eyes.",
+      "A brown mouse with a cylindrical yarn body, lavender thread whiskers, and a long unspooling pink tail.",
+      "A teal woven sprite with oversized ivory spool feet and a gold thread loop rising from its head."
+    ]
+  },
+  {
+    "name": "Bobbl",
+    "descriptions": [
+      "A lime-green, top-heavy creature with a spherical head, rubbery orange legs, and tiny ivory ear knobs.",
+      "A transparent lavender bubble cluster with a peach central face and three blue bubbles serving as feet.",
+      "A cobalt toy-like construct with a spring-shaped gold neck, round white hands, and a wobbling oval base."
+    ]
+  },
+  {
+    "name": "Bonbella",
+    "descriptions": [
+      "A rosy confection creature with a golden bell-shaped skirt, cream frosting curls, and tiny brown shoes.",
+      "A lilac fairy with ivory bell ears, a plump peach body, and translucent mint wings.",
+      "A glossy cherry-red living bonbon with gold wrapper fins and a small cream face inside its twisted shell."
+    ]
+  },
+  {
+    "name": "Bonnetta",
+    "descriptions": [
+      "A cream mouse wearing a broad pink petal bonnet, with green ribbon whiskers and a curled tail.",
+      "A pale blue turtle with a scalloped ivory bonnet shell and soft lavender ties beneath its chin.",
+      "A mint mushroom sprite with a ruffled peach cap, gold freckles, and delicate root-like brown hands."
+    ]
+  },
+  {
+    "name": "Bopaluh",
+    "descriptions": [
+      "A pear-shaped coral creature with oversized navy feet, round yellow ear discs, and a bouncy rubbery body.",
+      "A teal rhythm-themed spirit with floating gold palms and three ivory throat rings shaped like drum rims.",
+      "A lavender imp-like creature with a zigzag pink crest, broad cream hips, and little bell-shaped ankles."
+    ]
+  },
+  {
+    "name": "Briachette",
+    "descriptions": [
+      "A golden brioche mouse with a braided bread tail, flour-white cheeks, and chocolate-brown paws.",
+      "A cream, ceramic-bodied creature with a toasted orange dome, pale yellow frills, and four stubby feet.",
+      "A tan pastry bird with layered crescent wings, pink jam eyes, and a butter-yellow crest."
+    ]
+  },
+  {
+    "name": "Bubblesocks",
+    "descriptions": [
+      "A mint otter with transparent blue bubble boots, cream whiskers, and a rosy round nose.",
+      "A lavender frog with tall peach leg bands and clusters of pearl bubbles enclosing its webbed toes.",
+      "A pink aquatic sprite with ribbon arms, a white foam collar, and oversized spherical turquoise feet."
+    ]
+  },
+  {
+    "name": "Bumbini",
+    "descriptions": [
+      "A round honey-yellow bumblebee with chocolate stripes, tiny cream wings, and oversized fuzzy orange cheeks.",
+      "A lavender, bottom-heavy imp with black-tipped antennae, ivory mittens, and a soft golden belly.",
+      "A moss-green grub with peach pompom feet, a pale yellow face, and two comically small glassy wings."
+    ]
+  },
+  {
+    "name": "Bumbledrop",
+    "descriptions": [
+      "An amber teardrop bee with dark brown bands, drooping white wings, and honey-colored antenna droplets.",
+      "A cream bear cub with a yellow nectar belly, black bee ears, and sticky orange paws.",
+      "A translucent peach nectar creature with six tiny violet legs and a fluffy gold bee-shaped hood."
+    ]
+  },
+  {
+    "name": "Buttoncap",
+    "descriptions": [
+      "A beige mushroom creature with a burgundy button cap, ivory stitching marks, and tiny brown root toes.",
+      "A blue sewing sprite with a broad yellow button hat, white thread limbs, and pink pincushion cheeks.",
+      "A round moss-green beetle with four cream button holes on its domed shell and copper antennae."
+    ]
+  },
+  {
+    "name": "Caramimi",
+    "descriptions": [
+      "A caramel-brown kitten with cream swirl ears, glossy amber paws, and a long taffy tail.",
+      "A pale gold candy spirit with two mirrored pink faces and ribbon-shaped chocolate arms.",
+      "A tan, rabbit-shaped confection with a translucent orange sugar shell and soft ivory ear centers."
+    ]
+  },
+  {
+    "name": "Cherrymo",
+    "descriptions": [
+      "A ruby-red calf with paired cherry horns, cream muzzle markings, and a curled green stem tail.",
+      "Two connected cherry-red creatures with tiny pink feet and a shared canopy of glossy emerald leaves.",
+      "A rosy mouse with round cherry ears, a white belly, and a dark green vine tail."
+    ]
+  },
+  {
+    "name": "Chimble",
+    "descriptions": [
+      "A charcoal chimney imp with a terracotta cap, ivory soot freckles, and a pale blue smoke tail.",
+      "A copper thimble creature with little silver claw feet, a peach face, and embossed gold stars.",
+      "A cinnamon tree familiar with a compact body, mint grasping hands, and an oversized cream spiral ear."
+    ]
+  },
+  {
+    "name": "Chowmanow",
+    "descriptions": [
+      "A golden chow-like puppy with a cream mane, blue tongue, and broad pink paw pads.",
+      "A round dumpling beast with ivory folded fur, sesame-black ears, and a long orange noodle tail.",
+      "A rust-red, lion-like creature with a mint leaf mane, tan cheeks, and an enormous toothy grin."
+    ]
+  },
+  {
+    "name": "Chuppi",
+    "descriptions": [
+      "A mint, cup-shaped creature with a cream face, two pink handle ears, and short gold legs.",
+      "A peach quadrupedal familiar with a blunt snout, lilac suction-cup paws, and a soft white dorsal tuft.",
+      "A sky-blue, large-headed imp with yellow mitten hands, tiny ivory tusks, and a curled rubbery tail."
+    ]
+  },
+  {
+    "name": "Cindlit",
+    "descriptions": [
+      "A charcoal kitten with ember-orange paws, a cream ash ruff, and a glowing red tail crack.",
+      "A tiny rust-brown salamander with molten gold freckles and two flickering peach flames for external gills.",
+      "A blackened pinecone creature with orange light between its scales and little gray twig feet."
+    ]
+  },
+  {
+    "name": "Cirrup",
+    "descriptions": [
+      "A chestnut cricket with pale green wings, golden fiddle-shaped hind legs, and a cream throat.",
+      "A sky-blue songbird with a spiral orange crest, white cheek rings, and a narrow silver tail.",
+      "A mint tree frog with a translucent yellow throat bubble and tiny violet notes patterned across its back."
+    ]
+  },
+  {
+    "name": "Cloudnest",
+    "descriptions": [
+      "A white cloud bird with a woven tan nest belly and three blue feather tufts resembling eggs.",
+      "A lavender tree spirit with a fluffy cloud canopy, gold branch arms, and a small ivory nesting hollow.",
+      "A round sky-blue creature curled inside a floating white vapor ring, with peach beak-like ears."
+    ]
+  },
+  {
+    "name": "Cloudora",
+    "descriptions": [
+      "A pearl-white cloud dragon with lavender wing shadows, pale gold horns, and a long misty tail.",
+      "A floating pink cloud creature with an azure doorway-shaped belly and tiny silver hands along its sides.",
+      "A pale blue, broad-winged spirit with layered white vapor feathers and a radiant coral halo."
+    ]
+  },
+  {
+    "name": "Cosmini",
+    "descriptions": [
+      "A tiny navy cosmic creature with a spherical body, silver ring ears, and colorful pink star freckles.",
+      "A lavender astronaut-like golem with a clear bubble head, golden face, and stubby white boot feet.",
+      "A black-violet moth with miniature spiral galaxies in its aqua wings and a soft ivory body."
+    ]
+  },
+  {
+    "name": "Crinkleaf",
+    "descriptions": [
+      "A russet leaf creature with sharply folded edges, green vein markings, and spindly brown twig legs.",
+      "A pale green hedgehog with crinkled yellow leaf spines, a cream belly, and tiny pink ears.",
+      "A tan insect with accordion-folded copper wings and a curled moss-green leaf disguising its long head."
+    ]
+  },
+  {
+    "name": "Crumielle",
+    "descriptions": [
+      "A golden crumb mouse with cream frosting whiskers, a pink jam belly, and ragged pastry ears.",
+      "A cocoa-brown moth with delicate biscuit wings, pale yellow speckles, and a velvety ivory thorax.",
+      "A peach, cluster-bodied confection with craggy caramel lobes and six tiny lilac mitten feet."
+    ]
+  },
+  {
+    "name": "Cubibi",
+    "descriptions": [
+      "A cream bear cub with sky-blue heart ears, a peach belly patch, and oversized plush paws.",
+      "A cinnamon lion cub with lilac mane puffs and three pale gold spots on its round forehead.",
+      "A mint, cuboid toy creature with bear-shaped ivory ears, pink button eyes, and short articulated brown legs."
+    ]
+  },
+  {
+    "name": "Cubbyrex",
+    "descriptions": [
+      "A sage-green tyrannosaur with a cream cub muzzle, tiny rounded ears, and oversized brown hind paws.",
+      "A cinnamon bear cub with a mint dinosaur tail, ivory back plates, and two little gold brow horns.",
+      "A lilac, blocky reptile with a white storage-cubby belly and a peach baby face peeking inside."
+    ]
+  },
+  {
+    "name": "Cumuloo",
+    "descriptions": [
+      "A white cloud calf with lavender shadow patches, gold horn nubs, and tiny dangling blue hooves.",
+      "A pale pink, three-lobed cloud spirit with a long silver ribbon tail and sleepy violet eyes.",
+      "A sky-blue snail with a towering white cumulus shell and soft peach antennae curled into loops."
+    ]
+  },
+  {
+    "name": "Mistshroom",
+    "descriptions": [
+      "A pale gray mushroom with a translucent blue cap, lavender gills, and mist curling around root feet.",
+      "A mint amphibian beneath a white mushroom hood, with foggy glass skin and golden dotted toes.",
+      "A floating lilac fungal colony with three silver caps and trailing pale aqua vapor tendrils."
+    ]
+  },
+  {
+    "name": "Dewdroop",
+    "descriptions": [
+      "A mint sprout creature with a drooping blue glass leaf, pearl dew beads, and tiny brown roots.",
+      "A pale pink flower slug with limp ivory petals and a heavy turquoise droplet hanging from its nose.",
+      "A sage-green bird with downturned leaf wings, a cream belly, and silver water beads along its crest."
+    ]
+  },
+  {
+    "name": "Duufin",
+    "descriptions": [
+      "A powder-blue dolphin with a bulbous forehead, cream flippers, and a short lilac tail fin.",
+      "A lavender, two-bodied aquatic creature joined by a white fin bridge, with peach noses pointing opposite ways.",
+      "A mint penguin-like familiar with oversized turquoise fins, a yellow belly, and a drowsy broad face."
+    ]
+  },
+  {
+    "name": "Stewtail",
+    "descriptions": [
+      "A terracotta lizard with a curled bowl-shaped tail holding amber broth and green leaf-like scales.",
+      "A cocoa-brown otter with a cream belly, orange carrot-shaped tail tip, and herb-green whiskers.",
+      "A squat russet cauldron creature with gold feet and a long pale blue steam plume forming its tail."
+    ]
+  },
+  {
+    "name": "Dinopeach",
+    "descriptions": [
+      "A peach-pink dinosaur with a velvety round belly, green leaf plates, and a little brown stem horn.",
+      "A cream sauropod with blushing orange cheek patches and a split peach-shaped shell across its back.",
+      "A coral pterosaur with pale yellow fruit-slice wings and a fuzzy mint crest shaped like paired leaves."
+    ]
+  },
+  {
+    "name": "Diplodot",
+    "descriptions": [
+      "A lilac diplodocus with oversized turquoise polka dots, a cream throat, and a tiny rounded head.",
+      "A yellow, long-necked dinosaur with blue bead-like back knobs and a tail ending in a red dot.",
+      "A pale green aquatic sauropod with ringed pink flippers and pearl spots running down its transparent neck."
+    ]
+  },
+  {
+    "name": "Doodiri",
+    "descriptions": [
+      "A white doodle bird with black sketchy outlines, orange spiral wings, and a pink pencil-shaped crest.",
+      "A turquoise, three-headed songbird with cream bodies stacked vertically and tiny gold beaks pointing different ways.",
+      "A coral imp-like creature with ribbon limbs, blue scribble markings, and a wobbly ivory cone hat."
+    ]
+  },
+  {
+    "name": "Dotstic",
+    "descriptions": [
+      "A tan stick insect with mint dot joints, a narrow ivory face, and red bead antennae.",
+      "A white cylindrical living wand with floating blue spots, star-shaped yellow hands, and a pink pointed foot.",
+      "A charcoal, stilt-legged creature with circular coral feet and a lime dotted stripe along its angular back."
+    ]
+  },
+  {
+    "name": "Driftini",
+    "descriptions": [
+      "A lavender mist spirit with a teardrop head, long white ribbon arms, and scattered glowing blue freckles.",
+      "A cream seed creature with three gold sail leaves and a slender pink root trailing underneath.",
+      "A pale aqua ray with translucent silver fins and a tiny orange spiral shell balanced on its back."
+    ]
+  },
+  {
+    "name": "Drizzli",
+    "descriptions": [
+      "A slate-blue bear cub with rain-streaked silver fur, yellow paws, and a tiny cloud over its forehead.",
+      "A mint newt with transparent droplet toes, lavender gill umbrellas, and a pearl-white belly.",
+      "A pale gray cloud creature with dangling blue bead legs and a small peach face beneath its scalloped edge."
+    ]
+  },
+  {
+    "name": "Duskora",
+    "descriptions": [
+      "A plum owl with an orange horizon stripe across its chest and soft navy, crescent-shaped wings.",
+      "A smoky lavender deer with black-violet legs, glowing peach antlers, and a silver dusk-haze mane.",
+      "A dark blue, floating cloak creature with a coral oval face and golden stars stitched along its hem."
+    ]
+  },
+  {
+    "name": "Edelwisp",
+    "descriptions": [
+      "An ivory edelweiss spirit with fuzzy star petals, silver leaf arms, and a faintly glowing blue center.",
+      "A white alpine fox with woolly flower ears, pale green paws, and a misty lavender tail.",
+      "A slender silver phantom with a drooping yellow blossom crown and translucent mint ribbons instead of legs."
+    ]
+  },
+  {
+    "name": "Eirabel",
+    "descriptions": [
+      "A pale blue healer-like fairy with a white bell-shaped body, golden hands, and delicate rose-pink antlers.",
+      "A cream, porcelain-like familiar with lavender wing ears, a silver throat bell, and serene turquoise eyes.",
+      "A mint, long-necked creature with a pearl halo and layered pink frills resembling an open handbell."
+    ]
+  },
+  {
+    "name": "Ellipso",
+    "descriptions": [
+      "A smooth teal ellipsoid with tiny orange flippers, ivory ring markings, and one large golden eye.",
+      "A violet geometric creature with three floating oval body segments and delicate silver stilt legs.",
+      "A cream, elongated fairy beast with flat blue disc ears, a peach belly, and an elliptical curled tail."
+    ]
+  },
+  {
+    "name": "Emberbean",
+    "descriptions": [
+      "A reddish-brown bean creature with a glowing orange seam, charcoal root feet, and a golden flame sprout.",
+      "A cream mouse with a toasted bean-shaped body, red ember ears, and a smoky gray tail.",
+      "A black volcanic seed golem with amber eyes and two thick molten gold arms emerging from its shell."
+    ]
+  },
+  {
+    "name": "Emmori",
+    "descriptions": [
+      "A muted green memory-themed spirit with a hollow ivory mask, lavender moss hair, and small floating gold fragments.",
+      "A cocoa-brown magical familiar with a compact body, cream leaf ears, and glowing orange chest rings.",
+      "A translucent rose dream creature with a curled silver spine, ribbon feet, and two sleepy blue faces."
+    ]
+  },
+  {
+    "name": "Enowhip",
+    "descriptions": [
+      "A snow-white sprite with a whipped spiral head, icy blue ribbon arms, and tiny pink feet.",
+      "A pale yellow serpentine familiar with a long cream whip tail, lavender frills, and turquoise eyes.",
+      "A mint foam creature with a tall ivory crest, peach mitten hands, and three rounded blue body lobes."
+    ]
+  },
+  {
+    "name": "Fawny",
+    "descriptions": [
+      "A warm brown fawn with cream spots, oversized peach ears, and tiny green bud antlers.",
+      "A pale pink deerling with gold hoof tips, an ivory flower ruff, and fern-shaped mint antlers.",
+      "A charcoal woodland fawn with silver bark stripes and luminous amber mushrooms growing from its small antlers."
+    ]
+  },
+  {
+    "name": "Fenno",
+    "descriptions": [
+      "A sandy fox-like familiar with enormous sage ears, a cream muzzle, and a fennel-frond tail.",
+      "A moss-green marsh creature with a low elongated body, orange webbed paws, and pale yellow eye rings.",
+      "A lavender sprite-like creature with a pointed ivory face, copper reed legs, and a feathery blue crest."
+    ]
+  },
+  {
+    "name": "Ferretail",
+    "descriptions": [
+      "A cream ferret with cinnamon stripes and a long tail ending in a second sleepy ferret face.",
+      "A lilac ferret with silky silver fur, teal fin ears, and a broad transparent aquatic tail.",
+      "A russet, slender forest creature with green vine whiskers and a bushy golden fern tail twice its length."
+    ]
+  },
+  {
+    "name": "Finchibliss",
+    "descriptions": [
+      "A butter-yellow finch with rosy cheeks, a white heart-shaped chest, and little blue wing tips.",
+      "A pastel teal finch with a lavender flower collar, gold beak, and soft rainbow-striped tail feathers.",
+      "A cream celestial finch with closed navy eyes, pearl wing beads, and a pale pink halo crest."
+    ]
+  },
+  {
+    "name": "Fizztit",
+    "descriptions": [
+      "A lime-green tit-like bird with a yellow soda-bubble crest, white throat, and orange wing bars.",
+      "A cobalt songbird with a transparent turquoise throat pouch and fizzy silver dots scattered through its feathers.",
+      "A rosy round bird with cream foam wings, a cherry-red beak, and tiny sparkling gold tail quills."
+    ]
+  },
+  {
+    "name": "Floofin",
+    "descriptions": [
+      "A powder-blue fish with a fluffy ivory mane, peach fins, and a round fuzzy tail.",
+      "A lavender puffin with a cream woolly belly, a broad orange beak, and tiny teal flippers.",
+      "A mint seal creature with feathery white fin fringes and a towering pink pompom crest."
+    ]
+  },
+  {
+    "name": "Flopling",
+    "descriptions": [
+      "A beige rabbit with extremely long lilac ears, oversized pink feet, and a soft cream belly.",
+      "A blue mudskipper with floppy peach side fins and a drooping yellow sail along its back.",
+      "A mint seedling with limp white leaf arms, a round brown seed body, and tiny orange root toes."
+    ]
+  },
+  {
+    "name": "Floppim",
+    "descriptions": [
+      "A mauve, flat-bodied creature with oversized ivory mitten arms, a peach face, and floppy triangular ears.",
+      "A pale blue ray-like familiar with a broad rubbery body, yellow spots, and two long pink ribbon tails.",
+      "A cream mushroom imp with a collapsed teal cap, stumpy violet feet, and a mischievous toothy grin."
+    ]
+  },
+  {
+    "name": "Flufflesneeze",
+    "descriptions": [
+      "A white fluffy hedgehog with a pink nose, pale blue spines, and little floating cotton tufts.",
+      "A lavender kitten with an enormous cream cheek ruff and yellow pollen dust across its tiny muzzle.",
+      "A peach cloud creature with scrunched teal eyes, inflated cheeks, and a spray-shaped white crest."
+    ]
+  },
+  {
+    "name": "Flurriss",
+    "descriptions": [
+      "A silver ice sprite with narrow blue ribbon wings, a snowflake crest, and delicate lilac fingers.",
+      "A white arctic weasel with frosty turquoise whiskers, purple paws, and a spiraling snow-fluff tail.",
+      "A pale pink, many-winged moth with powdery ivory fringes and six tiny sapphire feet."
+    ]
+  },
+  {
+    "name": "Fossiltop",
+    "descriptions": [
+      "A tan dinosaur hatchling with a gray fossil dome, spiral shell impressions, and orange cheek patches.",
+      "A moss-green turtle with a broad sandstone shell displaying cream leaf fossils and tiny brown feet.",
+      "A rust-red spinning-top golem with an ivory ammonite crown and short black claw arms."
+    ]
+  },
+  {
+    "name": "Froget",
+    "descriptions": [
+      "A tiny jade frog with yellow eyelids, pale pink toe pads, and an oversized cream throat.",
+      "A lavender froglet with translucent blue hind legs, silver gill frills, and a lingering ribbon tail.",
+      "A peach tree frog with dark green leaf armor and a small white blossom between its eyes."
+    ]
+  },
+  {
+    "name": "Frondil",
+    "descriptions": [
+      "A green crocodile with layered fern fronds along its back, cream jaws, and brown twig claws.",
+      "A pale jade dinosaur with unfurling copper fern horns and a broad mint leaf tail.",
+      "A rust-brown woodland sprite with a slender stem body, lime frond arms, and an ivory curled head."
+    ]
+  },
+  {
+    "name": "Frostuna",
+    "descriptions": [
+      "A silver tuna-like creature with cobalt fins, an icy white dorsal blade, and frosted turquoise scales.",
+      "A pale blue rabbit spirit with a crescent frost crown, lavender paws, and long snow-white ear fringes.",
+      "A round mint fish with clear ice armor, peach cheeks, and a snowflake-shaped silver tail."
+    ]
+  },
+  {
+    "name": "Fumblecub",
+    "descriptions": [
+      "A cinnamon bear cub with oversized cream paws, mismatched blue toe pads, and a lopsided ear tuft.",
+      "A white snow cub with lavender ice skates growing from its feet and a stubby turquoise balancing tail.",
+      "A moss-green lion cub with a tangled gold vine mane and round brown paws wider than its head."
+    ]
+  },
+  {
+    "name": "Fuzzel",
+    "descriptions": [
+      "A purple fuzzy puzzle creature with three interlocking lobes, yellow mitten hands, and mismatched green eyes.",
+      "A teal, zigzag-shaped familiar with a shaggy ivory coat, pink pompom joints, and a forked orange tail.",
+      "A peach spherical imp with long violet whiskers and five small cream ears arranged around its face."
+    ]
+  },
+  {
+    "name": "Ganachoo",
+    "descriptions": [
+      "A dark chocolate mouse with glossy caramel ears, cream ganache cheeks, and a little strawberry nose.",
+      "A tan confection creature with a cracked cocoa shell, rosy filling, and thick ivory frosting paws.",
+      "A white truffle bird with a brown chocolate hood, gold crumb speckles, and a pink swirl crest."
+    ]
+  },
+  {
+    "name": "Gillyrest",
+    "descriptions": [
+      "A pale pink axolotl with lavender pillow-shaped gills, a cream belly, and sleepy blue eyes.",
+      "A sage-green fish curled inside a white scallop bed, with long peach gill tassels draping outside.",
+      "A slate-blue newt with a mossy mint cushion on its back and soft ivory fins folded like blankets."
+    ]
+  },
+  {
+    "name": "Gimbit",
+    "descriptions": [
+      "A compact orange trickster creature with blue pincer hands, a cream domino face, and stubby black feet.",
+      "A teal, articulated living construct with gold ball joints, a cuboid head, and little ivory paddle ears.",
+      "A lilac goblin-like familiar with a pear-shaped body, oversized green feet, and two curling pink antennae."
+    ]
+  },
+  {
+    "name": "Halobun",
+    "descriptions": [
+      "A white rabbit with a golden halo between its ears, peach paws, and tiny feathered wings.",
+      "A lavender ring-shaped bunny spirit with a luminous cream face and silver ribbon ears circling its body.",
+      "A honey-brown bread bun rabbit with ivory icing ears and a pink sugar halo floating above its crust."
+    ]
+  },
+  {
+    "name": "Honeyboots",
+    "descriptions": [
+      "A golden bear cub with translucent amber boot-shaped paws, cream ear tufts, and a dark brown muzzle.",
+      "A black-and-yellow bee sprite with oversized orange honeycomb feet and tiny pearl wings.",
+      "A tan dormouse with waxy gold leg cuffs, a mint leaf cape, and a sticky amber tail tip."
+    ]
+  },
+  {
+    "name": "Hummu",
+    "descriptions": [
+      "A round teal hummingbird with a long coral beak, cream throat fluff, and tiny glassy wings.",
+      "A lavender sound-infused creature with a hollow oval belly, gold throat rings, and hovering white mitten hands.",
+      "A honey-yellow moth-like familiar with fuzzy brown antennae and translucent blue wings shaped like tuning forks."
+    ]
+  },
+  {
+    "name": "Inkiboo",
+    "descriptions": [
+      "A black ink ghost with a drippy white face, lavender blush spots, and tentacle feet.",
+      "A navy baby squid with pink suction cups and a pale blue ink-cloud hood covering one eye.",
+      "An ivory paper imp with flowing purple ink limbs and two pointed black ears dripping turquoise droplets."
+    ]
+  },
+  {
+    "name": "Jasminu",
+    "descriptions": [
+      "A cream kitten with white jasmine flowers around its neck, mint ears, and pale yellow paws.",
+      "A jade vine sprite with a star-shaped ivory blossom head and long pink root fingers.",
+      "A pale lilac moth with jasmine-petal wings, gold antennae, and a downy white body."
+    ]
+  },
+  {
+    "name": "Kivo",
+    "descriptions": [
+      "A cobalt, quadrupedal alien creature with an angular orange crest, pearl eyes, and broad cream feet.",
+      "A lime-green, hollow-bodied golem with a floating violet core and three articulated silver legs.",
+      "A rust-red magical familiar with a compact body, oversized ivory hands, and a teal fan tail."
+    ]
+  },
+  {
+    "name": "Knotberry",
+    "descriptions": [
+      "A plum-colored squirrel with a knotted vine tail, green leaf ears, and red berry cheek pouches.",
+      "A brown root creature with tangled loop limbs and a crown of glossy blue berries.",
+      "A raspberry-pink serpent with cream braided markings and a jade leafy knot where its tail curls back."
+    ]
+  },
+  {
+    "name": "Lacewind",
+    "descriptions": [
+      "An ivory moth with intricate lace wings, a pale blue body, and long silver ribbon antennae.",
+      "A mint wind spirit with a hollow torso, pink filigree fins, and trailing white thread limbs.",
+      "A lavender deer-like creature with translucent lace antlers and a flowing cream mane shaped into airy loops."
+    ]
+  },
+  {
+    "name": "Lambini",
+    "descriptions": [
+      "A cream lamb with peach hooves, tiny lavender curled horns, and a round pompom tail.",
+      "A mint sheep sprite with white bell-shaped wool clusters and gold legs as thin as knitting needles.",
+      "A rose-pink lamb with silky ivory ear ribbons and pale blue cloud patches across its short fleece."
+    ]
+  },
+  {
+    "name": "Lambrosia",
+    "descriptions": [
+      "An ivory lamb with an amber nectar mane, green leaf horns, and peach flower-shaped hooves.",
+      "A lavender, celestial sheep with golden grape-like wool clusters and small pearl-white wings.",
+      "A pale mint lamb with a cream pudding-shaped body, pink blossom ears, and honey-yellow spiral horns."
+    ]
+  },
+  {
+    "name": "Lapis",
+    "descriptions": [
+      "A cobalt mineral turtle with gold flecks, a cream belly, and a faceted hexagonal shell.",
+      "A deep blue cat-like golem with polished stone fur, silver whiskers, and white vein markings.",
+      "A floating ultramarine crystal creature with three golden satellite beads and a luminous aqua eye."
+    ]
+  },
+  {
+    "name": "Liyaloom",
+    "descriptions": [
+      "A lilac woven spirit with long silver thread fingers, a tapered mint body, and glowing peach eyes.",
+      "A navy moth-like creature with a wide ivory wing frame filled by crisscrossed luminous blue strands.",
+      "A cream, long-necked familiar with teal yarn fur, gold spool horns, and a trailing pink fringe tail."
+    ]
+  },
+  {
+    "name": "Funderhush",
+    "descriptions": [
+      "A charcoal storm cub with a fluffy white muzzle, yellow lightning horns, and tiny closed blue eyes.",
+      "A muted violet cloud spirit with padded cream hands cupping a small golden thunderbolt core.",
+      "A navy owl with enormous soft gray wings and faint turquoise lightning stitches along its muffled feather edges."
+    ]
+  },
+  {
+    "name": "Lilacoo",
+    "descriptions": [
+      "A plump lilac dove with an ivory chest, pale green leaf feet, and a purple flower crest.",
+      "A white cowling with lavender blossom spots, green leaf ears, and small gold horns.",
+      "A violet snail with a shell made of clustered lilac florets and a pale pink velvety body."
+    ]
+  },
+  {
+    "name": "Liliwen",
+    "descriptions": [
+      "A white lily sprite with a mint stem body, golden pollen cheeks, and long pink petal sleeves.",
+      "A cream fawn with lily-shaped pale blue ears, silver hooves, and a lavender blossom tail.",
+      "A jade water bird with ivory petal wings and a rose-pink lily crown framing its narrow face."
+    ]
+  },
+  {
+    "name": "Lilynook",
+    "descriptions": [
+      "A tiny brown mouse tucked into a pink water lily, with mint ears and cream whiskers.",
+      "A green turtle with an ivory lily shelter growing from its shell and little golden webbed feet.",
+      "A pale blue pond spirit with a hollow leaf body and a white blossom canopy shading its peach face."
+    ]
+  },
+  {
+    "name": "Lumetti",
+    "descriptions": [
+      "A golden energy creature with floating pink and blue confetti plates around its luminous white core.",
+      "A cream firefly with a lavender lantern belly, narrow mint wings, and glowing yellow dotted antennae.",
+      "A navy sprite with six ribbon limbs, silver star pupils, and tiny orange light beads along its spine."
+    ]
+  },
+  {
+    "name": "Leemo",
+    "descriptions": [
+      "A lemon-yellow lemur with a white muzzle, teal eye rings, and a long green-striped tail.",
+      "A lime-green, teardrop-shaped slime with translucent orange ear fins and tiny cream flipper feet.",
+      "A pale blue pixie-like creature with broad yellow leaf ears, a smooth oval torso, and peach mitten hands."
+    ]
+  },
+  {
+    "name": "Loonibble",
+    "descriptions": [
+      "A black-and-white loon chick with a short orange beak, blue cheek spots, and tiny tooth-like bill notches.",
+      "A silver lunar mouse with crescent ears, a lavender belly, and oversized ivory front teeth.",
+      "A cream aquatic familiar with navy fin wings, pearl whiskers, and a round peach mouth ringed by tiny teeth."
+    ]
+  },
+  {
+    "name": "Luvulari",
+    "descriptions": [
+      "A rose-pink fairy creature with a heart-shaped face, ivory ribbon limbs, and translucent gold fan wings.",
+      "A lavender paired-creature joined at a cream central ring, with two serene faces and peach petal feet.",
+      "A ruby-red, pearl-textured familiar with a long curved neck, mint cheek frills, and a heart-tipped tail."
+    ]
+  },
+  {
+    "name": "Macarini",
+    "descriptions": [
+      "A cream macaroni creature with a curved tubular body, orange mitten hands, and tiny green herb freckles.",
+      "A pink macaron rabbit with almond-beige shell ears, a white filling belly, and lavender sugar paws.",
+      "A golden pasta bird with ridged elbow-shaped wings, a red bow crest, and olive-green feet."
+    ]
+  },
+  {
+    "name": "Mariglimm",
+    "descriptions": [
+      "A golden marigold sprite with glowing orange petals, a moss-green stem body, and bronze root toes.",
+      "A dark brown fox with a radiant yellow flower mane and amber sparks nestled in its tail.",
+      "A cream beetle with overlapping orange petal armor and pale green light shining between its shell segments."
+    ]
+  },
+  {
+    "name": "Marmotini",
+    "descriptions": [
+      "A tawny marmot with a cream belly, tiny pink paws, and a tufted lavender tail.",
+      "A slate-gray alpine marmot with white snow patches and little green sprouts growing behind its round ears.",
+      "A cinnamon marmot sprite with a glassy amber belly and a broad pale yellow mushroom hat."
+    ]
+  },
+  {
+    "name": "Mavella",
+    "descriptions": [
+      "A mauve fairy creature with a bell-shaped silhouette, silver floating wings, and oversized ivory hands.",
+      "A midnight-blue magical familiar with long peach ears, an arched back, and gold scallops along its tail.",
+      "A mint porcelain-like sprite with a heart-faced lavender mask, pink ribbon legs, and a delicate pearl crest."
+    ]
+  },
+  {
+    "name": "Medusie",
+    "descriptions": [
+      "A pink jellyfish with tiny lilac snake-shaped tentacles, a translucent cream bell, and soft green eyes.",
+      "A mint, round-faced sprite with a crown of sleepy teal serpents and a peach-scaled lower body.",
+      "A lavender floating head with pearl coral horns and silver ribbon tentacles curling beneath its gold-frilled face."
+    ]
+  },
+  {
+    "name": "Mibu",
+    "descriptions": [
+      "A peach, tiny-bodied familiar with a huge ivory head, mint mitten hands, and stubby blue feet.",
+      "A translucent mauve slime-like creature with two gold inner cores and a short white fin tail.",
+      "A cream quadruped with velvety teal fur patches, oversized pink ears, and a spiral-shaped horn."
+    ]
+  },
+  {
+    "name": "Mimibell",
+    "descriptions": [
+      "A golden bell mouse with pink ear interiors, an ivory clapper tail, and tiny brown feet.",
+      "A lilac fairy with two cream bell-shaped ears and long green ribbons hanging from its wrists.",
+      "A pale blue flower creature with a skirt of white bell blossoms and peach root toes."
+    ]
+  },
+  {
+    "name": "Mimipon",
+    "descriptions": [
+      "A cream pompom creature with two pink mirrored faces, lavender mitten hands, and short springy teal legs.",
+      "A rosy rabbit-like familiar with three ivory ear tufts and a round golden bead tail.",
+      "A mint, stacked-bodied sprite with blue button eyes and little peach fins on each of its three segments."
+    ]
+  },
+  {
+    "name": "Tivuna",
+    "descriptions": [
+      "A turquoise, long-necked aquatic familiar with ivory paddle limbs, orange cheek frills, and a shell-like forehead crest.",
+      "A violet, moon-shaped spirit with a pale yellow inner face, blue ribbon legs, and a quiet half-smile.",
+      "A terracotta guardian creature with a stout body, mint mosaic plates, and large ivory horn loops."
+    ]
+  },
+  {
+    "name": "Minirow",
+    "descriptions": [
+      "Three tiny brown bird heads peeking from one cream, elongated body, with blue wings and yellow feet.",
+      "A moss-green sparrow with a miniature tan wooden-boat belly and paddle-shaped orange tail feathers.",
+      "A pale gray chick with a row of pink crest beads and oversized navy feather mittens."
+    ]
+  },
+  {
+    "name": "Minnoli",
+    "descriptions": [
+      "A silver minnow curled inside a golden pastry tube, with pink fins and cream sugar freckles.",
+      "A pale blue fish with folded ivory fins, a cinnamon spiral tail, and tiny turquoise cheek dots.",
+      "A peach aquatic sprite with a hollow tube body, lavender filling-like frills, and six small cream flippers."
+    ]
+  },
+  {
+    "name": "Minti",
+    "descriptions": [
+      "A mint-green kitten with white candy stripes, pink paws, and leaf-shaped ears.",
+      "A pale turquoise ice sprite with a crystalline emerald crest and a round ivory lozenge body.",
+      "A cream moth with broad green mint-leaf wings, dark purple veins, and golden pollen antennae."
+    ]
+  },
+  {
+    "name": "Minamini",
+    "descriptions": [
+      "A pink, nested-bodied creature with a tiny cream companion face inside each of its oversized lavender ears.",
+      "A mint, six-legged familiar with a miniature orange body, broad white feet, and gold bead eyes.",
+      "A violet geometric sprite built from three shrinking ovals, with silver ribbon hands and a peach halo."
+    ]
+  },
+  {
+    "name": "Mistgrow",
+    "descriptions": [
+      "A sage-green seedling with a translucent gray trunk, white mist leaves, and glowing aqua root tips.",
+      "A lavender mushroom deer with smoky silver antlers and moss-green fur thickening around its broad paws.",
+      "A pale blue, cloud-bodied creature with golden shoots emerging from its back and a cream rain-fringe belly."
+    ]
+  },
+  {
+    "name": "Momorun",
+    "descriptions": [
+      "A peach-pink runner with long cream hind legs, green leaf ears, and a small brown stem tail.",
+      "A rose-colored squirrel with a fuzzy peach body and two long mint ribbon tails streaming behind it.",
+      "A golden flightless bird with a round coral belly, pink petal crest, and slim green stilt legs."
+    ]
+  },
+  {
+    "name": "Moonsteed",
+    "descriptions": [
+      "A silver foal with a navy mane, crescent hooves, and pale blue stars across its flanks.",
+      "A lavender seahorse with an ivory crescent crest, gold rein-like whiskers, and translucent midnight-blue fins.",
+      "A white winged pony with peach moon-disc wings and a long shimmering turquoise tail."
+    ]
+  },
+  {
+    "name": "Moonlesk",
+    "descriptions": [
+      "A pearly gray mollusk with a crescent-shaped blue shell, silver antennae, and a lavender underside.",
+      "A navy sprite with a pale gold moon mask, long ivory ribbon arms, and a flowing violet mantle.",
+      "A cream moth-cat with lunar-disc ears, dark blue wing folds, and luminous pink cheek crescents."
+    ]
+  },
+  {
+    "name": "Moonreed",
+    "descriptions": [
+      "A silver heron-like creature with long green reed legs and a navy crescent plume rising from its head.",
+      "A pale blue marsh spirit with a tubular jade body, ivory moon-flower face, and gold root tassels.",
+      "A lavender frog with reed-like green antennae and a translucent white crescent sail along its back."
+    ]
+  },
+  {
+    "name": "Morellis",
+    "descriptions": [
+      "A tan morel creature with a honeycombed brown cap, cream mitten hands, and moss-green root slippers.",
+      "A russet rabbit with long porous mushroom ears, an ivory muzzle, and pale yellow spore freckles.",
+      "A lavender woodland sprite with a tall ocher lattice crown and a pale green, tapering stalk body."
+    ]
+  },
+  {
+    "name": "Mossella",
+    "descriptions": [
+      "A moss-green snail with a pink flower shell, pale gold antennae, and a plush ivory belly.",
+      "A gray stone fairy with a soft green moss skirt, lavender gem eyes, and brown twig wings.",
+      "A cream woodland fawn with shaggy jade fur, tiny rosebud antlers, and dark brown hooves."
+    ]
+  },
+  {
+    "name": "Mossil",
+    "descriptions": [
+      "A gray fossil lizard with moss-green joints, cream bone markings, and tiny fern shoots along its skull.",
+      "A brown ammonite creature with a velvet green spiral shell and short ivory tentacles tipped in amber.",
+      "A slate-blue stone cub with pale green moss patches and gold leaf fossils embedded across its back."
+    ]
+  },
+  {
+    "name": "Mossnib",
+    "descriptions": [
+      "A mint vole with a mossy dark green coat, cream nib-like teeth, and a tiny brown leaf tail.",
+      "A gray stone sprout with an orange pencil-nib snout and shaggy green moss around its shoulders.",
+      "A brown beetle with a fuzzy jade shell, pale yellow mandibles, and small pink root-shaped antennae."
+    ]
+  },
+  {
+    "name": "Mossprite",
+    "descriptions": [
+      "A bright green pixie with moss-puff hair, ivory twig limbs, and translucent amber leaf wings.",
+      "A charcoal tree spirit with a glowing mint face and a thick olive moss cloak concealing tiny cream feet.",
+      "A lavender floating stone with dangling green moss tendrils, gold eyes, and a white flower crown."
+    ]
+  },
+  {
+    "name": "Myceli",
+    "descriptions": [
+      "An ivory fungal creature with branching pink thread limbs, a pale green core, and tiny violet spore eyes.",
+      "A tan woodland rabbit with mushroom-cap ears and white mycelium strands weaving through its mossy blue fur.",
+      "A cream colony creature made of three lavender mushrooms joined by exposed golden root networks."
+    ]
+  },
+  {
+    "name": "Nebuloo",
+    "descriptions": [
+      "A lavender cloud calf with magenta nebula patches, silver horns, and tiny glowing blue hooves.",
+      "A transparent indigo orb creature with a pink spiral cloud inside and long golden ribbon fins.",
+      "A smoky peach cosmic serpent with dark violet star-speckled frills and a luminous white tail tip."
+    ]
+  },
+  {
+    "name": "Nectaroo",
+    "descriptions": [
+      "A honey-yellow kangaroo with green leaf ears, a translucent amber pouch, and orange blossom feet.",
+      "A pink flower frog with a golden nectar belly and long mint hind legs folded like stems.",
+      "A cream hummingbird creature with an apricot droplet body, emerald wings, and a long coral drinking beak."
+    ]
+  },
+  {
+    "name": "Nemunemu",
+    "descriptions": [
+      "A lilac dream creature with two stacked pillow bodies, sleepy gold eyes, and long white blanket arms.",
+      "A pale blue, curled familiar with cream crescent ears, pink paw pads, and a soft navy sleeping-mask marking.",
+      "A peach moth sprite with heavy ivory wings wrapped around its body and drooping silver antennae."
+    ]
+  },
+  {
+    "name": "Nestlie",
+    "descriptions": [
+      "A brown chick with a woven nest ruff, pale yellow down, and tiny green leaf wings.",
+      "A cream mouse with a hollow wicker-brown back shelter lined in pink fur and two little blue ears.",
+      "A moss-green turtle with a nest-shaped tan shell and a white feather crest arching over its face."
+    ]
+  },
+  {
+    "name": "Nilaloo",
+    "descriptions": [
+      "An indigo, pear-shaped aquatic spirit with silver paddle arms, a moon-white belly, and pink cheek gills.",
+      "A lavender, downy quadruped with oversized cream feet, a looped teal tail, and sleepy golden eyes.",
+      "A translucent blue slime creature with a navy crescent core and three floating peach antenna beads."
+    ]
+  },
+  {
+    "name": "Nilavini",
+    "descriptions": [
+      "A navy, vine-limbed fairy with pale lilac blossom hair, silver leaf wings, and a narrow blue face.",
+      "A periwinkle serpentine creature with ivory fin frills and a string of golden moon discs along its back.",
+      "A cream, long-necked familiar with blue velvet fur, violet spiral horns, and mint tear-shaped cheek markings."
+    ]
+  },
+  {
+    "name": "Nimbini",
+    "descriptions": [
+      "A small white cloud sprite with a gold nimbus, pale blue mitten hands, and a peach raindrop tail.",
+      "A lavender lamb with a circular ivory wool body, tiny navy hooves, and a translucent yellow halo.",
+      "A mint, airborne seed creature with three fluffy pink sails and a luminous white ring around its waist."
+    ]
+  },
+  {
+    "name": "Nobi",
+    "descriptions": [
+      "A tan, ceramic-bodied familiar with a single cobalt forehead knob, ivory paddle hands, and broad orange feet.",
+      "A teal, compact imp with a long cream nose, pink ear fans, and a tufted gold tail.",
+      "A lavender, spherical dream creature with floating white wings, dark blue dot eyes, and three peach toe nubs."
+    ]
+  },
+  {
+    "name": "Nolu",
+    "descriptions": [
+      "A navy, crescent-shaped phantom with a pearl face, lilac ribbon limbs, and softly glowing gold freckles.",
+      "A cream, limbless familiar with a rounded teal back, pink fin ears, and a looped silver tail.",
+      "A sage-green quadruped with velvet ivory cheeks, broad lavender feet, and two orange leaf-shaped horns."
+    ]
+  },
+  {
+    "name": "Noodletoes",
+    "descriptions": [
+      "A pale yellow salamander with long wavy noodle toes, a red broth-like belly, and green herb gills.",
+      "A lavender bird with cream spaghetti legs, orange spoon-shaped wings, and a short teal beak.",
+      "A pink octopus-like creature with thin ivory noodle arms and a golden bowl-shaped head."
+    ]
+  },
+  {
+    "name": "Novini",
+    "descriptions": [
+      "A tiny white star spirit with coral flare wings, a violet core, and silver stumpy feet.",
+      "A navy sprout creature with an opening gold star bud and mint comet-like roots trailing behind it.",
+      "A translucent peach alien with a spherical head, blue ring ears, and a glowing ivory chest diamond."
+    ]
+  },
+  {
+    "name": "Nudibun",
+    "descriptions": [
+      "A pastel pink sea slug with rabbit-like lavender rhinophores, mint frills, and a pearl-white belly.",
+      "A cream aquatic bunny with orange branching back gills and flat turquoise flippers instead of paws.",
+      "A lemon-yellow nudibranch with black-tipped ear stalks and a wide lilac skirt edged in white pompom frills."
+    ]
+  },
+  {
+    "name": "Nukkeli",
+    "descriptions": [
+      "A cream, doll-like construct with lavender button eyes, peach articulated limbs, and a mint tassel crest.",
+      "A teal, stocky familiar with velvet white ears, a gold heart-shaped face, and tiny pink knuckle horns.",
+      "A pale blue dream creature with a hollow oval torso, silver hanging hands, and an ivory star inside."
+    ]
+  },
+  {
+    "name": "Nuzzlebee",
+    "descriptions": [
+      "A honey-yellow bee with a plush cream muzzle, soft brown stripes, and oversized pink cheek tufts.",
+      "A black-and-gold bear cub with tiny clear wings and rounded amber antennae curving toward its nose.",
+      "A peach pollen sprite with six fuzzy ivory arms, lavender bee wings, and a striped green abdomen."
+    ]
+  },
+  {
+    "name": "Ollu",
+    "descriptions": [
+      "A cream owl-like familiar with a circular olive face, large gold eyes, and short pink feather feet.",
+      "A blue, loop-shaped water creature with a pearlescent white inner rim and two dangling lavender flippers.",
+      "A rust-orange golem with a polished spherical body, tiny teal hands, and broad ivory horn crescents."
+    ]
+  },
+  {
+    "name": "Omi",
+    "descriptions": [
+      "A mint, teardrop-shaped spirit with a white mask face, two peach ribbon arms, and a gold halo.",
+      "A lilac, potbellied imp with cream mitten hands, broad blue ears, and a tiny coral spiral tail.",
+      "A smooth ivory alien with three orange eyes, pink paddle legs, and translucent green cheek fins."
+    ]
+  },
+  {
+    "name": "Oombit",
+    "descriptions": [
+      "A plum, spherical creature with thick orange feet, ivory tooth nubs, and a mint belly ring.",
+      "A dark blue cosmic familiar with a round white head and two tiny gold moons orbiting its shoulders.",
+      "A peach, rubbery burrow creature with a dome-shaped back, purple shovel hands, and oversized cream ears."
+    ]
+  },
+  {
+    "name": "Orbimoo",
+    "descriptions": [
+      "A white spherical calf with navy patches, golden crescent horns, and a lavender planetary ring around its belly.",
+      "A translucent blue cow spirit with a pink orb torso and four floating pearl hoof beads.",
+      "A dark violet cosmic bovine with silver star spots and three cream moon orbs forming its tail."
+    ]
+  },
+  {
+    "name": "Orbitot",
+    "descriptions": [
+      "A tiny orange planet creature with blue mitten hands and a tilted ivory ring functioning as a cradle.",
+      "A navy star child with a spherical cream head and three gold pebble companions orbiting its waist.",
+      "A lilac, three-part cosmic creature whose pink head and mint feet circle a bright white central body."
+    ]
+  },
+  {
+    "name": "Origamini",
+    "descriptions": [
+      "A white paper crane creature with coral folded wings, teal ink eyes, and tiny golden accordion legs.",
+      "A lavender origami rabbit with crisp cream belly folds and long green ears opening like fans.",
+      "A mint folded-paper dragon with triangular pink scales, ivory joint creases, and a narrow yellow ribbon tail."
+    ]
+  },
+  {
+    "name": "Otterly",
+    "descriptions": [
+      "A brown otter with a cream heart-shaped muzzle, turquoise webbed paws, and a pale pink shell belly patch.",
+      "A silver river otter with a long blue glass tail and green reed whiskers.",
+      "A peach sea otter with ivory foam fur, lavender flippers, and a small golden pearl nestled in its chest."
+    ]
+  },
+  {
+    "name": "Pandalion",
+    "descriptions": [
+      "A cream panda with black eye patches, a golden lion mane, and a tufted orange tail.",
+      "A white panda cub with green ears and a fluffy yellow dandelion mane surrounding its round face.",
+      "A charcoal lion cub with ivory panda markings and a pale pink petal mane dotted with gold pollen."
+    ]
+  },
+  {
+    "name": "Paperoo",
+    "descriptions": [
+      "A tan folded-paper kangaroo with a cream pouch, orange crease lines, and oversized blue triangular feet.",
+      "A white paper moth with layered pink stationery wings, black ink antennae, and a tiny red seal face.",
+      "A mint scroll creature with long curled ivory ears and a folded gold tail supporting its upright body."
+    ]
+  },
+  {
+    "name": "Pastelli",
+    "descriptions": [
+      "A lavender chalk creature with peach stubby legs, mint powder fur, and a pale yellow flat-topped crest.",
+      "A cream chameleon with watercolor pink and blue patches, a curled lilac tail, and rounded orange toes.",
+      "A pale green ceramic fairy with mosaic peach wings, powder-blue cheeks, and a gold scalloped collar."
+    ]
+  },
+  {
+    "name": "Peachums",
+    "descriptions": [
+      "A fuzzy peach-pink hamster with a cream belly, mint leaf ears, and a brown stem tail.",
+      "A pale orange hippo with rosy fruit-split cheeks, ivory toenails, and a tiny green sprout crest.",
+      "A pink peach jelly creature with a golden pit core, broad white mitten hands, and two leaf-shaped green feet."
+    ]
+  },
+  {
+    "name": "Peakabun",
+    "descriptions": [
+      "A white mountain rabbit with slate-gray peak ears, icy blue paws, and a little snowcap forehead tuft.",
+      "A tan bunny peeking from a green pinecone shell, with cream cheek fluff and tiny pink paws.",
+      "A pale lavender pika with an ivory triangular back crest and golden ears rising like twin summits."
+    ]
+  },
+  {
+    "name": "Pebblewing",
+    "descriptions": [
+      "A gray bird with smooth pebble wings, cream feather joints, and a tiny rust-orange beak.",
+      "A pale brown gargoyle hatchling with faceted blue stone wings and pink crystal eyes.",
+      "A mint insect with transparent wings weighted by silver pebbles along their rims and six gold legs."
+    ]
+  },
+  {
+    "name": "Pebblina",
+    "descriptions": [
+      "A rosy pebble fairy with silver gem eyes, delicate gold twig limbs, and a tiny white quartz crown.",
+      "A gray seal with smooth pink stone patches and flippers made of stacked ivory river pebbles.",
+      "A terracotta, doll-like golem with an oval cream head and a skirt of overlapping blue slate chips."
+    ]
+  },
+  {
+    "name": "Pebblit",
+    "descriptions": [
+      "A small charcoal rock lizard with glowing amber cracks, blunt cream claws, and a round stone snout.",
+      "A pale blue pebble chick with white quartz wings and tiny copper talons.",
+      "A stacked brown pebble creature with moss-green seams, a pink oval face, and broad gray feet."
+    ]
+  },
+  {
+    "name": "Peepaboo",
+    "descriptions": [
+      "A yellow chick peeking through a lavender eggshell hood, with orange feet and cream feather mittens.",
+      "A white ghost bird with a navy sheet-like body, pink cheek circles, and tiny gold eyes beneath its brim.",
+      "A mint owl with enormous ivory wing curtains partly hiding its peach face and a short blue tail."
+    ]
+  },
+  {
+    "name": "Pelli",
+    "descriptions": [
+      "A pink, ovoid fairy creature with thin ivory petal armor, gold eyes, and four short green legs.",
+      "A pale blue pelican-like familiar with an oversized cream pouch, lavender crest, and tiny orange flippers.",
+      "A tan, segmented living construct with silver hinge joints, a rounded teal head, and broad white paddle arms."
+    ]
+  },
+  {
+    "name": "Petalisk",
+    "descriptions": [
+      "A jade basilisk hatchling with pink petal scales, a white flower frill, and tiny golden horn buds.",
+      "A lavender snake with a broad ivory orchid hood and rose-colored leaf fins along its tail.",
+      "A cream lizard with orange tulip armor, green stem legs, and a pointed pink blossom crown."
+    ]
+  },
+  {
+    "name": "Pigeopip",
+    "descriptions": [
+      "A blue-gray pigeon chick with an oversized pink cere, cream cheek fluff, and tiny orange feet.",
+      "A white pigeon sprite with teal crystal wing tips, a lavender neck ring, and a gold seed-shaped body.",
+      "A russet ground dove with pale yellow pebble spots and a small green sprout between its crown feathers."
+    ]
+  },
+  {
+    "name": "Pikopon",
+    "descriptions": [
+      "A coral, star-shaped imp with a round ivory face, lime pompom hands, and little navy spike ears.",
+      "A yellow, compact alien with teal antenna paddles, pink ring eyes, and oversized white bouncing feet.",
+      "A lavender seed familiar with an angular green shell, gold cheek knobs, and a tall cream plume."
+    ]
+  },
+  {
+    "name": "Pillowbit",
+    "descriptions": [
+      "A square cream rabbit with quilted pink ears, blue button eyes, and a tiny lavender tassel tail.",
+      "A pale green pillow creature with ivory seam teeth, stubby peach feet, and soft gold fringe arms.",
+      "A navy bat with plush white cushion wings, a round violet body, and pink embroidered cheek stars."
+    ]
+  },
+  {
+    "name": "Pipitap",
+    "descriptions": [
+      "A brown pipit with cream speckles, red tap-shoe toes, and a tiny blue feather bow crest.",
+      "A mint water bird with ivory ripple rings on its belly and long peach droplet-shaped legs.",
+      "A yellow, wooden toy bird with blue articulated knees and a pair of flat orange clapping wings."
+    ]
+  },
+  {
+    "name": "Plixie",
+    "descriptions": [
+      "A hot-pink pixie with angular lime wings, silver claw fingers, and a pointed violet crest.",
+      "A translucent aqua fairy slime with floating gold eyes and four peach ribbon limbs.",
+      "A cream, pixelated trickster creature with stepped blue ears, purple square freckles, and disjointed yellow hands."
+    ]
+  },
+  {
+    "name": "Ploink",
+    "descriptions": [
+      "A peach piglet with a spring-shaped purple tail, mint hoof pads, and a broad cream snout.",
+      "A turquoise, gelatinous creature with a bell-shaped body, orange flipper hands, and a bouncing white pearl core.",
+      "A gold, squat living instrument with pink tuning-peg ears and three navy strings across its hollow belly."
+    ]
+  },
+  {
+    "name": "Pollipom",
+    "descriptions": [
+      "A golden pollen creature with three fuzzy pink pompom segments, mint leaf feet, and cream antennae.",
+      "A lime tadpole with an orange flower-puff tail, violet gill cheeks, and a round white belly.",
+      "A cream bee with lavender pompom wings and a dark yellow pollen basket forming its oversized hindquarters."
+    ]
+  },
+  {
+    "name": "Pompula",
+    "descriptions": [
+      "A purple spiderling with a huge pink pompom abdomen and eight short cream ribbon legs.",
+      "A teal, bulbous fairy creature with ivory fluff cuffs, gold fan ears, and a long lilac tassel tail.",
+      "A pale yellow flower beetle with round coral petal armor and mint antennae ending in fluffy white spheres."
+    ]
+  },
+  {
+    "name": "Pondhug",
+    "descriptions": [
+      "A moss-green frog with oversized cream arms, pink webbed fingers, and a blue lily-pad belly.",
+      "A pale brown pond otter with a broad mint tail curled around its round turquoise body.",
+      "A lavender aquatic slime shaped like an open embrace, with white foam cuffs and tiny golden eyes."
+    ]
+  },
+  {
+    "name": "Poppix",
+    "descriptions": [
+      "A scarlet poppy fox with a black seed-speckled muzzle, green paws, and a fan of red petal tails.",
+      "A pink pixie with explosive yellow flower hair, ivory wings, and a narrow violet stem body.",
+      "A cream popcorn creature with orange kernel feet, a lime leaf collar, and tiny black star pupils."
+    ]
+  },
+  {
+    "name": "Poyochi",
+    "descriptions": [
+      "A peach, round-bodied familiar with tiny white wings, lavender bean feet, and a short curled orange crest.",
+      "A mint, gummy quadruped with rosy cheek patches, an ivory belly, and a lilac ring tail.",
+      "A golden, large-headed imp with a soft pink body, broad cream mittens, and teal teardrop ears."
+    ]
+  },
+  {
+    "name": "Poyomaru",
+    "descriptions": [
+      "A round white seal-like creature with coral cheek discs, navy flippers, and a curled gold tail.",
+      "A pale pink, ring-shaped slime with a mint inner face and four ivory pompom feet.",
+      "An orange, spherical toy-like creature with blue patchwork panels, cream horn nubs, and tiny articulated purple hands."
+    ]
+  },
+  {
+    "name": "Pralinou",
+    "descriptions": [
+      "A hazelnut-brown squirrel with cream praline stripes, caramel paws, and a glossy amber nut-shaped tail.",
+      "A pale pink confection sprite with a gold sugar shell, ivory ribbon ears, and dark chocolate feet.",
+      "A cocoa-colored snail with a layered tan praline shell and a cream body dotted with copper sugar crystals."
+    ]
+  },
+  {
+    "name": "Puddleflop",
+    "descriptions": [
+      "A sky-blue mudskipper with peach floppy fins, a white belly, and a tail spreading into a flat puddle.",
+      "A translucent lavender rabbit slime with liquid ears and broad mint feet surrounded by silver droplets.",
+      "A brown duckling with an oversized aqua puddle-shaped body and small orange wings lying flat against its sides."
+    ]
+  },
+  {
+    "name": "Puddlepip",
+    "descriptions": [
+      "A pale blue duck chick with an orange seed-shaped beak, white bubble cheeks, and transparent webbed feet.",
+      "A mint tadpole with a round pink belly and three silver water droplets forming its tail fin.",
+      "A lavender puddle sprite with a tiny ivory face, yellow reed legs, and a rippled glassy skirt."
+    ]
+  },
+  {
+    "name": "Pufflé",
+    "descriptions": [
+      "A cream souffle creature with a tall golden puff crest, pink ceramic feet, and a softly cracked top.",
+      "A lavender poodle-like familiar with ivory pompom joints, blue ribbon ears, and a round peach muzzle.",
+      "A pale mint foam bird with layered white wings and a coral spiral of fluff instead of a tail."
+    ]
+  },
+  {
+    "name": "Puffypod",
+    "descriptions": [
+      "A lime-green seedpod with cream puffball seeds peeking out, brown root feet, and a pink flower cap.",
+      "A lilac caterpillar with inflated blue pod segments and tiny yellow suction feet beneath each rounded lobe.",
+      "A peach, cloud-bodied creature inside an ivory split shell, with two mint leaf wings sticking out."
+    ]
+  },
+  {
+    "name": "Purriwinkle",
+    "descriptions": [
+      "A periwinkle kitten with an ivory spiral shell, pink seaweed whiskers, and a long blue fin tail.",
+      "A cream cat with purple periwinkle blossoms for ears and a winding green vine tail.",
+      "A lavender sea snail with a feline peach face, soft white paws, and dark blue spiral markings."
+    ]
+  },
+  {
+    "name": "Purrsie",
+    "descriptions": [
+      "A pink purse-shaped cat with gold clasp ears, cream paw feet, and a long braided lavender handle tail.",
+      "A silver kitten with oversized plum cheek fluff, white mitten paws, and a silky pink bow-shaped tail tip.",
+      "A teal, pocket-sized feline familiar with a cream pouch belly, golden whiskers, and folded violet ears."
+    ]
+  },
+  {
+    "name": "Qamiri",
+    "descriptions": [
+      "A deep blue, crescent-bodied spirit with gold gem eyes, silver ribbon arms, and a rose-pink mantle.",
+      "A cream, long-legged familiar with curled turquoise horns, violet mosaic markings, and broad ornamental peach ears.",
+      "A jade, floating-parted fairy with an ivory mask, three golden torso beads, and delicate lilac fin wings."
+    ]
+  },
+  {
+    "name": "Quackaroon",
+    "descriptions": [
+      "A yellow duckling sandwiched between tan macaron shells, with white cream fluff and an orange paddle tail.",
+      "A rosy duck with a toasted coconut-brown back, ivory shredded-feather wings, and mint webbed feet.",
+      "A lavender confection bird with a round cream body, gold sugar bill, and two pink meringue wing spirals."
+    ]
+  },
+  {
+    "name": "Quibbit",
+    "descriptions": [
+      "A teal frog with quill-like ivory back spines, tiny orange hands, and a cream throat pouch.",
+      "A purple, imp-like amphibian with oversized mint hind feet and two golden question-mark antennae.",
+      "A white ink creature with a frog-shaped silhouette, black webbed toes, and pink punctuation spots on its cheeks."
+    ]
+  },
+  {
+    "name": "Rainwhisk",
+    "descriptions": [
+      "A blue-gray kitten with silver droplet whiskers, cream paws, and a translucent umbrella-shaped tail.",
+      "A mint otter with long lavender reed whiskers and a white rain-cloud mane around its shoulders.",
+      "A navy whiskered serpent with pale aqua rain-stripe scales and thin golden fin ribbons streaming from its cheeks."
+    ]
+  },
+  {
+    "name": "Raptorlet",
+    "descriptions": [
+      "A sage-green baby raptor with cream down, coral brow feathers, and tiny curved ivory claws.",
+      "A lavender, feathered raptor with blue winglets and an oversized pink fan tail for balance.",
+      "A sandy-orange raptor with a pale yellow belly, teal scale spots, and short rounded horns above its eyes."
+    ]
+  },
+  {
+    "name": "Roarberry",
+    "descriptions": [
+      "A raspberry-red lion cub with a blueberry-purple mane, cream muzzle, and leaf-green tail tuft.",
+      "A dark plum dinosaur with a wide pink mouth, golden seed spots, and scarlet berry clusters along its spine.",
+      "A strawberry-pink bear with a green calyx ruff, ivory claws, and a small round cherry nose."
+    ]
+  },
+  {
+    "name": "Rootle",
+    "descriptions": [
+      "A brown root piglet with a pale pink snout, green sprout ears, and cream branching toe roots.",
+      "A tan mole with bark-textured claws and a tangled orange carrot-root tail tipped in mint leaves.",
+      "A lilac turnip creature with a squat ivory body, long curling brown root arms, and a jade leaf crown."
+    ]
+  },
+  {
+    "name": "Rosetty",
+    "descriptions": [
+      "A pink rose kitten with layered petal fur, green leaf ears, and tiny ivory thorn claws.",
+      "A cream guinea pig with spiral red rosettes, gold whiskers, and a broad lavender petal tail.",
+      "A jade fairy creature with a burgundy rose head, peach ribbon arms, and delicate white root feet."
+    ]
+  },
+  {
+    "name": "Sabertuft",
+    "descriptions": [
+      "A tawny kitten with small ivory saber teeth, rust-red ear tufts, and a cream chest ruff.",
+      "A pale blue snow beast with lavender shaggy fur, silver tusks, and oversized white mitten paws.",
+      "A charcoal, feathered cat with orange sword-shaped cheek plumes and a long gold-tipped tail."
+    ]
+  },
+  {
+    "name": "Scallopop",
+    "descriptions": [
+      "A coral scallop creature with a cream zigzag rim, big blue eyes, and tiny peach tentacle feet.",
+      "A pink octopus inside a fan-shaped golden shell, with white polka dots across its short arms.",
+      "A mint scallop sprite with a pearl orb body and lavender shell wings opening like paired fans."
+    ]
+  },
+  {
+    "name": "Scarabun",
+    "descriptions": [
+      "A gold scarab with long rabbit-ear antennae, black shell seams, and fuzzy cream hind legs.",
+      "A brown rabbit with a domed emerald beetle shell, copper paws, and a small ivory horn.",
+      "A lavender bread-roll beetle with tan crust armor and six little pink bun-shaped feet."
+    ]
+  },
+  {
+    "name": "Scoochi",
+    "descriptions": [
+      "A low, elongated peach familiar with tiny mint feet, a cream belly, and a wide lilac paddle tail.",
+      "A blue-gray, flat-bodied rock creature with orange mitten hands and a small ivory face near the ground.",
+      "A cream, segmented grub with lavender cushion plates and oversized gold cheek pads framing its shy eyes."
+    ]
+  },
+  {
+    "name": "Scribbli",
+    "descriptions": [
+      "A white paper creature with black scribble fur, red pencil horns, and blue ink feet.",
+      "A lavender, ribbon-bodied imp with tangled charcoal line limbs and a bright yellow eraser-shaped head.",
+      "A cream chameleon with teal sketch marks, a pink crayon tail, and an angular orange crest."
+    ]
+  },
+  {
+    "name": "Sealestial",
+    "descriptions": [
+      "A navy seal with silver star spots, a white crescent muzzle, and translucent blue constellation flippers.",
+      "A cream celestial sea lion with golden halo whiskers and a lavender comet tail replacing its hind flippers.",
+      "A pale pink, glassy seal with a glowing yellow star core and a broad indigo ring around its waist."
+    ]
+  },
+  {
+    "name": "Serenoo",
+    "descriptions": [
+      "A pale blue, dreamlike creature with a smooth ovoid body, silver fin arms, and peacefully closed violet eyes.",
+      "A cream deer-like familiar with long lavender ears, a gold halo collar, and small mint hooves.",
+      "A translucent jade spirit with a loop-shaped torso, peach ribbon hands, and an ivory pearl face suspended inside."
+    ]
+  },
+  {
+    "name": "Shadowmi",
+    "descriptions": [
+      "A charcoal kitten-shaped shadow with lavender edge glow, white dot eyes, and a short wispy tail.",
+      "A navy mimic spirit with two offset faces, one silver and one purple, beneath a ragged black hood.",
+      "A dark plum sprite with flat ribbon limbs, a pink crescent smile, and a pale gray mask-shaped belly."
+    ]
+  },
+  {
+    "name": "Sherpup",
+    "descriptions": [
+      "A brown puppy with a thick ivory mountain coat, blue paw pads, and a braided rust-orange tail.",
+      "A slate-gray dog with a white snowcap crest, golden horn nubs, and oversized furry lavender feet.",
+      "A cream canine with moss-green saddle fur and a tan, basket-shaped ridge naturally growing across its back."
+    ]
+  },
+  {
+    "name": "Shrimpip",
+    "descriptions": [
+      "A translucent pink shrimp with enormous gold eyes, tiny white pincers, and a curled coral tail.",
+      "A mint shrimp-bird hybrid with a cream feathered head, orange segmented body, and narrow blue fin wings.",
+      "A ruby-red shrimp sprite with ivory bead joints and lavender antennae tipped in little pearl bubbles."
+    ]
+  },
+  {
+    "name": "Skimble",
+    "descriptions": [
+      "A teal, flat-bodied water familiar with silver paddle paws, a cream snout, and a narrow orange keel tail.",
+      "A cinnamon, lanky tree creature with mint grasping fingers, ivory cheek tufts, and a long purple balancing tail.",
+      "A lavender insect with gold skate-like feet, clear blue wings, and a tiny round white thorax."
+    ]
+  },
+  {
+    "name": "Sleepypea",
+    "descriptions": [
+      "A pale green pea with closed brown eyes, a cream leaf blanket, and tiny pink root feet.",
+      "Three mint peas with lavender sleepy faces nestled inside a dark green pod lined in white fluff.",
+      "A round yellow-green dormouse with a pea-pod tail, ivory paws, and large drooping leaf ears."
+    ]
+  },
+  {
+    "name": "Slothmallow",
+    "descriptions": [
+      "A cream marshmallow sloth with cocoa eye patches, pink paws, and long soft caramel claws.",
+      "A lavender sloth with white cloud-like fur and mint vine arms curling around its round belly.",
+      "A toasted golden sloth creature with a gooey ivory torso, chocolate-brown fingers, and a pink spiral nose."
+    ]
+  },
+  {
+    "name": "Snailody",
+    "descriptions": [
+      "A pale blue snail with a golden shell shaped like a treble-clef spiral and lavender antennae.",
+      "A pink snail with ivory piano-key shell ridges, black musical freckles, and a cream throat frill.",
+      "A mint, horn-shelled mollusk with a bronze bell opening and long white ribbon feelers beneath its smiling face."
+    ]
+  },
+  {
+    "name": "Sniffini",
+    "descriptions": [
+      "A tan shrew with an oversized rosy nose, cream whisker tufts, and tiny dark brown paws.",
+      "A lavender puppy with mint leaf nostrils, ivory ear fluff, and a peach teardrop-shaped body.",
+      "A pale green, long-snouted familiar with golden antenna whiskers and a broad pink flower collar."
+    ]
+  },
+  {
+    "name": "Snootie",
+    "descriptions": [
+      "A gray elephant shrew with a long peach snoot, white belly, and enormous lavender ears.",
+      "A mint tapir with a cream muzzle, pink saddle patch, and short curled blue trunk.",
+      "A golden, pear-shaped creature with a trumpet-like coral nose and two tiny ivory horn nubs."
+    ]
+  },
+  {
+    "name": "Snowpatchi",
+    "descriptions": [
+      "A white rabbit with blue patchwork fur, pink stitch-like markings, and one oversized lavender ear.",
+      "A cream arctic cub with irregular silver ice plates and moss-green patches peeking through its snowy coat.",
+      "A pale blue snow golem built from mismatched rounded chunks, with orange pebble eyes and a navy mitten hand."
+    ]
+  },
+  {
+    "name": "Snowsi",
+    "descriptions": [
+      "A white kitten with icy blue ears, lavender snowflake whiskers, and pale pink toe pads.",
+      "A silver snow sprite with a tiny round face and six translucent mint crystal limbs.",
+      "A pale blue chick with a tall white powder crest, coral beak, and fluffy snowball feet."
+    ]
+  },
+  {
+    "name": "Snugpod",
+    "descriptions": [
+      "A lavender seed creature wrapped in a thick green pod, with cream cheek fluff and tiny brown root toes.",
+      "A pink caterpillar in an ivory cocoon vest, with gold sleepy eyes and two soft blue antennae.",
+      "A mint turtle with a cushion-like peach shell and white petal flaps folded around its head."
+    ]
+  },
+  {
+    "name": "Sorapoyo",
+    "descriptions": [
+      "A sky-blue, spherical airborne creature with white fin wings, peach cheek discs, and a short gold ribbon tail.",
+      "A cream, cloud-bodied familiar with a pink belly, long teal ear sails, and tiny violet paws.",
+      "A pale yellow star-shaped sprite with blue membrane wings stretched between its rounded points and silver dot eyes."
+    ]
+  },
+  {
+    "name": "Sparrini",
+    "descriptions": [
+      "A chestnut sparrow with cream cheek patches, orange seed-shaped wings, and a little green feather crest.",
+      "A gray sparrow sprite with gold spark-shaped tail feathers and a lavender lightning mark across its breast.",
+      "A white birdling with rosy wing mittens, teal ankle bands, and an oversized brown feather pompadour."
+    ]
+  },
+  {
+    "name": "Spirali",
+    "descriptions": [
+      "A lavender spiral-bodied creature with a cream face at its center and small gold paddle limbs.",
+      "A mint seahorse with three pink corkscrew horns, silver belly ridges, and transparent blue fins.",
+      "A rust-orange fairy with an ivory coiled skirt and long turquoise ribbon arms curling into matching loops."
+    ]
+  },
+  {
+    "name": "Sporeboo",
+    "descriptions": [
+      "A white mushroom ghost with a lavender cap, black droplet eyes, and a trailing mint spore cloud.",
+      "A brown puffball creature with a shy pink face, cream root paws, and tiny blue spores floating around its crown.",
+      "A translucent green phantom with three red mushroom buttons down its belly and ragged ivory gill sleeves."
+    ]
+  },
+  {
+    "name": "Spriglit",
+    "descriptions": [
+      "A green twig creature with orange ember leaf ears, a cream face, and glowing gold root tips.",
+      "A tiny brown deer with mint sprig antlers, yellow firefly spots, and a pale peach belly.",
+      "A charcoal seedling with a translucent lime shoot and white light shining through cracks in its round shell."
+    ]
+  },
+  {
+    "name": "Sproutle",
+    "descriptions": [
+      "A tan turtle with a green sprout growing from its shell, cream toes, and pink cheek circles.",
+      "A pale brown root piglet with jade leaf ears and a round white radish-like belly.",
+      "A mint seed creature with a split orange husk, ivory root whiskers, and two broad green leaf wings."
+    ]
+  },
+  {
+    "name": "Squeeb",
+    "descriptions": [
+      "A lime-green, compressible imp with a bulbous head, purple webbed hands, and tiny ivory tooth buds.",
+      "A pale blue, rubbery sphere with coral trumpet ears and three short cream paddle feet.",
+      "A yellow, many-legged alien with a narrow teal body, huge pink cheeks, and a zigzag silver tail."
+    ]
+  },
+  {
+    "name": "Squeezle",
+    "descriptions": [
+      "A lavender, elongated slime with peach mitten hands, a white belly stripe, and a coiled teal tail.",
+      "A golden, accordion-bodied creature with pink fold seams and two oversized ivory squeezing-clamp arms.",
+      "A mint, plush familiar with a pinched hourglass torso, broad blue ears, and round cream paw pads."
+    ]
+  },
+  {
+    "name": "Squidlet",
+    "descriptions": [
+      "A tiny coral squid with lavender suction cups, a white arrow-shaped mantle, and round turquoise eyes.",
+      "A mint squidling with six short cream arms and a transparent blue head containing a golden pearl.",
+      "A navy squid with pink star spots, silver fin ears, and two extra-long ribbon tentacles tipped in white."
+    ]
+  },
+  {
+    "name": "Stickibun",
+    "descriptions": [
+      "A cinnamon bun snail with cream icing spirals, an amber sticky foot, and pink antennae.",
+      "A tan rabbit with bark-like fur, green twig ears, and a glossy golden sap tail.",
+      "A rose-pink gummy bunny with a cream spiral belly and wide turquoise suction pads on its paws."
+    ]
+  },
+  {
+    "name": "Sugarpluff",
+    "descriptions": [
+      "A white sugar-cloud lamb with pink crystal horns, lavender hooves, and sparkling gold freckles.",
+      "A pale blue puffball creature with a crown of coral rock-candy shards and tiny cream mitten hands.",
+      "A peach confection bird with fluffy ivory wings and a long mint cotton-candy tail."
+    ]
+  },
+  {
+    "name": "Tabbit",
+    "descriptions": [
+      "A brown tabby rabbit with cream striped ears, feline whiskers, and oversized pink hind paws.",
+      "A lavender tablet-shaped creature with ivory rabbit ears, blue square markings, and gold articulated feet.",
+      "A white cat-rabbit familiar with teal tab-shaped back fins and a short peach tassel tail."
+    ]
+  },
+  {
+    "name": "Tavi",
+    "descriptions": [
+      "A rust-orange, slender familiar with an ivory mask face, teal claw tips, and a long fan-shaped tail.",
+      "A lavender, bipedal fairy creature with gold crescent ears, mint ribbon sleeves, and oversized cream feet.",
+      "A pale blue, shelled alien with a triangular peach head, silver leg joints, and two short ivory antennae."
+    ]
+  },
+  {
+    "name": "Tesselli",
+    "descriptions": [
+      "A teal mosaic lizard with interlocking gold scales, ivory joints, and a triangular pink tail.",
+      "A cream, geometric fairy with tessellated blue and lavender wings and small orange polygon hands.",
+      "A rust-red golem made of fitted hexagonal stones, with moss-green seams and a smooth white face tile."
+    ]
+  },
+  {
+    "name": "Tidekin",
+    "descriptions": [
+      "A seafoam-green otter-like creature with blue tide bands, cream flippers, and pink coral whiskers.",
+      "A lavender water sprite with a wave-shaped white crest and gold shell plates along its narrow torso.",
+      "A sandy-beige crab familiar with a translucent turquoise body dome and broad ivory claws edged in navy."
+    ]
+  },
+  {
+    "name": "Tinyroar",
+    "descriptions": [
+      "A golden lion cub with a huge rust-red mouth, cream paw mittens, and a miniature brown mane.",
+      "A pea-green dinosaur with a rounded ivory jaw, coral throat frill, and oversized blue hind feet.",
+      "A lavender, mouse-sized dragon with tiny orange horns and a transparent pink chest showing a gold flame core."
+    ]
+  },
+  {
+    "name": "Tiptili",
+    "descriptions": [
+      "A pale pink, stilt-legged fairy with a tilted ivory flower hat, mint ribbon arms, and tiny gold feet.",
+      "A teal, top-heavy bird with a cream teardrop body, long orange toes, and a narrow lavender balancing tail.",
+      "A yellow, articulated creature with a conical blue head and small silver arms extended from its rounded torso."
+    ]
+  },
+  {
+    "name": "Totorin",
+    "descriptions": [
+      "A moss-green, barrel-bodied guardian with cream belly rings, brown root claws, and broad lavender ears.",
+      "A blue ceramic turtle with concentric ivory shell ridges and a small gold bell at its tail tip.",
+      "A rust-orange, squat familiar with three stacked neck rings, pink mitten hands, and a round white forehead tuft."
+    ]
+  },
+  {
+    "name": "Tourmali",
+    "descriptions": [
+      "A pink-and-green tourmaline lizard with black crystal claws, translucent scales, and an ivory belly.",
+      "A pale mint mineral fairy with long rose crystal ears and faceted silver ribbon wings.",
+      "A charcoal stone creature with a watermelon-colored crystal core and three floating gold-edged prism limbs."
+    ]
+  },
+  {
+    "name": "Triceratot",
+    "descriptions": [
+      "A mint baby triceratops with three ivory horn nubs, a pink scalloped frill, and stubby brown feet.",
+      "A lavender triceratops with plush cream cheek fur and gold star-shaped plates around its small blue frill.",
+      "A terracotta hatchling with a faceted turquoise shield face, pale yellow horns, and a chunky white-tipped tail."
+    ]
+  },
+  {
+    "name": "Tuftulip",
+    "descriptions": [
+      "A cream rabbit with pink tulip ears, a green leafy ruff, and fluffy gold ankle tufts.",
+      "A mint hedgehog with closed coral tulip buds instead of spines and a soft ivory face.",
+      "A brown sprout creature with a tall yellow petal tuft and four broad lavender root feet."
+    ]
+  },
+  {
+    "name": "Turtulip",
+    "descriptions": [
+      "A jade turtle with a pink tulip-shaped shell, yellow petal seams, and tiny brown root claws.",
+      "A pale blue sea turtle with ivory lily-like flippers and an orange blossom growing from its domed back.",
+      "A cream tortoise with overlapping purple tulip scales and broad green leaf feet."
+    ]
+  },
+  {
+    "name": "Twirlina",
+    "descriptions": [
+      "A pink dancer-like sprite with a spiral ivory skirt, gold ribbon arms, and a tiny lavender pointed foot.",
+      "A turquoise dragonfly with corkscrew silver wings and a peach tail curled into a wide loop.",
+      "A cream, spinning-top creature with blue petal plates, a round rose face, and delicate golden side fins."
+    ]
+  },
+  {
+    "name": "Umbrelluna",
+    "descriptions": [
+      "A midnight-blue jellyfish with a silver crescent umbrella bell and long lavender rain-ribbon tentacles.",
+      "A white rabbit with one enormous navy parasol ear patterned in golden moons and tiny pink feet.",
+      "A pale gray mushroom sprite with a moon-disc cap, blue scalloped gills, and slender ivory handle-shaped legs."
+    ]
+  },
+  {
+    "name": "Uvvi",
+    "descriptions": [
+      "A violet, translucent alien with a ring-shaped torso, cream floating hands, and two bright lime eyes.",
+      "A peach, round-faced familiar with silky blue fur, broad ivory ears, and paired gold tail tufts.",
+      "A mint, radially symmetrical fairy with five lavender leaf fins and a pearl-white central face."
+    ]
+  },
+  {
+    "name": "Vanillou",
+    "descriptions": [
+      "A cream puppy with vanilla-pod brown ears, golden speckles, and a soft white whipped tail.",
+      "An ivory slug with a curled pale yellow ice-cream shell and pink waffle-patterned belly.",
+      "A tan confection spirit with a tall cream swirl head, chocolate ribbon arms, and tiny lavender sugar feet."
+    ]
+  },
+  {
+    "name": "Velloo",
+    "descriptions": [
+      "A velvety teal creature with a pear-shaped body, cream cheek fins, and long pink ribbon arms.",
+      "A lavender, floating-parted familiar with a round ivory head and four fluffy gold limb spheres.",
+      "A cream, loop-shaped spirit with silky navy fringes, silver gem eyes, and an orange teardrop tail."
+    ]
+  },
+  {
+    "name": "Velocutie",
+    "descriptions": [
+      "A pink baby velociraptor with cream feather fluff, tiny teal claws, and a mint fan tail.",
+      "A gold raptor chick with oversized brown eyes, lavender winglets, and a soft white throat frill.",
+      "A pale blue runner with a rounded ivory snout, coral petal scales, and little silver hooked toes."
+    ]
+  },
+  {
+    "name": "Winkimi",
+    "descriptions": [
+      "A cream imp with one gold star eye, one curved wink mark, and long pink ribbon ears.",
+      "A lavender moth familiar with an asymmetrical white mask and turquoise eye-like wing spots.",
+      "A teal, mirror-faced sprite with a silver oval head, peach mitten hands, and one glowing yellow eyelid."
+    ]
+  },
+  {
+    "name": "Wobblebee",
+    "descriptions": [
+      "A golden bumblebee with an oversized striped abdomen, tiny blue wings, and broad orange balancing feet.",
+      "A peach bee grub with three wobbly cream body lobes and lavender antennae curled into loose springs.",
+      "A black-and-yellow bee golem with a round ivory rocking base and pink ball-jointed arms."
+    ]
+  },
+  {
+    "name": "Woffin",
+    "descriptions": [
+      "A brown puppy with a golden waffle-patterned belly, cream butter ears, and a short pink tongue.",
+      "A slate-blue puffin with a canine cream muzzle, orange webbed paws, and a fluffy white tail.",
+      "A lavender, puffy canine spirit with tiny mint wings and three ivory smoke rings around its neck."
+    ]
+  },
+  {
+    "name": "Woolib",
+    "descriptions": [
+      "A white lamb with a compact blue body, pink hooves, and a long ivory wool braid tail.",
+      "A mint, book-shaped living construct with fluffy cream page edges and golden curled sheep horns.",
+      "A peach sheep grub with six tiny brown feet and lavender fleece arranged in rounded bands."
+    ]
+  },
+  {
+    "name": "Woolwink",
+    "descriptions": [
+      "A cream sheep with a navy eye patch, a golden star pupil, and pale blue spiral horns.",
+      "A lavender wool moth with broad ivory wings, pink antennae, and one oversized winking face marking.",
+      "A mint, round-bodied familiar with shaggy white brows covering one eye and a short gold tassel tail."
+    ]
+  },
+  {
+    "name": "Wrennel",
+    "descriptions": [
+      "A russet wren with cream cheek stripes, a tall orange tail, and tiny green twig feet.",
+      "A pale blue wren with a woven brown nest collar and white down spilling over its small wings.",
+      "A gray tunnel bird with gold spade-shaped claws and a lavender, funnel-like feather hood."
+    ]
+  },
+  {
+    "name": "Zelu",
+    "descriptions": [
+      "A lime-green, angular alien with a pearl face, navy jointed legs, and a coral lightning crest.",
+      "A lilac, fluid-bodied spirit with silver ribbon fins, a yellow luminous core, and a tapered glassy tail.",
+      "A cream, feline familiar with teal velvet ears, pink spiral cheek markings, and oversized gold paws."
+    ]
+  },
+  {
+    "name": "Zephyroo",
+    "descriptions": [
+      "A sky-blue kangaroo with white cloud ears, a golden sail tail, and small lavender winged ankles.",
+      "A mint wind spirit with a looped body, pink ribbon limbs, and two broad ivory ear sails.",
+      "A cream flying squirrel with turquoise membrane wings and a long silver feather tail curving like a breeze."
+    ]
+  },
+  {
+    "name": "Zigzumi",
+    "descriptions": [
+      "A yellow, zigzag-bodied creature with navy ear tips, coral cheek sparks, and short ivory claw feet.",
+      "A teal, segmented familiar with alternating pink angular plates and a long white lightning-bolt tail.",
+      "A lavender moth with sharp gold chevrons across its blue wings and two zigzag cream antennae."
+    ]
+  },
+  {
+    "name": "Zinnibee",
+    "descriptions": [
+      "A golden bee with magenta zinnia-petal wings, dark brown stripes, and mint leaf antennae.",
+      "A pink flower creature with a fuzzy yellow bee face and six green stem legs beneath its bloom.",
+      "A cream bumblebee with layered orange petal armor and violet pollen puffs on its back legs."
+    ]
+  },
+  {
+    "name": "Zippilo",
+    "descriptions": [
+      "A teal, darting alien with an elongated body, orange fin wings, and a silver zipper-like belly seam.",
+      "A lavender, plush familiar with a pointed cream face, gold spring feet, and a long pink ribbon tail.",
+      "A white, electric sprite with blue zigzag ear fins and three small coral body segments linked by glowing joints."
+    ]
+  },
+  {
+    "name": "Ankylump",
+    "descriptions": [
+      "A sage-green ankylosaur with lumpy gray armor, cream toe claws, and a round brown club tail.",
+      "A lavender dinosaur with plush ivory armor cushions and a giant pink pompom tail club.",
+      "A rust-orange stone ankylosaur with moss-green cracks and smooth golden knobs covering its low domed back."
+    ]
+  },
+  {
+    "name": "Newtrino",
+    "descriptions": [
+      "A turquoise newt with silver orbital gills, a transparent blue belly, and a glowing pink particle core.",
+      "A cream, miniature salamander with violet speckles and three small gold beads floating around its long tail.",
+      "A dark blue aquatic sprite with six orange fin limbs and a white neutron-like sphere for a head."
+    ]
+  },
+  {
+    "name": "Craggle",
+    "descriptions": [
+      "A gray, craggy mountain cub with moss-green cheek tufts, amber eyes, and broad brown stone paws.",
+      "A rust-red rock golem with uneven ivory peaks on its back and a tiny blue face between boulders.",
+      "A lavender cliff lizard with jagged silver plates and a curled cream tail shaped like a grappling hook."
+    ]
+  },
+  {
+    "name": "Nautilump",
+    "descriptions": [
+      "A cream nautilus with a bulky orange spiral shell, short pink tentacles, and sleepy blue eyes.",
+      "A slate-gray, lumpy sea beast with an ivory ammonite back plate and tiny teal flipper legs.",
+      "A lavender mollusk with a transparent aqua chambered shell and round gold stones visible inside each chamber."
+    ]
+  },
+  {
+    "name": "Scuppup",
+    "descriptions": [
+      "A blue-gray fish puppy with a cream canine muzzle, coral gill ears, and short golden paddle paws.",
+      "A tan boat-like pup with an ivory hollow back, mint fin legs, and a curled blue rudder tail.",
+      "A navy seal puppy with a white sailor-collar fur marking and a broad peach scoop-shaped lower jaw."
+    ]
+  },
+  {
+    "name": "Xenibble",
+    "descriptions": [
+      "A lime alien with a large translucent head, purple tooth nubs, and six short orange grasping limbs.",
+      "A pink extraterrestrial grub with black starry eyes, ivory plated cheeks, and teal pincers framing its small mouth.",
+      "A silver, quadrupedal cosmic familiar with blue gem teeth and a long lavender tail ending in a second mouth."
+    ]
+  },
+  {
+    "name": "Alpip",
+    "descriptions": [
+      "A white alpine chick with a gray mountain crest, pink cheeks, and tiny orange crampon-like toes.",
+      "A cream pika with icy blue ears, slate-gray paws, and a little gold flower between its eyes.",
+      "A pale lavender ibex hatchling with silver horn nubs and a thick white puff of chest fur."
+    ]
+  },
+  {
+    "name": "Amanibble",
+    "descriptions": [
+      "A cream mouse with a red spotted mushroom cap, brown nibbling teeth, and a green leaf tail.",
+      "A pale yellow mushroom creature with little pink bite notches in its cap and stout ivory root legs.",
+      "A lavender beetle with white fungal plates, orange mandibles, and a tiny scarlet toadstool growing between its antennae."
+    ]
+  },
+  {
+    "name": "Anchoroo",
+    "descriptions": [
+      "A navy kangaroo with a silver anchor-shaped tail, cream pouch, and coral webbed feet.",
+      "A rust-orange anchor golem with a round teal face, gold rope arms, and broad ivory fluke feet.",
+      "A mint seahorse with a heavy charcoal anchor belly and pink fins curling like ribbons around its neck."
+    ]
+  },
+  {
+    "name": "Berlow",
+    "descriptions": [
+      "A brown, low-slung familiar with a barrel-shaped torso, ivory shovel paws, and soft blue cheek tufts.",
+      "A burgundy, velvet-skinned creature with a broad cream face, orange horn loops, and a short gold club tail.",
+      "A teal, hollow-bodied golem with a peach bell core and four stubby silver legs beneath its rounded shell."
+    ]
+  },
+  {
+    "name": "Blennibob",
+    "descriptions": [
+      "A mint blenny with bobble-like gold eyes, a pink head tuft, and tiny cream fin feet.",
+      "A sandy-orange fish with a bulbous lilac forehead and blue frilled fins folded like little elbows.",
+      "A translucent lavender blenny with a white bubble belly and coral antennae tipped in floating bead shapes."
+    ]
+  },
+  {
+    "name": "Blinkmi",
+    "descriptions": [
+      "A navy shadow sprite with one enormous pink eye, silver floating hands, and a tiny crescent body.",
+      "A cream moth-like familiar with teal eyelid wings that fold over its round gold face.",
+      "A lavender, mirror-bodied creature with a pearl oval head and two offset peach faces visible in its chest."
+    ]
+  },
+  {
+    "name": "Blinkit",
+    "descriptions": [
+      "A teal robotic familiar with bright yellow eye shutters, orange joint rings, and four short white feet.",
+      "A pale pink gecko with silver eyelids, lime glowing spots, and a transparent curled tail.",
+      "A black-violet firefly imp with a blinking gold belly, ivory claw fingers, and narrow blue glass wings."
+    ]
+  },
+  {
+    "name": "Boletot",
+    "descriptions": [
+      "A tan bolete toddler with a broad brown cap, pale yellow pores, and short cream root feet.",
+      "A rust-orange turtle with a sponge-textured mushroom shell and moss-green cheeks.",
+      "A lavender woodland creature with three tiny ivory bolete caps along its back and pink mitten hands."
+    ]
+  },
+  {
+    "name": "Bongoli",
+    "descriptions": [
+      "A brown, barrel-bodied creature with two cream drumhead shoulders, red palms, and gold ring markings.",
+      "A teal rhythm spirit with a hollow orange belly, ivory tuning pegs, and long lavender tapping fingers.",
+      "A pink monkey-like familiar with twin golden bongo ears and a striped cream tail ending in a padded mallet."
+    ]
+  },
+  {
+    "name": "Brontini",
+    "descriptions": [
+      "A pale green baby brontosaur with a cream throat, pink fern frills, and a short rounded tail.",
+      "A sky-blue sauropod with white cloud patches and tiny gold lightning horns above its lavender eyes.",
+      "A tan, long-necked dinosaur with brown pebble armor and a miniature moss-green tree canopy on its back."
+    ]
+  },
+  {
+    "name": "Buzzibud",
+    "descriptions": [
+      "A yellow flower bud with black bee stripes, tiny white wings, and green stem legs.",
+      "A lavender bee grub with a pink unopened blossom abdomen and gold pollen antennae.",
+      "A cream beetle with mint leaf wing cases and a glowing orange flower stamen rising from its head."
+    ]
+  },
+  {
+    "name": "Chibimaru",
+    "descriptions": [
+      "A coral, spherical familiar with a tiny ivory face, blue mitten hands, and enormous pink foot pads.",
+      "A cream, toy-like guardian with a round lavender body, gold disc ears, and a short green tassel tail.",
+      "A mint, potbellied imp with black bead eyes, peach horn nubs, and white fluffy cuffs around its stubby limbs."
+    ]
+  },
+  {
+    "name": "Chitini",
+    "descriptions": [
+      "A copper insect with delicate ivory chitin plates, teal bead eyes, and six tiny pink jointed legs.",
+      "A pale green crab sprite with a round cream carapace and slim lavender pincers larger than its body.",
+      "A black beetle larva with translucent amber segments and a white helmet-like head crowned by two orange antennae."
+    ]
+  },
+  {
+    "name": "Corallop",
+    "descriptions": [
+      "A coral-pink rabbit with branching ivory reef ears, turquoise flippers, and a short peach tail.",
+      "A mint scallop creature with a red coral crown and lavender tentacles peeking beneath its ridged white shell.",
+      "A pale blue seahorse with orange branching coral armor and a broad pink fan tail."
+    ]
+  },
+  {
+    "name": "Cressta",
+    "descriptions": [
+      "A teal bird with a towering coral fan crest, cream cheek feathers, and tiny golden feet.",
+      "A lavender reptile with an ivory crescent head ridge and blue frills continuing down its slender neck.",
+      "A pale yellow aquatic sprite with a wave-shaped navy crown, pink ribbon arms, and a silver fin skirt."
+    ]
+  },
+  {
+    "name": "Cuddlump",
+    "descriptions": [
+      "A cream, lumpy bear-like creature with oversized pink hugging arms and three soft lavender back humps.",
+      "A moss-green stone familiar with smooth gray cushion plates and an orange face nestled between its broad shoulders.",
+      "A peach, gelatinous creature with a pillowy oval torso, blue mitten hands, and tiny ivory ear nubs."
+    ]
+  },
+  {
+    "name": "Curlclaw",
+    "descriptions": [
+      "A cinnamon kitten with curled ivory claws, teal spiral whiskers, and a corkscrew cream tail.",
+      "A purple crab with enormous gold spiral pincers and short pink legs beneath its blue shell.",
+      "A mint sloth creature with curled brown branch claws, a white shaggy belly, and pale orange cheek frills."
+    ]
+  },
+  {
+    "name": "Dazzip",
+    "descriptions": [
+      "A yellow electric sprite with narrow cobalt wings, a silver zigzag body, and bright pink star eyes.",
+      "A teal dragonfly with gold mirror-like wing panels and a coral dart-shaped abdomen.",
+      "A lavender, crystalline familiar with a white luminous chest and orange prism limbs ending in tiny blue claws."
+    ]
+  },
+  {
+    "name": "Dewyn",
+    "descriptions": [
+      "A pale green sprite with a transparent blue droplet head, silver leaf arms, and cream root feet.",
+      "A white fawn with dew-beaded mint fur and two peach leaf-shaped horns drooping over its forehead.",
+      "A lilac, watery bird with gold reed legs and clear aqua beads forming its fan-shaped tail."
+    ]
+  },
+  {
+    "name": "Dodosaur",
+    "descriptions": [
+      "A peach dodo with green dinosaur scales, an oversized ivory beak, and a long blue reptilian tail.",
+      "A gray dinosaur hatchling with fluffy cream dodo wings and a bulbous pink bird muzzle.",
+      "A mustard-yellow, flightless bird with lavender back plates, tiny white brow horns, and broad orange clawed feet."
+    ]
+  },
+  {
+    "name": "Duneskip",
+    "descriptions": [
+      "A sand-colored jerboa with huge cream hind feet, turquoise ear interiors, and a rust-red tufted tail.",
+      "A golden lizard with wide ivory sand-skimming toes and a blue sail along its narrow back.",
+      "A peach dune spirit with a hollow sandy body and two long silver spring legs beneath its white face."
+    ]
+  },
+  {
+    "name": "Earwiggle",
+    "descriptions": [
+      "A brown earwig with oversized pink ear-shaped pincers, gold segmented armor, and tiny cream legs.",
+      "A lilac rabbit-like insect with long teal feeler ears and six soft white feet.",
+      "A mint grub with large coral fan ears on each body segment and a tiny ivory face."
+    ]
+  },
+  {
+    "name": "Fibbin",
+    "descriptions": [
+      "A rust-red trickster creature with a long cream nose, mismatched blue eyes, and an extravagant purple tail.",
+      "A teal, woven imp with loose gold thread whiskers, ivory patch knees, and pink button ears.",
+      "A lavender shapeshifter with a clear peach belly revealing a smaller navy silhouette and two tiny floating white hands."
+    ]
+  },
+  {
+    "name": "Fidgetail",
+    "descriptions": [
+      "A tan mouse with a jointed orange bead tail, cream paws, and oversized lavender ears.",
+      "A mint lizard with a long purple tail split into three curling tips and gold toe pads.",
+      "A cream squirrel with blue spiral forelock fur and a pink spring tail ending in a silver ring."
+    ]
+  },
+  {
+    "name": "Fluffernut",
+    "descriptions": [
+      "A brown squirrel with a giant cream hazelnut-shaped tail, pink paws, and soft golden ear tufts.",
+      "A tan acorn creature with an ivory fluff cap, mint leaf arms, and stubby root feet.",
+      "A lavender dormouse with a cracked caramel shell around its fluffy white body and an orange button nose."
+    ]
+  },
+  {
+    "name": "Fractini",
+    "descriptions": [
+      "A blue crystalline creature with branching pink antlers, repeating silver triangles, and a tiny gold core.",
+      "A mint fairy with fern-like ivory limbs that split into smaller fingers and a lavender spiral face.",
+      "A coral, geometric golem made of nested cubes, with cream joints and one large turquoise eye."
+    ]
+  },
+  {
+    "name": "Fuzzywump",
+    "descriptions": [
+      "A shaggy purple creature with a huge cream belly, orange horn nubs, and flat teal feet.",
+      "A brown, low-slung beast with yellow moss-like fur and a rounded pink club tail.",
+      "A pale blue, three-humped familiar with woolly white ridges and broad lavender mitten arms."
+    ]
+  },
+  {
+    "name": "Glissip",
+    "descriptions": [
+      "A silver, elongated water creature with pink ribbon fins, turquoise scales, and a narrow cream snout.",
+      "A lavender sound sprite with a pale gold harp-shaped torso and smooth blue fingers stretching across its opening.",
+      "A white snail-like familiar with a glossy teal foot, orange spiral shell, and long peach antennae."
+    ]
+  },
+  {
+    "name": "Glowgrub",
+    "descriptions": [
+      "A lime-green grub with an amber luminous belly, brown head plates, and six tiny ivory legs.",
+      "A translucent blue larva with pink light beads inside each segment and soft white antenna tufts.",
+      "A charcoal caterpillar with glowing yellow back windows and a creamy orange face framed by lavender gills."
+    ]
+  },
+  {
+    "name": "Gobibee",
+    "descriptions": [
+      "A sandy goby with black-and-yellow bee bands, clear ivory fin wings, and orange whisker antennae.",
+      "A golden bumblebee with a blue fish tail, cream gill cheeks, and tiny coral webbed feet.",
+      "A mint reef fish with a fuzzy brown thorax and lavender honeycomb markings across its broad fins."
+    ]
+  },
+  {
+    "name": "Hareloom",
+    "descriptions": [
+      "A cream hare with woven lavender fur panels, golden thread whiskers, and long teal tassel ears.",
+      "A brown rabbit golem with carved ivory floral markings, brass joint circles, and a pink quilted belly.",
+      "A white hare spirit with blue ribbon ears stretched like a loom frame and silver strands between them."
+    ]
+  },
+  {
+    "name": "Hiveling",
+    "descriptions": [
+      "A honey-gold hexagonal creature with a cream face, brown wax feet, and tiny translucent blue wings.",
+      "A black-and-yellow bee larva nestled inside an orange honeycomb armor cell, with pink mitten hands.",
+      "A mint colony creature formed from three cream bee faces in a shared golden hive-shaped shell."
+    ]
+  },
+  {
+    "name": "Hobbini",
+    "descriptions": [
+      "A moss-brown, squat sprite with oversized ivory feet, peach pointed ears, and a green mushroom hood.",
+      "A copper toy-like familiar with one short blue leg, one gold spring leg, and a round cream head.",
+      "A lavender burrow creature with a pear-shaped body, white cheek fur, and broad orange digging mittens."
+    ]
+  },
+  {
+    "name": "Ibexie",
+    "descriptions": [
+      "A tan ibex kid with tiny cream spiral horns, lavender hooves, and a white chin tuft.",
+      "A pale blue mountain goat with translucent silver crystal horns and shaggy snow-white ankle fur.",
+      "A peach alpine fairy goat with mint leaf horns, golden freckled cheeks, and little ivory feather wings."
+    ]
+  },
+  {
+    "name": "Indigoop",
+    "descriptions": [
+      "An indigo slime with a glossy violet surface, turquoise bubbles inside, and drippy pink mitten hands.",
+      "A dark blue ink creature with a long tapered body, silver eye rings, and six cream tentacle feet.",
+      "A translucent lavender goop beast with a navy star core and broad mint fin ears drooping over its face."
+    ]
+  },
+  {
+    "name": "Jotjot",
+    "descriptions": [
+      "A white paper sprite with two black dot eyes, red pencil legs, and blue scribble hair.",
+      "A peach, paired-creature with matching round bodies, gold pen-nib noses, and a shared lavender ribbon tail.",
+      "A mint insect with ivory notebook-like wing panels and orange ink dots along its narrow segmented body."
+    ]
+  },
+  {
+    "name": "Kilnito",
+    "descriptions": [
+      "A terracotta kiln creature with a glowing gold belly opening, charcoal feet, and a white smoke crest.",
+      "A cream ceramic dragon with blue glaze scales, orange firing cracks, and short brown clay horns.",
+      "A rust-red, rounded golem with brick-like armor and tiny lavender flames peeking from its shoulder vents."
+    ]
+  },
+  {
+    "name": "Kotopoko",
+    "descriptions": [
+      "A tan, segmented creature with alternating ivory drum-shaped plates, mint palms, and a coral tassel crest.",
+      "A purple, quadrupedal familiar with a broad cream face, gold ring ears, and a short blue paddle tail.",
+      "A jade, hollow-bodied sprite with peach wooden limbs and silver strings spanning its oval chest."
+    ]
+  },
+  {
+    "name": "Krillik",
+    "descriptions": [
+      "A translucent coral krill with silver joint rings, tiny cream paddles, and long violet antennae.",
+      "A ruby-red shrimp creature with an angular ivory helmet and two gold crystal pincers.",
+      "A pale blue, segmented sea fairy with pink feathery gills and a yellow light glowing inside its curled tail."
+    ]
+  },
+  {
+    "name": "Kyanibble",
+    "descriptions": [
+      "A cyan mineral creature with ivory tooth nubs, faceted navy paws, and blue blade-like crystal ears.",
+      "A pale gray mouse with long turquoise kyanite whiskers and a pink crystal chip tail.",
+      "A deep blue crystal grub with silver belly segments and small gold mandibles around its round cream mouth."
+    ]
+  },
+  {
+    "name": "Lunasker",
+    "descriptions": [
+      "A silver catfish with long crescent-shaped navy whiskers, a lavender belly, and glowing gold fin tips.",
+      "A cream lunar kitten with blue moon-disc ears and whiskers ending in tiny pink star beads.",
+      "A dark violet hare with ivory crescent cheek tusks, pale blue shaggy fur, and a silver ribbon tail."
+    ]
+  },
+  {
+    "name": "Malachick",
+    "descriptions": [
+      "A green chick with malachite-banded down, an ivory beak, and tiny copper talons.",
+      "A cream birdling with faceted emerald wing shells and a dark green crystal crest.",
+      "A charcoal stone chick with polished mint spiral cheeks and gold light shining between its feather-shaped plates."
+    ]
+  },
+  {
+    "name": "Mammuff",
+    "descriptions": [
+      "A cocoa-brown mammoth calf with cream earmuff-like fur, peach trunk tips, and tiny ivory tusks.",
+      "A lavender mammoth with white cloud fleece, icy blue curled tusks, and broad silver snowshoe feet.",
+      "A golden, muffin-shaped mammoth creature with a tan craggy back, pink ears, and a short cream trunk."
+    ]
+  },
+  {
+    "name": "Mantini",
+    "descriptions": [
+      "A mint mantis with folded ivory blade arms, rose-pink leaf wings, and tiny gold eyes.",
+      "A pale blue manta with a small purple bow-shaped head and long cream ribbon fins.",
+      "A lavender insect fairy with slender green legs, coral orchid armor, and broad white petal forearms."
+    ]
+  },
+  {
+    "name": "Marshmop",
+    "descriptions": [
+      "A green marsh creature with a shaggy brown reed coat, cream webbed feet, and yellow cattail ears.",
+      "A white, mop-shaped water spirit with pale blue strand limbs and a round lavender face beneath its fringe.",
+      "A pink marshmallow salamander with mint algae gills and long ivory noodle toes spread like mop fibers."
+    ]
+  },
+  {
+    "name": "Mobibun",
+    "descriptions": [
+      "A white rabbit with a lavender loop body, pink ears, and a single continuous gold stripe around its twist.",
+      "Three cream bunny heads sharing a round mint body, with peach paws and a clustered blue pompom tail.",
+      "A coral, wheeled toy rabbit with ivory articulated ears and two broad lavender disc feet."
+    ]
+  },
+  {
+    "name": "Mokopon",
+    "descriptions": [
+      "A moss-green, pompom-bodied familiar with a cream mask face, orange mitten hands, and tiny brown root feet.",
+      "A tan, wooden imp with pink ball joints, a cobalt oval belly, and a gold leaf crest.",
+      "A lavender, large-headed creature with ivory cheek fluff, mint bead antennae, and a short peach fan tail."
+    ]
+  },
+  {
+    "name": "Mugiloo",
+    "descriptions": [
+      "A silver mullet-like fish with thick blue lips, cream fin edges, and a long lavender dorsal tuft.",
+      "A pale pink aquatic creature with a mug-shaped torso, ivory handle fins, and a mint bubble crest.",
+      "A teal, barrel-bodied fish with gold scale bands and short orange paddle legs beneath its white belly."
+    ]
+  },
+  {
+    "name": "Napperoo",
+    "descriptions": [
+      "A tan kangaroo with a cream pillow pouch, drooping lavender ears, and pink oversized feet.",
+      "A pale blue wallaby with white blanket-like wing membranes and a curled gold tail supporting its sleeping head.",
+      "A mint, round-bodied dream creature with peach hopping legs and an ivory cocoon hood folded over its eyes."
+    ]
+  },
+  {
+    "name": "Nibbleraptor",
+    "descriptions": [
+      "A green raptor with tiny ivory nibbling teeth, orange cheek feathers, and cream claw mittens.",
+      "A brown, mouse-sized dinosaur with pink rodent ears, gold incisor tips, and a long lavender feather tail.",
+      "A pale blue raptor hatchling with leaf-green jaw frills and white seed-shaped plates along its back."
+    ]
+  },
+  {
+    "name": "Numeko",
+    "descriptions": [
+      "A cream, slippery familiar with a rounded peach muzzle, teal fin ears, and a long lavender tail.",
+      "A mint, mushroom-like imp with a glossy orange cap, ivory mitten hands, and a squat pink stalk body.",
+      "A navy, dream-themed creature with nested silver face rings, gold dot eyes, and four floating blue foot beads."
+    ]
+  },
+  {
+    "name": "Orbulin",
+    "descriptions": [
+      "A blue spherical creature with a transparent ivory shell, peach fin arms, and a small golden core.",
+      "A lavender, three-part spirit with pearl body orbs linked by thin mint ribbons and two silver antennae.",
+      "A rust-orange golem with a globe-shaped torso, cream meridian ridges, and chunky teal feet."
+    ]
+  },
+  {
+    "name": "Pachypom",
+    "descriptions": [
+      "A mint pachycephalosaur with a pink pompom dome, cream belly, and tiny gold brow knobs.",
+      "A gray elephant calf with fluffy lavender ear balls and a round white pompom trunk tip.",
+      "A peach dinosaur with a polished ivory skull dome and blue puffball tufts along its short tail."
+    ]
+  },
+  {
+    "name": "Pebblehorn",
+    "descriptions": [
+      "A gray goat kid with smooth stacked-pebble horns, moss-green hooves, and cream cheek fur.",
+      "A tan rhino calf with a rounded turquoise stone horn and pale pink mineral patches.",
+      "A lavender lizard with ivory pebble antlers and a broad slate-blue shield across its shoulders."
+    ]
+  },
+  {
+    "name": "Petalgon",
+    "descriptions": [
+      "A green dragon with layered pink petal wings, cream horn buds, and a gold pollen mane.",
+      "A lavender, polygonal flower creature with five angular ivory petals and tiny orange root feet.",
+      "A pale blue serpent with coral blossom scales and a broad mint leaf fan surrounding its smiling face."
+    ]
+  },
+  {
+    "name": "Pteropeep",
+    "descriptions": [
+      "A yellow pterosaur chick with peach membrane wings, a cream beak, and tiny brown clawed toes.",
+      "A lavender flying reptile with fluffy white shoulder feathers and a long teal beak tipped in gold.",
+      "A mint pterosaur hatchling with pink flower-petal wings and an ivory crest shaped like a curled seed."
+    ]
+  },
+  {
+    "name": "Puddlebeak",
+    "descriptions": [
+      "A blue duckling with a broad transparent aqua bill, cream down, and orange webbed feet.",
+      "A gray heron chick with a long pink droplet beak and a white puddle-shaped feather skirt.",
+      "A mint platypus with a lavender scoop bill, ivory toe webs, and a glossy blue puddle tail."
+    ]
+  },
+  {
+    "name": "Puddlesaur",
+    "descriptions": [
+      "A teal dinosaur with a liquid blue belly, cream dorsal fins, and wide translucent puddle feet.",
+      "A brown mud dinosaur with mint duckweed patches and a pink snout peeking from its low, rounded head.",
+      "A lavender sauropod with a transparent white neck and gold water bubbles floating inside its body."
+    ]
+  },
+  {
+    "name": "Puffergill",
+    "descriptions": [
+      "A round yellow pufferfish with coral frilly gills, white belly scales, and tiny turquoise fins.",
+      "A blue axolotl with an inflated cream torso, lavender gill pompoms, and short pink webbed legs.",
+      "A mint sea creature with soft ivory puff spines and a transparent orange gill collar encircling its head."
+    ]
+  },
+  {
+    "name": "Puffspore",
+    "descriptions": [
+      "A cream puffball mushroom with brown root toes, gold spore freckles, and a soft lavender cap tuft.",
+      "A mint caterpillar with white fungal fluff segments and pale pink spores suspended around its antennae.",
+      "A gray rock creature with three porous peach mushroom vents and blue powder spilling from its broad shoulders."
+    ]
+  },
+  {
+    "name": "Pulsip",
+    "descriptions": [
+      "A translucent pink energy creature with a glowing red heart core, ivory ribbon arms, and blue dot eyes.",
+      "A navy insect with gold pulse-line markings, clear teal wings, and three luminous orange abdomen rings.",
+      "A mint, spherical spirit with expanding lavender body bands and tiny cream flipper feet beneath a silver face."
+    ]
+  },
+  {
+    "name": "Quasini",
+    "descriptions": [
+      "A dark violet cosmic creature with a white radiant core and twin narrow gold jets forming its arms.",
+      "A peach, almost-spherical alien with one flat silver side, teal gem eyes, and three asymmetrical cream legs.",
+      "A lavender, fragmented sprite with orbiting blue triangles and a tiny orange face inside an ivory ring."
+    ]
+  },
+  {
+    "name": "Qubloo",
+    "descriptions": [
+      "A transparent blue cube creature with lavender bubble joints, ivory mitten hands, and a round pink inner core.",
+      "A navy, blocky familiar with gold corner horns, cream square feet, and a teal cuboid tail.",
+      "A mint foam construct made of four rounded cubes, with coral face panels and soft white seam tufts."
+    ]
+  },
+  {
+    "name": "Quorli",
+    "descriptions": [
+      "A lavender, spiral-shaped creature with gold ring eyes, peach ribbon fins, and a pale blue tapered tail.",
+      "A cream, four-armed fairy with teal curling fingers and an orange whorl crest above its small face.",
+      "A jade shell familiar with ivory concentric ridges, pink stilt legs, and a long silver corkscrew horn."
+    ]
+  },
+  {
+    "name": "Reefroo",
+    "descriptions": [
+      "A turquoise kangaroo with pink coral ears, a cream shell pouch, and broad lavender flipper feet.",
+      "A sandy sea slug with rabbit-like orange reef branches on its head and white frills along its back.",
+      "A mint seahorse creature with gold hopping legs and a broad red coral fan tail."
+    ]
+  },
+  {
+    "name": "Rillock",
+    "descriptions": [
+      "A gray stream golem with blue water seams, cream pebble fingers, and moss-green shoulder tufts.",
+      "A pale teal otter with a white ripple collar and long copper reed whiskers framing its pink nose.",
+      "A lavender aquatic sprite with a narrow turquoise body, silver lock-shaped head ring, and tiny gold key-like fins."
+    ]
+  },
+  {
+    "name": "Rollyroo",
+    "descriptions": [
+      "A tan kangaroo with a spherical cream belly, pink curled ears, and a thick blue wheel-shaped tail.",
+      "A mint armadillo-like familiar with a rounded gold shell and oversized peach hopping feet.",
+      "A lavender, ring-bodied creature with white paw nubs and two long turquoise ears folded along its curved back."
+    ]
+  },
+  {
+    "name": "Rumbico",
+    "descriptions": [
+      "A rust-brown, barrel-bodied golem with gold vibration rings, ivory drum feet, and tiny teal eyes.",
+      "A violet sound spirit with three rounded orange body chambers and long cream tuning-fork antennae.",
+      "A slate-blue beast with a broad silver chest plate, peach throat pouches, and short moss-green back spines."
+    ]
+  },
+  {
+    "name": "Scootling",
+    "descriptions": [
+      "A mint beetle larva with tiny orange wheel-shaped feet and an ivory helmet head.",
+      "A blue-gray newt with a long cream belly, lavender skate-like hind toes, and a short pink fin tail.",
+      "A tan, elongated familiar with oversized white forepaws and a broad green leaf shell sweeping backward like a sled."
+    ]
+  },
+  {
+    "name": "Skipple",
+    "descriptions": [
+      "A pink frog-like creature with long gold hind legs, cream cheek puffs, and three blue back dots.",
+      "A teal water sprite with flat ivory pebble feet and a round orange head marked with white ripple rings.",
+      "A lavender rabbit familiar with a spring-shaped mint torso, broad cream ears, and a tiny coral pompom tail."
+    ]
+  },
+  {
+    "name": "Smilobun",
+    "descriptions": [
+      "A sandy rabbit with small ivory saber teeth, brown ear tips, and a fluffy cream cheek mane.",
+      "A pale pink saber-toothed kitten with long lavender rabbit ears and broad white hopping feet.",
+      "A golden bun creature with an arched cream smile, cinnamon saber fangs, and little green leaf ears."
+    ]
+  },
+  {
+    "name": "Snackasaur",
+    "descriptions": [
+      "A mint dinosaur with orange cracker-shaped back plates, cream teeth, and a round pink belly.",
+      "A brown cookie raptor with chocolate spots, ivory frosting claws, and a red jam crest.",
+      "A pale yellow sauropod with green leaf armor and a peach fruit-shaped pouch beneath its short neck."
+    ]
+  },
+  {
+    "name": "Snappaw",
+    "descriptions": [
+      "A teal crocodile cub with broad cream paw-shaped flippers, orange cheek scales, and a round pink snout.",
+      "A gray crab puppy with enormous coral claw paws and a white fluffy muzzle.",
+      "A rust-red feline with ivory snapping-turtle forearm plates and a short moss-green club tail."
+    ]
+  },
+  {
+    "name": "Snapsprig",
+    "descriptions": [
+      "A green twig lizard with a pink snapdragon jaw, cream thorn teeth, and brown root feet.",
+      "A tan stick insect with lime leaf armor and oversized orange bud pincers.",
+      "A pale mint plant sprite with hinged red leaf hands and an ivory blossom head tilted above its thin stem."
+    ]
+  },
+  {
+    "name": "Snoozorex",
+    "descriptions": [
+      "A blue tyrannosaur with a cream pillow belly, lavender eyelids, and a soft white nightcap-shaped crest.",
+      "A moss-green dinosaur curled around a brown log tail, with pink leaf ears folded over its face.",
+      "A peach plush rex with ivory blanket-like back scales and oversized purple feet tucked beneath its round body."
+    ]
+  },
+  {
+    "name": "Sprigula",
+    "descriptions": [
+      "A pale green vine bat with pink leaf wings, tiny ivory fangs, and a dark purple flower collar.",
+      "A brown twig sprite with a lime pointed cape, white bud eyes, and long red root fingers.",
+      "A cream plant reptile with a crown of violet sprigs and broad green leaf frills framing its narrow face."
+    ]
+  },
+  {
+    "name": "Squishadon",
+    "descriptions": [
+      "A peach gelatinous dinosaur with a cream belly, mint blunt horns, and huge blue cushion feet.",
+      "A lavender hadrosaur with rubbery pink skin folds, white fin ears, and a flat turquoise paddle tail.",
+      "A moss-green sauropod with a broad ivory muzzle and soft orange pod-like armor bulging along its back."
+    ]
+  },
+  {
+    "name": "Squishnub",
+    "descriptions": [
+      "A pink, compressible blob with four cream limb nubs, lavender cheek spots, and a tiny gold horn.",
+      "A mint, low-bodied familiar with rubbery blue bumps and a wide peach face tucked between its stubby forelegs.",
+      "A cream, gummy sea creature with orange suction feet and three translucent purple nodules down its oval back."
+    ]
+  },
+  {
+    "name": "Stegobud",
+    "descriptions": [
+      "A green stegosaur with closed pink flower buds for back plates and small ivory tail spikes.",
+      "A brown stegosaur hatchling with mint leaf armor and a gold blossom opening at its tail tip.",
+      "A lavender dinosaur with cream seedpod plates and pale blue sprouts growing between its short orange toes."
+    ]
+  },
+  {
+    "name": "Stumblepip",
+    "descriptions": [
+      "A yellow chick with oversized orange feet, uneven blue wing feathers, and a lopsided cream crest.",
+      "A mint seedling creature with tangled brown root legs and a pink bud head leaning far forward.",
+      "A lavender mouse with broad white shoe-like paws and a long gold balancing tail ending in a tiny seed."
+    ]
+  },
+  {
+    "name": "Summitot",
+    "descriptions": [
+      "A gray mountain goat kid with an ivory snowcap forehead, blue horn nubs, and thick brown hooves.",
+      "A slate-blue, pyramid-bodied golem with a white peak and short pink mitten arms.",
+      "A cream alpine bird with a tall lavender mountain crest, gold beak, and fluffy mint ankle feathers."
+    ]
+  },
+  {
+    "name": "Sundoggi",
+    "descriptions": [
+      "A golden puppy with an orange sunray mane, cream muzzle, and tiny peach paws.",
+      "A white celestial dog with pale blue halo rings around its ears and two pink light orbs beside its shoulders.",
+      "A rust-red, elongated canine with a yellow glowing belly and a broad silver tail shaped like a sun disc."
+    ]
+  },
+  {
+    "name": "Tangentot",
+    "descriptions": [
+      "A teal geometric creature with a spherical ivory body and long gold arms touching its sides at sharp angles.",
+      "A pink, toy-like sprite with an orange triangle head, mint disc feet, and a straight silver balancing tail.",
+      "A lavender, orbiting-parts creature with a blue central sphere and three cream rods supporting tiny gold hands."
+    ]
+  },
+  {
+    "name": "Thrumi",
+    "descriptions": [
+      "A plum sound-infused spirit with a hollow cream chest, silver strings, and soft pink mitten fingers.",
+      "A teal moth with gold ribbed wings, ivory antennae, and a round orange abdomen marked by vibration rings.",
+      "A brown, stocky creature with lavender throat bands and two large cream ear membranes resembling drumheads."
+    ]
+  },
+  {
+    "name": "Titanib",
+    "descriptions": [
+      "A charcoal miniature titan with oversized ivory hands, copper armor plates, and a small gold tooth.",
+      "A pale blue dinosaur with a massive cream head, tiny pink legs, and silver nub horns.",
+      "A moss-green stone mouse with broad brown shoulders, a lavender crystal nose, and two white chisel teeth."
+    ]
+  },
+  {
+    "name": "Topazip",
+    "descriptions": [
+      "A golden topaz dragonfly with faceted orange wings, silver legs, and a bright blue dart-shaped tail.",
+      "A pale pink mineral fox with yellow crystal paws and a narrow white lightning-bolt crest.",
+      "A teal electric sprite with a luminous amber prism body and disjointed cream hands surrounded by tiny gold shards."
+    ]
+  },
+  {
+    "name": "Toroo",
+    "descriptions": [
+      "A russet bull calf with cream ring horns, pink hooves, and a broad golden muzzle.",
+      "A teal, torus-shaped creature with an ivory inner face, lavender fin arms, and two orange horn knobs.",
+      "A brown kangaroo-like familiar with a barrel chest, white brow tufts, and a thick blue tail curled into a loop."
+    ]
+  },
+  {
+    "name": "Tucktail",
+    "descriptions": [
+      "A cream dormouse with a wide lavender blanket tail folded over its back and tiny pink paws.",
+      "A mint turtle with an orange hinged tail plate that fits neatly beneath its ivory shell.",
+      "A navy fox spirit with a long silver ribbon tail threaded through a gold ring in its chest fur."
+    ]
+  },
+  {
+    "name": "Tumblefin",
+    "descriptions": [
+      "A sky-blue fish with oversized orange rolling-disc fins, a cream belly, and a short curled lavender tail.",
+      "A pink seal with broad ivory fan flippers and three mint ring markings around its round body.",
+      "A golden reef creature curled into a spiral, with turquoise fin spokes and tiny white eyes near its center."
+    ]
+  },
+  {
+    "name": "Velviver",
+    "descriptions": [
+      "A velvety brown river creature with mint webbed paws, an ivory throat, and a long plum rudder tail.",
+      "A lavender wyvern-like familiar with soft cream membrane wings, golden horn tips, and a narrow blue face.",
+      "A teal deer spirit with plush pink shoulder fur and a flowing silver tail divided into three ribbon streams."
+    ]
+  },
+  {
+    "name": "Voolip",
+    "descriptions": [
+      "A violet, tulip-shaped fairy with mint petal sleeves, cream root feet, and a small golden face.",
+      "A peach, hovering familiar with a looped ivory body, blue fin ears, and soft lavender cheek tufts.",
+      "A navy, round-headed alien with broad pink lips, three silver antennae, and a squat turquoise torso."
+    ]
+  },
+  {
+    "name": "Whuffi",
+    "descriptions": [
+      "A cream, fluffy puppy with a pale blue puff-shaped muzzle, pink ear tips, and a thick gold tail tuft.",
+      "A lavender cloud creature with inflated peach cheeks, tiny white wings, and teal mitten feet.",
+      "A tan, shaggy familiar with a wide ivory nose, green leaf ears, and a low cushion-like body."
+    ]
+  },
+  {
+    "name": "Wiggara",
+    "descriptions": [
+      "A coral, segmented serpent with lilac ribbon fins, cream belly bands, and two wavy gold horns.",
+      "A green, many-legged fairy creature with orange joint beads and a pink leaf fan surrounding its tiny white face.",
+      "A lavender, elastic-bodied familiar with a long blue torso, ivory mitten hands, and three peach tail tendrils."
+    ]
+  },
+  {
+    "name": "Wobblerex",
+    "descriptions": [
+      "A lime-green rex with a huge cream head, tiny orange feet, and a thick lavender counterweight tail.",
+      "A pink jelly dinosaur with blue suspended bone-like shapes and little white bubble horns.",
+      "A tan wooden rex with a gold spring neck, teal ball-jointed hips, and wide ivory rocking feet."
+    ]
+  },
+  {
+    "name": "Wulfin",
+    "descriptions": [
+      "A gray wolf cub with blue fin ears, cream chest fur, and a broad turquoise aquatic tail.",
+      "A navy dolphin with a pointed ivory wolf muzzle and shaggy silver fur along its dorsal ridge.",
+      "A lavender, wolf-like sea spirit with translucent pink flipper paws and long white whisker fins."
+    ]
+  },
+  {
+    "name": "Yalupo",
+    "descriptions": [
+      "A pale gold, long-snouted familiar with teal leaf ears, cream paws, and a curled purple tail.",
+      "A blue-gray, canine-shaped spirit with an ivory crescent mane and peach ribbon fins behind its elbows.",
+      "A mint, lanky creature with broad pink feet, gold cheek tufts, and a soft white plume down its spine."
+    ]
+  },
+  {
+    "name": "Zavi",
+    "descriptions": [
+      "A cobalt, sleek fairy creature with narrow silver wings, coral claw fingers, and a sharp lime crest.",
+      "A cream, geometric familiar with a triangular lavender head, gold sphere joints, and a flat pink fan tail.",
+      "A teal, serpentine alien with orange ring eyes and three ivory fins spaced along its smooth back."
+    ]
+  },
+  {
+    "name": "Zippup",
+    "descriptions": [
+      "A yellow puppy with blue lightning ears, white paws, and a silver zipper-like stripe down its back.",
+      "A lavender, plush pup with a gold zip-pull tail tip and pink patchwork panels across its cream belly.",
+      "A teal canine sprite with narrow orange wing fins and tiny glowing white sparks around its oversized feet."
+    ]
+  },
+  {
+    "name": "Zopali",
+    "descriptions": [
+      "A pink, mineral-bodied familiar with opaline blue cheeks, ivory claw feet, and a tall golden prism horn.",
+      "A teal, spherical alien with three peach eye rings and long lavender limbs bending at silver bead joints.",
+      "A cream, mosaic-bodied fairy with coral ear fans, mint chest tiles, and a short blue ribbon tail."
+    ]
+  },
+  {
+    "name": "Zzibby",
+    "descriptions": [
+      "A navy, sleepy insect with fuzzy ivory antennae, lavender wings, and a gold zigzag stripe across its abdomen.",
+      "A pale blue, pillow-shaped familiar with pink drooping ears and three cream cloud tufts down its back.",
+      "A peach, dreamlike sprite with closed violet eyes and a spiral white blanket body ending in tiny mint feet."
+    ]
+  },
+  {
+    "name": "Antenny",
+    "descriptions": [
+      "A copper ant creature with oversized teal antenna paddles, an ivory face, and six short orange legs.",
+      "A pale blue alien with a round pink body and twin silver aerials ending in glowing gold stars.",
+      "A cream moth grub with long lavender feather antennae and tiny mint suction feet beneath its segmented belly."
+    ]
+  },
+  {
+    "name": "Granuloo",
+    "descriptions": [
+      "A sandy-beige, globular creature made of visible golden grains, with blue pebble eyes and cream scoop hands.",
+      "A lavender rock familiar with a granular gray shell, pink crystal freckles, and four stout ivory legs.",
+      "A rust-orange colony creature of clustered spheres, with a mint central face and tiny brown root tassels."
+    ]
+  },
+  {
+    "name": "Polypori",
+    "descriptions": [
+      "A cream fungal creature with stacked orange shelf caps, tiny brown root legs, and green moss eyebrows.",
+      "A gray log golem with lavender bracket mushrooms forming broad side fins and a round ivory face.",
+      "A mint colony of three connected mushroom bodies with gold pore patterns and a shared pink root skirt."
+    ]
+  },
+  {
+    "name": "Quincutie",
+    "descriptions": [
+      "A golden quince mouse with velvety yellow fur, green leaf ears, and a cream teardrop muzzle.",
+      "A pale peach fruit sprite with an angular orange pear-shaped body, ivory flower collar, and brown root feet.",
+      "A mint hedgehog with soft gold quince-shaped back lobes and pink blossom tufts beside its cream face."
+    ]
+  },
+  {
+    "name": "Thallumi",
+    "descriptions": [
+      "A translucent jade seaweed spirit with branching ribbon limbs, a luminous white core, and violet frilled edges.",
+      "A cream lichen creature with flat mint body lobes, glowing gold pore spots, and stubby gray stone feet.",
+      "A dark blue aquatic familiar with broad green algae wings and pale pink light pulsing along its central stem."
+    ]
+  },
+  {
+    "name": "Tunicute",
+    "descriptions": [
+      "A lavender sea squirt with two gold siphon horns, a transparent pink body, and tiny cream anchor feet.",
+      "A pale blue marine sprite with an ivory tunic-shaped mantle and coral gill cuffs around its short arms.",
+      "A mint colony creature with three orange tube crowns and a shared pearlescent white base shaped like a cushion."
+    ]
+  },
+  {
+    "name": "Wigglarva",
+    "descriptions": [
+      "A lime-green larva with peach segmented cheeks, tiny white suction feet, and two wavy lavender antennae.",
+      "A translucent blue grub with gold inner bead organs and long pink ribbon gills along its back.",
+      "A cream caterpillar with flexible orange armor bands and an oversized mint head bearing silver dot eyes."
+    ]
+  },
+  {
+    "name": "Zoanthee",
+    "descriptions": [
+      "A pink reef polyp with a gold tentacle flower face, cream tubular body, and violet suction feet.",
+      "A turquoise colonial creature with three orange anemone crowns and a shared pale green branching base.",
+      "A lavender sea fairy with ivory petal tentacles framing its mouth and bright yellow dots across its squat body."
+    ]
+  },
+  {
+    "name": "Balancini",
+    "descriptions": [
+      "A cream dancer-like creature balanced on one gold toe, with pink disc hands and a lavender fan crest.",
+      "A teal, scale-shaped golem with two ivory bowl arms and a small orange face centered on its narrow torso.",
+      "A pale blue bird with one long silver leg and a wide peach crescent tail counterbalancing its oversized head."
+    ]
+  },
+  {
+    "name": "Battimini",
+    "descriptions": [
+      "A lavender bat with tiny ivory wings, enormous pink ears, and a fluffy charcoal belly.",
+      "A cream cricket-bat-shaped construct with blue grip markings, gold mitten hands, and two short orange feet.",
+      "A teal, compact bat familiar with translucent peach wing membranes and a white star-shaped nose leaf."
+    ]
+  },
+  {
+    "name": "Biscouette",
+    "descriptions": [
+      "A golden biscuit bird with cream lace wings, cocoa speckles, and a pink curled crest.",
+      "A tan ballet sprite with an ivory wafer tutu, chocolate-brown feet, and long lavender icing ribbons.",
+      "A peach squirrel with scalloped beige biscuit ears and a white sugar-dusted tail shaped like a rolled wafer."
+    ]
+  },
+  {
+    "name": "Spindrifty",
+    "descriptions": [
+      "A white sea-foam creature with a spiral aqua body, silver spray whiskers, and tiny coral fin hands.",
+      "A navy seabird with pale blue mist wings and a long cream tail twisted like windblown surf.",
+      "A translucent mint sprite with a tilted gold shell hat and lavender water ribbons whirling around its narrow waist."
+    ]
+  },
+  {
+    "name": "Bibbleboo",
+    "descriptions": [
+      "A lavender bubble ghost with a round cream face, pink cheek beads, and stubby translucent blue tentacles.",
+      "A mint, three-lobed familiar with gold button eyes, oversized ivory ear flaps, and peach mitten hands.",
+      "A cream, amorphous imp with a broad purple mouth, orange bubble-shaped horns, and tiny teal feet."
+    ]
+  },
+  {
+    "name": "Dabbadoo",
+    "descriptions": [
+      "A turquoise, duck-like creature with a broad orange bill, cream belly, and pink splash-shaped webbed feet.",
+      "A white, paint-bodied sprite with cobalt brush hands, yellow cheek smudges, and a long magenta drip tail.",
+      "A tan otter familiar with moss-green paddle paws and a lavender fan crest resembling a wet paintbrush."
+    ]
+  },
+  {
+    "name": "Dimpledoo",
+    "descriptions": [
+      "A peach, potbellied creature with deep pink cheek dimples, ivory mitten hands, and tiny blue horn nubs.",
+      "A mint, porous stone familiar with gold pit-shaped eyes and cream pebble feet under its round lavender shell.",
+      "A pale yellow tadpole with rose cheek hollows, teal frilled gills, and a wide white spoon tail."
+    ]
+  },
+  {
+    "name": "Dinobubble",
+    "descriptions": [
+      "A translucent blue dinosaur with floating pink bubble organs, cream claws, and a spherical glassy tail tip.",
+      "A lavender sauropod with white foam plates and gold bubble rings around its long neck.",
+      "A mint pterosaur with inflated peach membrane wings and tiny silver water beads along its ivory beak."
+    ]
+  },
+  {
+    "name": "Gigglebud",
+    "descriptions": [
+      "A pink flower bud with a wide cream smile, gold pollen dimples, and short green root legs.",
+      "A mint seedling monkey with orange blossom cheeks and an ivory vine tail curled into a grin.",
+      "A yellow, round-bodied fairy with lavender bud ears and a broad white petal collar framing its laughing face."
+    ]
+  },
+  {
+    "name": "Hugglehop",
+    "descriptions": [
+      "A cream rabbit with oversized coral hugging arms, mint paw pads, and tiny gold wings on its ankles.",
+      "A lavender frog with a wide pink belly and long ivory forearms curled inward beneath its blue cheek fins.",
+      "A tan wallaby with a fluffy white pouch, green leaf ears, and broad peach spring-shaped hind feet."
+    ]
+  },
+  {
+    "name": "Roarbutton",
+    "descriptions": [
+      "A gold lion cub with a tiny red button nose, cream mane loops, and blue stitched-looking paw pads.",
+      "A mint dinosaur with an ivory button-shaped belly plate and a wide pink mouth framed by orange frills.",
+      "A lavender toy monster with gold button eyes, white felt teeth, and tiny coral arms on its square torso."
+    ]
+  },
+  {
+    "name": "Snifflesprout",
+    "descriptions": [
+      "A pale green seedling with a large pink nose, drooping ivory leaf ears, and tiny brown root feet.",
+      "A cream puppy with mint sprout horns, lavender pollen freckles, and a peach flower-shaped muzzle.",
+      "A yellow flower creature with blue dew drops on its nose and a leafy green collar around its round face."
+    ]
+  },
+  {
+    "name": "Sprinklesaur",
+    "descriptions": [
+      "A pink dinosaur with rainbow sugar-rod back spines, cream frosting scales, and mint claw tips.",
+      "A chocolate-brown stegosaur with white icing plates scattered with yellow and blue sprinkle dots.",
+      "A pale blue sauropod with peach confetti spots, lavender feather frills, and a golden candy-star tail tip."
+    ]
+  },
+  {
+    "name": "Squeakadoo",
+    "descriptions": [
+      "A cream mouse with huge coral trumpet ears, blue paw pads, and a long gold coiled tail.",
+      "A yellow rubber-duck creature with a pink bellows belly and tiny teal wings raised beside its orange bill.",
+      "A lavender, compact imp with inflated ivory cheek pouches, mint mitten hands, and a narrow pink whistle nose."
+    ]
+  },
+  {
+    "name": "Squooshie",
+    "descriptions": [
+      "A peach, flat-bodied jelly creature with lilac ripple edges, blue bead eyes, and broad ivory flipper arms.",
+      "A mint, plush familiar with a wrinkled cream muzzle, pink pillow feet, and a short gold pompom tail.",
+      "A transparent violet blob with an orange heart core and six soft white limb lobes around its base."
+    ]
+  },
+  {
+    "name": "Ticklepea",
+    "descriptions": [
+      "A pale green pea creature with long pink feather fingers, cream leaf feet, and a cheeky gold-eyed face.",
+      "A mint pea-pod centipede with three yellow rounded segments and many soft ivory tendril legs.",
+      "A lavender dormouse with a green seed-shaped body and long white whiskers curling around its pink cheeks."
+    ]
+  },
+  {
+    "name": "Tippyteeth",
+    "descriptions": [
+      "A peach, top-heavy dinosaur with tiny ivory teeth, long blue toes, and a lavender balancing tail.",
+      "A cream mouse with two oversized gold-tipped incisors and narrow pink hind feet supporting its upright teal body.",
+      "A mint imp with a broad toothy white grin, orange horn nubs, and three silver stilt legs."
+    ]
+  },
+  {
+    "name": "Twiddletot",
+    "descriptions": [
+      "A lavender toddler-like sprite with oversized cream hands, six long pink fingers, and tiny mint feet.",
+      "A tan, articulated toy creature with gold gear ears, blue joint knobs, and a small ivory round head.",
+      "A peach, many-armed fairy with four turquoise ribbon hands and a white spiral hat above its gold eyes."
+    ]
+  },
+  {
+    "name": "Wiggletum",
+    "descriptions": [
+      "A green caterpillar with a huge cream belly segment, orange toe nubs, and pink frilled antennae.",
+      "A lavender, elastic-bodied creature with a striped blue-and-white tummy and tiny peach mitten arms.",
+      "A tan, worm-like familiar with gold belly rings, broad ivory ear fins, and a short coral brush tail."
+    ]
+  },
+  {
+    "name": "Wigglewoo",
+    "descriptions": [
+      "A purple, sinuous creature with long cream ribbon ears, turquoise ring markings, and three orange tail tufts.",
+      "A mint, segmented fairy with peach leaf fins at every joint and a small gold star-shaped face.",
+      "A white, fuzzy serpent with pink zigzag stripes and six tiny blue paws clustered near its round head."
+    ]
+  },
+  {
+    "name": "Brrili",
+    "descriptions": [
+      "A pale blue ice sprite with a faceted silver body, white shivering fringe, and tiny pink mittens.",
+      "A lavender arctic bird with clear icicle wings, cream down, and a short orange crystal beak.",
+      "A mint, snow-bodied familiar with a round ivory muzzle, sapphire horn buds, and long white woolly feet."
+    ]
+  },
+  {
+    "name": "Flupflup",
+    "descriptions": [
+      "A blue, two-lobed aquatic creature with broad pink flippers, cream face patches, and a tiny gold fin crest.",
+      "A lavender, floppy-eared familiar with an ivory cushion body and oversized mint paddle feet.",
+      "A peach foam sprite with two stacked white bubble bodies and long teal leaf wings folded along its sides."
+    ]
+  },
+  {
+    "name": "Fwoopi",
+    "descriptions": [
+      "A sky-blue airborne creature with a swept white crest, orange sail fins, and a long tapered lavender tail.",
+      "A pink, hollow-bodied wind spirit with an ivory loop torso and two mint ribbon arms curving backward.",
+      "A golden gliding familiar with a tiny cream head and enormous blue membrane ears stretched into a single wing."
+    ]
+  },
+  {
+    "name": "Puffjell",
+    "descriptions": [
+      "A translucent pink jellyfish with an ivory puffball bell, lavender tentacles, and a glowing yellow central pearl.",
+      "A mint gelatinous hedgehog with soft white bubble spines and tiny coral flipper feet.",
+      "A pale blue, cloud-bodied creature with a glossy purple jelly belly and round peach pompom hands."
+    ]
+  },
+  {
+    "name": "Tchipi",
+    "descriptions": [
+      "A tiny orange bird with an ivory throat, teal pointed crest, and short pink feather toes.",
+      "A mint cricket-like familiar with gold antennae, lavender clicking forewings, and a cream seed-shaped body.",
+      "A pale blue, angular sprite with a coral beak mask, silver ribbon wings, and two small yellow claw feet."
+    ]
+  },
+  {
+    "name": "Thripsy",
+    "descriptions": [
+      "A slender yellow thrips creature with fringed ivory wings, purple bead eyes, and six delicate orange legs.",
+      "A mint, flower-dwelling insect with pink petal armor, gold feathery antennae, and a narrow cream abdomen.",
+      "A lavender, elongated bug with translucent blue ribbon wings and white pollen tufts clustered around its tiny coral face."
+    ]
+  }
+]
