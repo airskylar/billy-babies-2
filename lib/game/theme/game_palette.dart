@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 
-abstract final class GamePalette {
-  static const cream = Color(0xFFFFF9F1);
-  static const paper = Color(0xFFFFFFFF);
-  static const ink = Color(0xFF3F3851);
-  static const mutedInk = Color(0xFF817A91);
-  static const berry = Color(0xFF8B6EC7);
-  static const berryDark = Color(0xFF684E9F);
-  static const berryWash = Color(0xFFF0EAFB);
-  static const peach = Color(0xFFFF8E7A);
-  static const peachDark = Color(0xFFD96457);
-  static const peachWash = Color(0xFFFFEAE4);
-  static const mint = Color(0xFF9ADBC5);
-  static const mintWash = Color(0xFFE6F7F1);
-  static const sunshine = Color(0xFFFFD36E);
-  static const outline = Color(0xFFE9DFD5);
-  static const shadow = Color(0x1F5B486A);
+abstract final class DuelPalette {
+  static const canvas = Color(0xFFF4F0E8);
+  static const panel = Color(0xFFFFFCF6);
+  static const ink = Color(0xFF282335);
+  static const mutedInk = Color(0xFF706A7A);
+  static const outline = Color(0xFFD8D1DF);
+  static const violet = Color(0xFF7056A8);
+  static const coral = Color(0xFFE98770);
+  static const mint = Color(0xFF70B5A0);
 }

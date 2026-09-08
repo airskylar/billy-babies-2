@@ -1,111 +1,115 @@
 import 'package:coreflame/app/coreflame_app.dart';
-import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
+import 'package:coreflame/game/domain/prototype_session.dart';
 import 'package:coreflame/game/game_root.dart';
-import 'package:coreflame/runtime/game_services/game_platform_services.dart';
 import 'package:coreflame/runtime/inspection/inspection_surface.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../support/fake_game_platform_services.dart';
-
 void main() {
-  testWidgets('hosts the Flame game without owning injected services', (
+  testWidgets('hosts the non-playable Billy Babies Flame shell', (
     tester,
   ) async {
-    final gameServices = FakeGamePlatformServices();
-
-    await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
+    await tester.pumpWidget(const CoreflameApp());
     await tester.pump();
 
+    final game = _currentGame(tester);
     expect(
-      find.byType(InspectableGameSurface<TinyTacticsGame>),
+      find.byType(InspectableGameSurface<BillyBabiesGame>),
       findsOneWidget,
     );
-    expect(gameServices.isAuthenticated, isTrue);
-    expect(
-      gameServices.calls.map((call) => call.operation),
-      contains(GameServiceOperation.authenticate),
-    );
+    expect(game.session.status, DuelPrototypeStatus.setupNotStarted);
     expect(find.byType(FloatingActionButton), findsNothing);
     expect(tester.takeException(), isNull);
 
     await tester.pumpWidget(const SizedBox.shrink());
-
-    expect(gameServices.isDisposed, isFalse);
+    await tester.pump();
+    expect(game.isRemoved, isTrue);
   });
 
-  testWidgets('launches, restarts, and clears a scenario with fresh games', (
+  testWidgets('propagates safe padding into the game root', (tester) async {
+    const padding = EdgeInsets.fromLTRB(10, 20, 30, 40);
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(size: Size(800, 400), viewPadding: padding),
+          child: GameScreen(),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(_currentGame(tester).safePadding, padding);
+  });
+
+  testWidgets('launches, restarts, and clears with fresh game roots', (
     tester,
   ) async {
-    final gameServices = FakeGamePlatformServices();
-    await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
+    await tester.pumpWidget(const CoreflameApp());
     await tester.pump();
     final normalGame = _currentGame(tester);
 
     await _openLauncherWithGesture(tester);
-    expect(find.text('Scenarios'), findsOneWidget);
-
-    await tester.tap(find.text('X about to win'));
-    await tester.pumpAndSettle();
+    await tester.tap(find.text('Duel shell'));
+    await _pumpTransition(tester);
     final scenarioGame = _currentGame(tester);
     expect(scenarioGame, isNot(same(normalGame)));
-    expect(scenarioGame.platformServices, same(gameServices));
-    expect(scenarioGame.match.turn, Mark.x);
-    expect(scenarioGame.match.markAt(0), Mark.x);
-    expect(scenarioGame.match.markAt(2), isNull);
+    expect(normalGame.isRemoved, isTrue);
+    expect(scenarioGame.session.scenarioId, 'shell.default');
 
     await _openLauncherWithGesture(tester);
     await tester.tap(find.byKey(const ValueKey('state-launcher-restart')));
-    await tester.pumpAndSettle();
+    await _pumpTransition(tester);
     final restartedGame = _currentGame(tester);
     expect(restartedGame, isNot(same(scenarioGame)));
-    expect(restartedGame.match.markAt(0), Mark.x);
+    expect(scenarioGame.isRemoved, isTrue);
+    expect(restartedGame.session.scenarioId, 'shell.default');
 
     await _openLauncherWithGesture(tester);
     await tester.tap(find.byKey(const ValueKey('state-launcher-clear')));
     await tester.pump();
     final clearedGame = _currentGame(tester);
     expect(clearedGame, isNot(same(restartedGame)));
-    expect(clearedGame.match.cells, everyElement(isNull));
+    expect(restartedGame.isRemoved, isTrue);
+    expect(clearedGame.session.scenarioId, isNull);
   });
 
-  testWidgets('opens the launcher with a mobile three-finger upward swipe', (
+  testWidgets('survives background and resume lifecycle transitions', (
     tester,
   ) async {
-    final gameServices = FakeGamePlatformServices();
-    await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
+    await tester.pumpWidget(const CoreflameApp());
     await tester.pump();
 
-    await _openLauncherWithGesture(tester);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await tester.pump();
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pump();
 
-    expect(find.text('Scenarios'), findsOneWidget);
+    expect(_currentGame(tester).isRemoved, isFalse);
+    expect(tester.takeException(), isNull);
   });
 
-  testWidgets('opens the launcher through the public programmatic function', (
-    tester,
-  ) async {
-    final gameServices = FakeGamePlatformServices();
-    await tester.pumpWidget(CoreflameApp(gameServices: gameServices));
+  testWidgets('opens the launcher through the public function', (tester) async {
+    await tester.pumpWidget(const CoreflameApp());
     await tester.pump();
 
     final gameContext = tester.element(
-      find.byType(InspectableGameSurface<TinyTacticsGame>),
+      find.byType(InspectableGameSurface<BillyBabiesGame>),
     );
     final result = showScenarioLauncher(gameContext);
-    await tester.pumpAndSettle();
+    await _pumpTransition(tester);
 
     expect(find.text('Scenarios'), findsOneWidget);
 
     Navigator.of(gameContext).pop();
-    await tester.pumpAndSettle();
+    await _pumpTransition(tester);
     expect(await result, isNull);
   });
 }
 
-TinyTacticsGame _currentGame(WidgetTester tester) => tester
-    .widget<InspectableGameSurface<TinyTacticsGame>>(
-      find.byType(InspectableGameSurface<TinyTacticsGame>),
+BillyBabiesGame _currentGame(WidgetTester tester) => tester
+    .widget<InspectableGameSurface<BillyBabiesGame>>(
+      find.byType(InspectableGameSurface<BillyBabiesGame>),
     )
     .game;
 
@@ -125,5 +129,10 @@ Future<void> _openLauncherWithGesture(WidgetTester tester) async {
   for (final gesture in gestures) {
     await gesture.up();
   }
-  await tester.pumpAndSettle();
+  await _pumpTransition(tester);
+}
+
+Future<void> _pumpTransition(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 500));
 }

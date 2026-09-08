@@ -6,12 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:state_launcher_flutter/state_launcher_flutter.dart';
 
-import '../game/scenarios/catalog.dart';
-import '../game/services/service_configuration.dart';
-import '../game/theme/game_palette.dart';
+import '../game/domain/prototype_session.dart';
 import '../game/game_root.dart';
-import '../runtime/game_services/game_platform_services.dart';
-import '../runtime/game_services/mobile_game_platform_services.dart';
+import '../game/scenarios/catalog.dart';
+import '../game/theme/game_palette.dart';
 import '../runtime/inspection/inspection_surface.dart';
 
 const _scenarioLauncherEnabled = bool.fromEnvironment(
@@ -20,10 +18,6 @@ const _scenarioLauncherEnabled = bool.fromEnvironment(
 );
 const _initialScenarioId = String.fromEnvironment('STATE_LAUNCHER_SCENARIO');
 
-/// Shows the scenario launcher above the nearest game screen.
-///
-/// The supplied [context] must be below [GameScreen], and scenario launching
-/// must be enabled for the current build.
 Future<String?> showScenarioLauncher(BuildContext context) {
   final host = context.getInheritedWidgetOfExactType<_ScenarioLauncherHost>();
   if (host == null) {
@@ -33,42 +27,35 @@ Future<String?> showScenarioLauncher(BuildContext context) {
 }
 
 class CoreflameApp extends StatelessWidget {
-  const CoreflameApp({super.key, this.gameServices});
-
-  final GamePlatformServices? gameServices;
+  const CoreflameApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Coreflame',
+      title: 'Billy Babies Duel',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        fontFamily: 'Gluten',
         colorScheme: ColorScheme.fromSeed(
-          seedColor: GamePalette.berry,
-          surface: GamePalette.cream,
+          seedColor: DuelPalette.violet,
+          surface: DuelPalette.panel,
         ),
-        scaffoldBackgroundColor: GamePalette.cream,
+        scaffoldBackgroundColor: DuelPalette.canvas,
       ),
-      home: GameScreen(gameServices: gameServices),
+      home: const GameScreen(),
     );
   }
 }
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key, this.gameServices});
-
-  final GamePlatformServices? gameServices;
+  const GameScreen({super.key});
 
   @override
   State<GameScreen> createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late final bool _ownsGameServices;
-  late final GamePlatformServices _gameServices;
-  late TinyTacticsGame _game;
+  late BillyBabiesGame _game;
   late final StateLauncherController _scenarioLauncher;
   var _gameGeneration = 0;
   var _safePadding = EdgeInsets.zero;
@@ -76,11 +63,6 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    final injectedGameServices = widget.gameServices;
-    _ownsGameServices = injectedGameServices == null;
-    _gameServices =
-        injectedGameServices ??
-        MobileGamePlatformServices(configuration: gameServicesConfiguration);
     final initialScenario = _resolveInitialScenario();
     _game = _createGame(initialScenario);
     _scenarioLauncher = StateLauncherController(
@@ -97,20 +79,11 @@ class _GameScreenState extends State<GameScreen> {
       },
       onClear: () => _replaceGame(_createGame(null)),
     );
-
-    if (_gameServices.capabilities.contains(
-      GameServiceCapability.authentication,
-    )) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) unawaited(_gameServices.authenticate());
-      });
-    }
   }
 
   @override
   void dispose() {
     _scenarioLauncher.dispose();
-    if (_ownsGameServices) unawaited(_gameServices.dispose());
     super.dispose();
   }
 
@@ -124,7 +97,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final scaffold = Scaffold(
-      body: InspectableGameSurface<TinyTacticsGame>(
+      body: InspectableGameSurface<BillyBabiesGame>(
         key: ValueKey(_gameGeneration),
         game: _game,
       ),
@@ -152,12 +125,10 @@ class _GameScreenState extends State<GameScreen> {
     return scenario;
   }
 
-  TinyTacticsGame _createGame(GameScenario? scenario) => TinyTacticsGame(
-    platformServices: _gameServices,
-    match: scenario?.createMatch(),
-  );
+  BillyBabiesGame _createGame(GameScenario? scenario) =>
+      BillyBabiesGame(session: DuelPrototypeSession(scenarioId: scenario?.id));
 
-  void _replaceGame(TinyTacticsGame game) {
+  void _replaceGame(BillyBabiesGame game) {
     game.safePadding = _safePadding;
     setState(() {
       _game = game;

@@ -1,4 +1,3 @@
-import 'package:coreflame/game/domain/tic_tac_toe_match.dart';
 import 'package:coreflame/game/scenarios/catalog.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,40 +9,9 @@ void main() {
     );
   });
 
-  test('X-about-to-win creates a fresh match with one winning move', () {
-    final first = GameScenario.xAboutToWin.createMatch();
-    final second = GameScenario.xAboutToWin.createMatch();
-
-    expect(first, isNot(same(second)));
-    expect(first.turn, Mark.x);
-    expect(first.cells, [
-      Mark.x,
-      Mark.x,
-      null,
-      Mark.o,
-      Mark.o,
-      null,
-      null,
-      null,
-      null,
-    ]);
-    expect(first.play(2), MoveOutcome.accepted);
-    expect(first.result, RoundResult.xWon);
-  });
-
-  test('O-about-to-win creates a match with one winning move', () {
-    final match = GameScenario.oAboutToWin.createMatch();
-
-    expect(match.turn, Mark.o);
-    expect(match.play(5), MoveOutcome.accepted);
-    expect(match.result, RoundResult.oWon);
-  });
-
-  test('draw-about-to-finish creates a match with one empty cell', () {
-    final match = GameScenario.drawAboutToFinish.createMatch();
-
-    expect(match.cells.where((mark) => mark == null), hasLength(1));
-    expect(match.play(8), MoveOutcome.accepted);
-    expect(match.result, RoundResult.draw);
+  test('catalog exposes only the non-playable foundation shell', () {
+    expect(GameScenario.values, [GameScenario.shell]);
+    expect(GameScenario.findById('shell.default'), GameScenario.shell);
+    expect(GameScenario.findById('missing'), isNull);
   });
 }
